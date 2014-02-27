@@ -1,0 +1,13 @@
+setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
+		vsetContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
+		vvvvvsetContentView(R.layout.activity_main);
+		vvsetContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
+		
