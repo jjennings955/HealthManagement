@@ -11,9 +11,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		// This should screw things up?
-		// I don't know
-		
 		
 		// Inflate the menu; this adds items to the action bar if it is present.
 // Inflate the menu; this adds items to the action bar if it is present.
