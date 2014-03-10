@@ -14,7 +14,7 @@ public class MainActivity extends Activity {
 	//private TextView v;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+		//REKG;TWEW;EKGTWKEG	
 		super.onCreate(savedInstanceState);
 		//v = new TextView(this);
 		setContentView(R.layout.activity_main);
