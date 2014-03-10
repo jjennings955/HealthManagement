@@ -21,10 +21,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		SQLiteDatabase foo = this.getWritableDatabase();
+		//SQLiteDatabase foo = this.getWritableDatabase();
 		String create_statement = "create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, date_of_birth INTEGER); create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id)); create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id)); create table food(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories REAL, fat REAL, protein REAL, carbs REAL, fiber REAL, sugar REAL); create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id)); create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, priority INTEGER); create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id)); create table medication_tracking(id INTEGER PRIMARY KEY AUTOINCREMENT, medication_schedule_id INTEGER, date INTEGER, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id));";
 		
-		foo.execSQL(create_statement);
+		db.execSQL(create_statement);
 	}
 	public void store(User newUser)
 	{
