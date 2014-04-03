@@ -6,11 +6,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class User {
+	
 	private int _id;
 	
 	private String userName;
@@ -23,7 +21,13 @@ public class User {
 	private Date date_of_birth;
 	private char gender;
 	
-	public HashMap<String, Boolean> validateUserFields(String user, String pass, String fName, String lName,
+	public String toString()
+	{
+		return "userName: " + userName + " " + "name: " + firstName + " " + lastName + "\n" +
+				"     " + "height: " + height_feet + "'" + height_inches + "\"" + "weight: " + weight + "lbs" + "\n" +
+				"     " + "gender: " + gender + " dob: " + date_of_birth.toString();
+	}
+	public static HashMap<String, Boolean> validateUserFields(String user, String pass, String fName, String lName,
 			int height_feet, int height_inches, float weight, Date dob, char gender)
 			{
 				HashMap<String, Boolean> resultMap = new HashMap<String, Boolean>();
@@ -45,7 +49,7 @@ public class User {
 			}
 	
 	public User(String user, String pass, String fName, String lName,
-			int height_feet, int height_inches, float weight, Date dob, char gender) throws UnsupportedEncodingException
+			int height_feet, int height_inches, float weight, Date dob, char gender) 
 	{
 		
 		setFirstName(fName);
@@ -60,7 +64,7 @@ public class User {
 	}
 
 	
-	public void setPassword(String pass) throws UnsupportedEncodingException {
+	public void setPassword(String pass) {
 		MessageDigest digest;
 		try {
 			digest = MessageDigest.getInstance("SHA-256");
@@ -68,7 +72,12 @@ public class User {
 			passwordHash = pass;
 			return;
 		}
-		byte[] hash = digest.digest(pass.getBytes("UTF-8"));
+		byte[] hash = null;
+		try {
+			hash = digest.digest(pass.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			
+		}
 		passwordHash = Helper.getHex(hash);
 	}
 	
@@ -185,9 +194,11 @@ public class User {
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
-	public static void main(String[] args) throws UnsupportedEncodingException
-	{
-		User jason = new User("jason", "jason", "jason", "jennings", 6, 1, 200, new Date(1987, 8, 15), 'M');
-		
+	public int get_id() {
+		return _id;
 	}
+	public void set_id(int _id) {
+		this._id = _id;
+	}
+
 }

@@ -4,5 +4,6 @@
     <string name="app_name">HealthMonitoring</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello Picard!</string>
+    <string name="title_activity_example">ExampleActivity</string>
 
 </resources>
