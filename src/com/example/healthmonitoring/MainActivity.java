@@ -20,12 +20,12 @@ public class MainActivity extends Activity {
 		TextView v = (TextView)findViewById(R.id.helloworld);
 		
 		DatabaseHandler db = new DatabaseHandler(this);
-		Medication med = new Medication("DRUGS", 1);
+		Medication med = new Medication("Tylenol", 1);
 		
 		
 		User jason = new User("jason", "jason", "jason", "jennings", 6, 1, 200, new Date(87, 8 - 1, 15), 'M');
 		Log.w("PHMS", jason.getFirstName());
-		User schyler = new User("picard", "jason", "schyler", "folefack", 6, 1, 200, new Date(88, 4 - 1, 2), 'M');
+		User schyler = new User("schyler", "jason", "schyler", "dsfkjdsfklj", 6, 1, 200, new Date(88, 4 - 1, 2), 'M');
 		Log.w("PHMS", "foo " + new Date(schyler.getDate_of_birth().getTime()).toString());
 		db.store(jason);
 		db.store(schyler);
