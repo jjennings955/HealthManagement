@@ -1,3 +1,4 @@
+
 package com.example.healthmonitoring;
 
 import java.util.ArrayList;
@@ -247,6 +248,171 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete("user", "id = ?", new String[] { ""+target.get_id() });
 	}
+	
+	
+	/*
+	 * Add article
+	 * */
+	public void addContact(Article article) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	 
+	    ContentValues values = new ContentValues();
+	    values.put("type", article.getType()); 
+	    values.put("url", article.getUrl()); 
+	    values.put("title", article.getTitle()); 
+	    values.put("description", article.getDescription()); 
+	    values.put("userId", article.getUserId()); 
+	    
+	    db.insert("artilce", null, values);
+	    db.close(); 
+	}
+	
+	/*
+	 * Get single article entry from Id
+	 * */
+	public Article getArticle(int id) {
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    
+	    
+	    //Cursor c = db.rawQuery("select * from article where userId= ?", new String[]{String.valueOf(id)});
+	 
+	    Cursor cursor = db.query("article", new String[] {"id", "type",
+	            "url", "title", "description","userId" }, "userId =?",
+	            new String[] { String.valueOf(id) }, null, null, null, null);
+	    if (cursor != null)
+	        cursor.moveToFirst();
+	 
+	    Article article = new Article(Integer.parseInt(cursor.getString(0)),
+	            cursor.getString(1), cursor.getString(2),cursor.getString(3),
+	            cursor.getString(4),Integer.parseInt(cursor.getString(5)));
+	    // return contact
+	    
+	    
+	    
+	    return article;
+	}
+	
+	/*
+	 * Add food
+	 * */
+	public void addContact(Food food) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	 
+	    ContentValues values = new ContentValues();
+	    values.put("name", food.getName()); 
+	    values.put("calories", food.getCalories()); 
+	    values.put("fat", food.getFat()); 
+	    values.put("protein", food.getProtein()); 
+	    values.put("carb", food.getCarbs()); 
+	    values.put("fiber", food.getFiber()); 
+	    values.put("sugar", food.getSugar()); 
+	    
+	    db.insert("food", null, values);
+	    db.close(); 
+	}
+	
+	/*
+	 * Add food_journal
+	 * */
+	public void addFood_journal(Food_journal food_j) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	 
+	    ContentValues values = new ContentValues();
+	    values.put("userId", food_j.getUserId()); 
+	    values.put("foodId", food_j.getFoodId());  
+	    
+	    db.insert("food_journal", null, values);
+	    db.close(); 
+	}
+	
+	/*
+	 * Get single food_journal entry from Id
+	 * */
+	public Food_journal getFood_journal(int id) {
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    
+	    
+	    //Cursor c = db.rawQuery("select * from article where userId= ?", new String[]{String.valueOf(id)});
+	 
+	    Cursor cursor = db.query("food_journal", new String[] {"id", "userId",
+	            "foodId"}, "userId =?",
+	            new String[] { String.valueOf(id) }, null, null, null, null);
+	    if (cursor != null)
+	        cursor.moveToFirst();
+	 //db.qu
+	    Food_journal food_j = new Food_journal(Integer.parseInt(cursor.getString(0)),
+	    		Integer.parseInt(cursor.getString(1)),Integer.parseInt(cursor.getString(2)));
+	    // return contact
+	    
+	    
+	    
+	    return food_j;
+	}
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/*
+	 * Add vitalSign
+	 * */
+	
+	
+	public void addVitalSign(VitalSign vt) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	 
+	    ContentValues values = new ContentValues();
+	    values.put("type", vt.getType()); 
+	    values.put("value1", vt.getValue1());  
+	    values.put("value2", vt.getValue2()); 
+	    values.put("userId", vt.getUser_Id());  
+	    
+	    db.insert("vitalsign", null, values);
+	    db.close(); 
+	}
+	
+	/*
+	 * Get single vital sign entry from Id
+	 * */
+	public VitalSign getVitalSign(int id) {
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    
+	    
+	    //Cursor c = db.rawQuery("select * from article where userId= ?", new String[]{String.valueOf(id)});
+	 
+	    Cursor cursor = db.query("vitalsign", new String[] {"id", "type",
+	            "value1","value2","userId"}, "userId =?",
+	            new String[] { String.valueOf(id) }, null, null, null, null);
+	    if (cursor != null)
+	        cursor.moveToFirst();
+	 //db.qu
+	    VitalSign vt = new VitalSign(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(0)),
+	    		Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(0)),
+	    		Integer.parseInt(cursor.getString(2)));
+	    // return contact
+	    
+	    
+	    
+	    return vt;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
