@@ -41,7 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(statements[i]);
 		}
 		User jason = new User("admin", "admin", "jason", "jennings", 6, 1, 200, 26, 'M');
-		this.store(jason);
+		this.store(jason, db);
 	}
 	public void store(MedicationEvent newEvent)
 	{
@@ -181,9 +181,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete("medication", "id = ?", new String[] { ""+target.getId() });
 	}
-	public void store(User newUser)
+	public void store(User newUser, SQLiteDatabase db)
 	{
-		  SQLiteDatabase db = this.getWritableDatabase();
 		  ContentValues values = new ContentValues();
 		  values.put("username", newUser.getUserName());
 		  values.put("password", newUser.getPasswordHash());
@@ -194,7 +193,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("weight", newUser.getWeight());
 		  values.put("age", newUser.getAge());
 		  db.insert("user", null, values);
-		  db.close();
+		  
+	}
+	public void store(User newUser)
+	{
+		this.store(newUser, this.getWritableDatabase());
 	}
 	public boolean checkLoginInfo(String uname, String pass)
 	{
