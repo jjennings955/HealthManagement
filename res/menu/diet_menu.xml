@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+   <item
+      android:id="@+id/add_item_diet"
+      android:icon="@drawable/add_icon"
+      android:showAsAction="ifRoom"
+      android:title="@string/add_item_diet">
+   </item>
+   
+   <item
+      android:id="@+id/settings_item"
+      android:icon="@drawable/settings_icon"
+      android:showAsAction="ifRoom"
+      android:title="@string/settings_item">
+   </item>
+   
+</menu>

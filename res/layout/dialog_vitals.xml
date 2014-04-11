@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blood Pressure:"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Systolic:"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/Dosage"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+    <RadioGroup
+        android:id="@+id/Priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diastolic:"
+            android:textSize="15sp" />
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/NumberOfTimes"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blood Glucose Level:"
+        android:textSize="17sp" />
+
+    <EditText
+        android:id="@+id/EditText01"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cholestrol:"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/TextView02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HDL (Good):"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/EditText02"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/TextView03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LDL (Bad):"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/EditText03"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+</LinearLayout>
