@@ -4,6 +4,10 @@ package com.team4.healthmonitor;
 import android.app.Activity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.User;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,8 +45,12 @@ public class RegisterActivity extends Activity {
 			      Toast.LENGTH_SHORT).show();
 	  }
 	  
-	  Toast.makeText(getApplicationContext(), newUser.getText().toString(), 
-		      Toast.LENGTH_SHORT).show();
+	  
+	  User user = new User();
+	  DatabaseHandler db = new DatabaseHandler(this);
+	  user.setUserName(newUser.getText().toString());
+	  user.setPassword(newPassword.getText().toString());
+	  db.store(user);
 	  
 	  
 	 

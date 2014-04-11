@@ -67,16 +67,6 @@
               android:singleLine="true" />
       </LinearLayout>
 
-      <Button
-          android:id="@+id/btnRegister"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentBottom="true"
-          android:layout_centerHorizontal="true"
-          android:layout_marginBottom="17dp"
-          android:onClick="btnRegister"
-          android:text="Register New Account" />
-
       <RadioGroup
           android:id="@+id/radioGroup1"
           android:layout_width="wrap_content"
@@ -151,6 +141,15 @@
           android:layout_alignParentTop="true"
           android:text="@string/username"
           android:textColor="#ffffff" />
+
+      <Button
+          android:id="@+id/btnRegister"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentLeft="true"
+          android:onClick="btnRegister"
+          android:text="Register New Account" />
 
   </RelativeLayout>
 
