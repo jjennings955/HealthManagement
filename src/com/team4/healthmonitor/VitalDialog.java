@@ -6,6 +6,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -38,6 +40,14 @@ public class VitalDialog extends DialogFragment  {
 			 hdl=(EditText) view2.findViewById(R.id.hdl);
 			 ldl=(EditText) view2.findViewById(R.id.ldl);
 			 getDialog().setTitle("Add Vital Signs");
+			 
+			 Button button = (Button)view2.findViewById(R.id.btnSubmitVitals);
+		     button.setOnClickListener(new OnClickListener() {
+		         public void onClick(View v) {
+		             // When button is clicked, call up to owning activity.
+		             dismiss();
+		         }
+		     });
 	  
 			return view2;
 			

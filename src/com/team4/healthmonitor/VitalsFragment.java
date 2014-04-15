@@ -2,6 +2,8 @@ package com.team4.healthmonitor;
 
 
 import com.team4.healthmonitor.R;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +30,12 @@ public class VitalsFragment extends Fragment
 		//((MainAppActivity) getActivity()).setActionBarTitle("Vitals");
 		
 		return rootView;
+	}
+	
+	public void onAttach(Activity activity)
+	{
+	    myContext2=(FragmentActivity) activity;
+	    super.onAttach(activity);
 	}
 	
 	
