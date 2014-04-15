@@ -8,7 +8,7 @@
 
   <RelativeLayout
       android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="663dp"
       android:background="#000000" >
 
       <!-- Header  Starts -->
@@ -123,16 +123,7 @@
           android:hint="Inch"
           android:inputType="phone" />
 
-      <TextView
-          android:id="@+id/textView1"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentLeft="true"
-          android:layout_below="@+id/Height"
-          android:layout_marginTop="15dp"
-          android:layout_toLeftOf="@+id/button1"
-          android:text="Contacts"
-          android:textColor="#ffffff" />
+      
 
       <TextView
           android:layout_width="fill_parent"
@@ -141,6 +132,82 @@
           android:layout_alignParentTop="true"
           android:text="@string/username"
           android:textColor="#ffffff" />
+      
+      
+      
+            <TextView
+                  android:id="@+id/Contact_1"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/Height"
+                  android:layout_marginTop="32dp"
+                  android:text="Emergency Contacts"
+                  android:textColor="#372c24" />
+
+              <EditText
+                  android:id="@+id/DoctorPhone"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/DoctorName"
+                  android:ems="10"
+                  android:hint="Doctor's #"
+                  android:inputType="phone"
+                  android:singleLine="true" />
+
+              <EditText
+                  android:id="@+id/DoctorEmail"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/DoctorPhone"
+                  android:ems="10"
+                  android:hint="Doctor's Email"
+                  android:singleLine="true" />
+
+              <EditText
+                  android:id="@+id/DoctorName"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/Contact_1"
+                  android:layout_marginTop="16dp"
+                  android:ems="10"
+                  android:hint="Doctor's Name"
+                  android:singleLine="true" />
+
+              <EditText
+                  android:id="@+id/personalName"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/DoctorEmail"
+                  android:layout_marginTop="20dp"
+                  android:ems="10"                 
+                  android:hint="Personal Contact's Name"
+                  android:singleLine="true" />
+
+              <EditText
+                  android:id="@+id/personalPhone"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/personalName"
+                  android:ems="10"
+                  android:inputType="phone"
+                  android:hint="Personal Contact's #"
+                  android:singleLine="true" />
+
+              <EditText
+                  android:id="@+id/personalEmail"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/personalPhone"
+                  android:ems="10"
+                  android:hint="Personal Contact&apos;s Email"
+                  android:singleLine="true" />
 
       <Button
           android:id="@+id/btnRegister"
