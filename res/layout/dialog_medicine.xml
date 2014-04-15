@@ -1,15 +1,23 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:fillViewport="true">
+  
+<LinearLayout
     android:id="@+id/edit_name"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name of medication:"
+        android:layout_marginTop="70dip"
         android:textSize="14sp" />
 
     <EditText
@@ -88,4 +96,12 @@
         android:ems="10"
         android:inputType="number" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Medication"
+        android:onClick="onAddButtonClicked" />
+
 </LinearLayout>
+</ScrollView>

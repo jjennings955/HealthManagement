@@ -14,7 +14,8 @@ import android.widget.Toast;
 import com.team4.database.*;
 
 public class MainActivity extends Activity {
- 
+   
+   public final static String USERNAME = "com.team4.healthmonitor.USERNAME";	
    private EditText username=null;
    private EditText password=null;
    private TextView attempts;
@@ -39,6 +40,7 @@ public class MainActivity extends Activity {
       Toast.makeText(getApplicationContext(), "Redirecting...",
       Toast.LENGTH_SHORT).show();
       Intent i = new Intent(this, MainAppActivity.class);
+      i.putExtra(USERNAME, uname);
       startActivity(i);
    }	
    else{
