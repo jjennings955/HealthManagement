@@ -6,14 +6,14 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.FragmentTransaction;
-<<<<<<< HEAD
+
 import android.content.Intent;
-=======
+
 import android.os.Build;
->>>>>>> 0a78b5fcc55abb819c5840b8d573204e28da0abd
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
@@ -135,6 +135,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) 
 	{
 	}
+
+
 	
 
 }

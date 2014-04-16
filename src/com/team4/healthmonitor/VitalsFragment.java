@@ -7,10 +7,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-<<<<<<< HEAD
-=======
+
 import android.support.v4.app.FragmentManager;
->>>>>>> 0a78b5fcc55abb819c5840b8d573204e28da0abd
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;

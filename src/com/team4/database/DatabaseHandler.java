@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PHMS";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 7;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,7 +42,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(statements[i]);
 		}
 		User jason = new User("admin", "admin", "jason", "jennings", 6, 1, 200, 26, 'M');
+		ArrayList<Medication> meds = new ArrayList<Medication>();
+		meds.add(new Medication("Tylenol", 1));
+		meds.add(new Medication("Viagra", 1));
+		meds.add(new Medication("Aspirin", 1));
+		meds.add(new Medication("Viox", 1));
+		meds.add(new Medication("Heroin", 1));
+		meds.add(new Medication("Caffeine", 1));
+		MedicationEvent mv = new MedicationEvent(5, 24, "wednesday", 5, 1, 1);
+		
+		
+		for (Medication m : meds)
+		{
+			this.store(m, db);
+		}
+		
 		this.store(jason, db);
+		this.store(mv, db);
+		mv.setMedication_id(2);
+		this.store(mv, db);
+	}
+	public ArrayList<String[]> getUserMedicationSchedule(User u)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		ArrayList<String[]> results = new ArrayList<String[]>();
+		String query = "select M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication_schedule as S, user as U, medication as M where S.user = U.id and U.id = M.id and U.id = ?";
+		Cursor cursor = db.rawQuery(query, new String[] { "" + u.getId() } );
+        if (cursor.moveToFirst()) {
+            do {
+    			String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
+    			results.add(row);
+            } while (cursor.moveToNext());
+        }
+        return results;
+		
 	}
 	public void store(MedicationEvent newEvent)
 	{
@@ -52,8 +85,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("time_hours", newEvent.getTime_hours());
 		  values.put("time_mins", newEvent.getTime_mins());
 		  values.put("dosage", newEvent.getDosage());
-		  values.put("medication_id", newEvent.getMedication_id());
-		  values.put("user_id", newEvent.getUserId());
+		  values.put("medication", newEvent.getMedication_id());
+		  values.put("user", newEvent.getUserId());
 		  values.put("day", newEvent.getDay());
 		  db.insert("medication_schedule", null, values);
 		  
@@ -112,8 +145,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put("time_hours", existingEvent.getTime_hours());
 		values.put("time_mins", existingEvent.getTime_mins());
 		values.put("dosage", existingEvent.getDosage());
-		values.put("medication_id", existingEvent.getMedication_id());
-		values.put("user_id", existingEvent.getUserId());
+		values.put("medication", existingEvent.getMedication_id());
+		values.put("user", existingEvent.getUserId());
 		values.put("day", existingEvent.getDay());
 		db.update("user", values, "id = ?", new String[] { ""+existingEvent.getId() });
 	}
@@ -193,16 +226,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("height_inches", newUser.getHeight_inches());
 		  values.put("weight", newUser.getWeight());
 		  values.put("age", newUser.getAge());
-		  values.put("gender",""+newUser.getGender());
 		  db.insert("user", null, values);
 		  
 	}
-	
+	public void store(MedicationEvent newEvent, SQLiteDatabase db)
+	{
+		  ContentValues values = new ContentValues();
+		  values.put("time_hours", newEvent.getTime_hours());
+		  values.put("time_mins", newEvent.getTime_mins());
+		  values.put("dosage", newEvent.getDosage());
+		  values.put("medication", newEvent.getMedication_id());
+		  values.put("user", newEvent.getUserId());
+		  values.put("day", newEvent.getDay());
+		  db.insert("medication_schedule", null, values);
+		  //db.close();
+	}
+	public void store(Medication newMedication, SQLiteDatabase db)
+	{
+		  ContentValues values = new ContentValues();
+		  values.put("name", newMedication.getName());
+		  values.put("priority", newMedication.getPriority());
+		  db.insert("medication", null, values);
+		  //db.close();
+	}
 	public void store(User newUser)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		this.store(newUser, db);
-		db.close();
+		//db.close();
 	}
 	public boolean checkLoginInfo(String uname, String pass)
 	{
@@ -320,7 +371,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("userId", article.getUserId()); 
 	    
 	    db.insert("article", null, values);
-	    db.close(); 
+	    //db.close(); 
 	}
 	
 	/*
@@ -364,7 +415,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("sugar", food.getSugar()); 
 	    
 	    db.insert("food", null, values);
-	    db.close(); 
+	    //db.close(); 
 	}
 	
 	/*
@@ -378,7 +429,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("foodId", food_j.getFoodId());  
 	    
 	    db.insert("food_journal", null, values);
-	    db.close(); 
+	    //db.close(); 
 	}
 	
 	/*
@@ -420,7 +471,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("userId", vt.getUser_Id());  
 	    
 	    db.insert("vitalsign", null, values);
-	    db.close(); 
+	    //db.close(); 
 	}
 	
 	/*
