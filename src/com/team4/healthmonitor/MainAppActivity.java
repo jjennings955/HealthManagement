@@ -2,17 +2,24 @@ package com.team4.healthmonitor;
 
 
 import com.team4.healthmonitor.swipeadapter.*;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+<<<<<<< HEAD
 import android.content.Intent;
+=======
+import android.os.Build;
+>>>>>>> 0a78b5fcc55abb819c5840b8d573204e28da0abd
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
-public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener 
+@SuppressLint("NewApi")
+public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener
 {
 
 	public final static String USERNAME = "com.team4.healthmonitor.USERNAME";
@@ -25,6 +32,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	// Tab titles
 	private String[] tabs = { "Medication", "Vitals", "Storage", "Diet", "Search" };
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -99,11 +108,13 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		});
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft)
 	{
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) 
 	{
