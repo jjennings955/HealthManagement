@@ -1,7 +1,9 @@
 package com.team4.healthmonitor;
 
 
+
 import java.util.ArrayList;
+
 
 import com.team4.database.DatabaseHandler;
 import com.team4.database.User;
@@ -29,7 +31,12 @@ public class MedicineFragment extends Fragment
 {
 
 	private FragmentActivity myContext;
+
 	private String key = "username";
+
+	private String username;
+	private String password;
+
 	
 	
 	
@@ -52,27 +59,43 @@ public class MedicineFragment extends Fragment
 		String username = bundle.getString(key,"username");
 	*/	
 		
-		String username = "";
+		
 		Intent i = getActivity().getIntent();
 		username = i.getStringExtra(MainActivity.USERNAME);
+		password = i.getStringExtra(MainActivity.PASSWORD);
 		
-		Toast.makeText(getActivity(), username +"", Toast.LENGTH_SHORT).show();
+		DatabaseHandler db = new DatabaseHandler(getActivity());
+		User u = db.login(username, password);
+		
+		String f = u.getFirstName();
+		String l = u.getLastName();
+		int age = u.getAge();
+		char g = u.getGender();
+		
+		
+		
+		//Toast.makeText(getActivity(), username +" "+password, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getActivity(), myContext+"", Toast.LENGTH_SHORT).show();
+		
+
    
 		
 		
 	    TableLayout ll = (TableLayout) rootView.findViewById(R.id.tableLayout);
 
-	    DatabaseHandler db = new DatabaseHandler(this.getActivity());
+
 	    User dummy = new User();
 	    dummy.setId(1);
 	    ArrayList<String[]> results = db.getUserMedicationSchedule(dummy);
 	    int j = 0;
 	    for (String[] resultRow : results) 
+
 	    {
 
 	        TableRow row= new TableRow(getActivity());
 	        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
 	        row.setLayoutParams(lp);
+
 	        TextView a = new TextView(getActivity());
 	        TextView b = new TextView(getActivity());
 	        TextView c = new TextView(getActivity());
@@ -87,6 +110,7 @@ public class MedicineFragment extends Fragment
 	        row.addView(d);
 	        ll.addView(row,j++);
 	    }
+
 
 		
 		return rootView;

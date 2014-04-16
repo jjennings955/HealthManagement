@@ -96,12 +96,25 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number" />
+<TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="14sp" />
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:text="Submit" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Medication" />
+        android:text="Add Medication"
+        android:onClick="onAddButtonClicked" />
 
 </LinearLayout>
 </ScrollView>
+

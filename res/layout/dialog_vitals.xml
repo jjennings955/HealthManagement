@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#000000">
 
     <TextView
         android:id="@+id/textView1"
@@ -11,6 +12,8 @@
         android:layout_height="wrap_content"
         android:text="Blood Pressure:"
         android:textSize="17sp" />
+    
+   
 
     <TextView
         android:id="@+id/textView2"
@@ -20,7 +23,7 @@
         android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/Dosage"
+        android:id="@+id/systolic"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:inputType="number" />
@@ -40,7 +43,7 @@
     </RadioGroup>
 
     <EditText
-        android:id="@+id/NumberOfTimes"
+        android:id="@+id/diastolic"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -54,7 +57,7 @@
         android:textSize="17sp" />
 
     <EditText
-        android:id="@+id/EditText01"
+        android:id="@+id/bgl"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -75,7 +78,7 @@
         android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/EditText02"
+        android:id="@+id/hdl"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:inputType="number" />
@@ -88,9 +91,25 @@
         android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/EditText03"
+        android:id="@+id/ldl"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
-        android:inputType="number" />
+        android:inputType="number" >
+
+        <requestFocus />
+    </EditText>
+    
+     <TextView
+        android:id="@+id/TextView03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnSubmitVitals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
 
 </LinearLayout>

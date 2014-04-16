@@ -2,6 +2,8 @@ package com.team4.healthmonitor;
 
 
 import android.app.Activity;
+import android.content.Intent;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,6 +97,7 @@ public class RegisterActivity extends Activity {
 			  user.setHeight_inches(Integer.parseInt(height_inch.getText().toString()));
 			  db.store(user);
 			  
+
 			  finish();
 		}
 		else
@@ -103,7 +106,10 @@ public class RegisterActivity extends Activity {
 		}
 
 	  
-	  
+
+	  //returns user to login screen
+	  Intent i = new Intent(this, MainActivity.class);
+      startActivity(i);
 	 
 	 
 	}

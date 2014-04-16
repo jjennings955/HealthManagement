@@ -40,7 +40,7 @@ public class MedicationEvent {
 	{
 		
 	}
-	
+
 	public MedicationEvent(int time_hours, int time_mins, String day, float dosage, int medication_id, int user_id)
 	{
 		this.time_hours = time_hours;
@@ -60,6 +60,7 @@ public class MedicationEvent {
 		this.user_id = user.getId();
 	}
 	
+
 
 	public int getId() {
 		return _id;

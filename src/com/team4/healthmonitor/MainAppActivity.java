@@ -2,27 +2,41 @@ package com.team4.healthmonitor;
 
 
 import com.team4.healthmonitor.swipeadapter.*;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.FragmentTransaction;
+
 import android.content.Intent;
+
+import android.os.Build;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.app.FragmentTransaction;
+
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
-public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener 
+@SuppressLint("NewApi")
+public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener
 {
 
-	public final static String USERNAME = "com.team4.healthmonitor.USERNAME";	
+
+	public final static String USERNAME = "com.team4.healthmonitor.USERNAME";
+	public final static String PASSWORD = "com.team4.healthmonitor.PASSWORD";
 	public static String username = "";
+	public static String password = "";
+
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	// Tab titles
 	private String[] tabs = { "Medication", "Vitals", "Storage", "Diet", "Search" };
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -30,6 +44,10 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		
 		Intent i = getIntent();
 		username = i.getStringExtra(MainActivity.USERNAME);
+
+		password = i.getStringExtra(MainActivity.PASSWORD);
+		
+
 
 	/*	
 		Bundle bundle = new Bundle();
@@ -47,7 +65,9 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 */
 		Intent intent = new Intent(this, MedicineFragment.class);
 	    intent.putExtra(USERNAME, username);
-		
+
+	    intent.putExtra(PASSWORD, password);
+
 		
 		
 		setContentView(R.layout.activity_main_app);
@@ -79,6 +99,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 				// on changing the page
 				// make respected tab selected
 				actionBar.setSelectedNavigationItem(position);
+				//Toast.makeText(getApplicationContext(), position+"", Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
@@ -93,11 +114,13 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		});
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft)
 	{
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) 
 	{
@@ -118,6 +141,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) 
 	{
 	}
+
+
 	
 
 }
