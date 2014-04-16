@@ -44,4 +44,8 @@ public class Medication {
 	public void setId(int _id) {
 		this._id = _id;
 	}
+	public String toString()
+	{
+		return this.getName();
+	}
 }

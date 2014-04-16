@@ -41,11 +41,12 @@ public class MedicationEvent {
 		
 	}
 	
-	public MedicationEvent(int time_hours, int time_mins, float dosage, int medication_id, int user_id)
+	public MedicationEvent(int time_hours, int time_mins, String day, float dosage, int medication_id, int user_id)
 	{
 		this.time_hours = time_hours;
 		this.time_mins = time_mins;
 		this.dosage = dosage;
+		this.day = day;
 		this.medication_id = medication_id;
 		this.user_id = user_id;
 		

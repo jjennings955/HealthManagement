@@ -5,13 +5,18 @@ import com.team4.healthmonitor.swipeadapter.*;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener 
 {
 
+	public final static String USERNAME = "com.team4.healthmonitor.USERNAME";	
+	public static String username = "";
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
@@ -22,6 +27,29 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		
+		Intent i = getIntent();
+		username = i.getStringExtra(MainActivity.USERNAME);
+
+	/*	
+		Bundle bundle = new Bundle();
+		bundle.putString("username", username);
+		MedicineFragment fragment=new MedicineFragment();
+		fragment.setArguments(bundle);
+
+		
+	
+		Fragment fragment = new Fragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(key, username);
+		fragment.setArguments(bundle);
+
+*/
+		Intent intent = new Intent(this, MedicineFragment.class);
+	    intent.putExtra(USERNAME, username);
+		
+		
+		
 		setContentView(R.layout.activity_main_app);
 
 		// Initilization
