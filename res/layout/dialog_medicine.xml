@@ -105,16 +105,10 @@
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
-        android:layout_height="33dp"
+        android:layout_height="53dp"
         android:text="Submit" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Medication"
-        android:onClick="onAddButtonClicked" />
-
+    
 </LinearLayout>
 </ScrollView>
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.team4.database.DatabaseHandler;
 import com.team4.database.Medication;
+import com.team4.database.MedicationEvent;
 
 import android.content.DialogInterface;
 import android.view.View.OnClickListener;
@@ -63,6 +64,7 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
  {
 	 DatabaseHandler db = new DatabaseHandler(this.getActivity());
+
 	 List<String> suggestions = new ArrayList<String>();
 	 ArrayList<Medication> medications = db.getMedications();
 	 for (Medication m : medications)

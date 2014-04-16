@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PHMS";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,8 +27,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//SQLiteDatabase foo = this.getWritableDatabase();
 		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking" };
 		String create_statement = "" + 
-				"create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER);\n" +
-				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
+				"create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER, doctor_name TEXT, doctor_number TEXT, doctor_email TEXT, contact_name TEXT, contact_number TEXT, contact_email TEXT);\n" +
+				"create table contacts(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT, phone TEXT, email TEXT, FOREIGN KEY(user_id) REFERENCES (user.id));" +
+				"create table sessions(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, timestamp INTEGER, FOREIGN KEY(user_id) REFERENCES (user.id));" +
+				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, datetime INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table food(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories REAL, fat REAL, protein REAL, carbs REAL, fiber REAL, sugar REAL);\n" +
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
@@ -49,7 +51,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		meds.add(new Medication("Viox", 1));
 		meds.add(new Medication("Heroin", 1));
 		meds.add(new Medication("Caffeine", 1));
-		MedicationEvent mv = new MedicationEvent(5, 24, "wednesday", 5, 1, 1);
+		//MedicationEvent mv = new MedicationEvent(5, 24, "wednesday", 5, 1, 1);
 		
 		
 		for (Medication m : meds)
@@ -58,10 +60,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
 		this.store(jason, db);
-		this.store(mv, db);
-		mv.setMedication_id(2);
-		this.store(mv, db);
+		//this.store(mv, db);
+		//mv.setMedication_id(2);
+		//this.store(mv, db);
 	}
+	
 	public ArrayList<String[]> getUserMedicationSchedule(User u)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -231,13 +234,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	public void store(MedicationEvent newEvent, SQLiteDatabase db)
 	{
+		//"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
 		  ContentValues values = new ContentValues();
 		  values.put("time_hours", newEvent.getTime_hours());
 		  values.put("time_mins", newEvent.getTime_mins());
+		  values.put("day", newEvent.getDay());
 		  values.put("dosage", newEvent.getDosage());
 		  values.put("medication", newEvent.getMedication_id());
 		  values.put("user", newEvent.getUserId());
-		  values.put("day", newEvent.getDay());
 		  db.insert("medication_schedule", null, values);
 		  //db.close();
 	}
@@ -432,6 +436,72 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    //db.close(); 
 	}
 	
+	public void store(Contact c)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("user_id", c.getUser_id());
+		values.put("phone", c.getPhone());
+		values.put("name", c.getName());
+		values.put("email", c.getEmail());
+		long id = db.insert("contacts", null, values);
+		c.setId((int)id);
+	}
+	public Contact getContact(int id)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from contacts where id = ?";
+		Cursor cursor = db.rawQuery(query, new String[] { ""+id });
+		Contact result = new Contact();
+		result.setId(cursor.getInt(0));
+		result.setUser_id(cursor.getInt(1));
+		result.setName(cursor.getString(2));
+		result.setPhone(cursor.getString(3));
+		result.setEmail(cursor.getString(4));
+		return result;		
+	}
+	public ArrayList<Contact> getContacts(int userid)
+	{
+		
+	}
+	public void store(Session s)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("user_id", s.getUser_id());
+		values.put("timestamp", s.getTimestamp());
+		db.insert("sessions", null, values);
+	}
+	public Session getSession(int id)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from sessions where id = ?";
+		Cursor cursor = db.rawQuery(query, new String[] { ""+id });
+		Session result = new Session();
+		result.setSession_id(cursor.getInt(0));
+		result.setUser_id(cursor.getInt(1));
+		result.setTimestamp(cursor.getLong(2));
+		return result;
+	}
+	public ArrayList<Session> userSessions(int userId)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from sessions where user_id = ?";
+		Cursor cursor = db.rawQuery(query, new String[] { ""+ userId });
+		ArrayList<Session> results = new ArrayList<Session>();
+        if (cursor.moveToFirst()) {
+            do {
+            	Session result = new Session();
+        		result.setSession_id(cursor.getInt(0));
+        		result.setUser_id(cursor.getInt(1));
+        		result.setTimestamp(cursor.getLong(2));
+        		
+    			results.add(result);
+            } while (cursor.moveToNext());
+        }
+
+        return results;
+	}
 	/*
 	 * Get single food_journal entry from Id
 	 * */

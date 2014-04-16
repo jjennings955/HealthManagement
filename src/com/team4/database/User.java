@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import android.telephony.PhoneNumberUtils;
+
 public class User {
 	
 	private int _id;
@@ -22,10 +24,30 @@ public class User {
 	//private Date date_of_birth;
 	private char gender;
 	private int age;
+	
+	private String doctor_name;
+	private String doctor_phone;
+	private String doctor_email;
+	
 	private String contact_name;
 	private String contact_phone;
 	private String contact_email;
 	
+	public final static boolean validatePhone(String phone)
+	{
+		return phone != null && PhoneNumberUtils.isGlobalPhoneNumber(phone);
+	}
+	public final static boolean validateName(String name)
+	{
+		return name != null && !name.equals("");
+	}
+	public final static boolean validateEmail(String target) {
+	    if (target == null) {
+	        return false;
+	    } else {
+	        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+	    }
+	}
 	public String toString()
 	{
 		return "userName: " + userName + " " + "name: " + firstName + " " + lastName + "\n" +
@@ -90,7 +112,7 @@ public class User {
 	{
 		
 	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -101,20 +123,20 @@ public class User {
 	public static boolean validateUserName(String userName)
 	{
 
-		return Helper.stringMatchesPattern(userName, "[a-zA-Z0-9_]{4,16}");
+		return userName != null && Helper.stringMatchesPattern(userName, "[a-zA-Z0-9_]{4,16}");
 	}
 
 	public static boolean validatePassword(String password)
 	{
-		return Helper.stringMatchesPattern(password, "[a-zA-Z0-9_]{4,16}");
+		return password != null && Helper.stringMatchesPattern(password, "[a-zA-Z0-9_]{4,16}");
 	}
 	public static boolean validFirstName(String firstName)
 	{
-		return Helper.stringMatchesPattern(firstName, "[a-zA-Z0-9_]{1,40}");
+		return firstName != null && Helper.stringMatchesPattern(firstName, "[a-zA-Z0-9_]{1,40}");
 	}
 	public static boolean validLastName(String lastName)
 	{
-		return Helper.stringMatchesPattern(lastName, "[a-zA-Z0-9_]{1,40}");
+		return lastName != null && Helper.stringMatchesPattern(lastName, "[a-zA-Z0-9_]{1,40}");
 	}
 	public static boolean validHeightInch(int inch)
 	{
@@ -204,6 +226,42 @@ public class User {
 	}
 	public void setAge(int age) {
 		this.age = age;
+	}
+	public String getDoctor_name() {
+		return doctor_name;
+	}
+	public void setDoctor_name(String doctor_name) {
+		this.doctor_name = doctor_name;
+	}
+	public String getDoctor_phone() {
+		return doctor_phone;
+	}
+	public void setDoctor_phone(String doctor_phone) {
+		this.doctor_phone = doctor_phone;
+	}
+	public String getDoctor_email() {
+		return doctor_email;
+	}
+	public void setDoctor_email(String doctor_email) {
+		this.doctor_email = doctor_email;
+	}
+	public String getContact_name() {
+		return contact_name;
+	}
+	public void setContact_name(String contact_name) {
+		this.contact_name = contact_name;
+	}
+	public String getContact_phone() {
+		return contact_phone;
+	}
+	public void setContact_phone(String contact_phone) {
+		this.contact_phone = contact_phone;
+	}
+	public String getContact_email() {
+		return contact_email;
+	}
+	public void setContact_email(String contact_email) {
+		this.contact_email = contact_email;
 	}
 
 }
