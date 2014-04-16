@@ -95,6 +95,7 @@ public class RegisterActivity extends Activity {
 			  user.setHeight_inches(Integer.parseInt(height_inch.getText().toString()));
 			  db.store(user);
 			  
+			  
 			  finish();
 		}
 		else

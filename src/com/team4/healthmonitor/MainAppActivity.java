@@ -15,8 +15,10 @@ import android.widget.Toast;
 public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener 
 {
 
-	public final static String USERNAME = "com.team4.healthmonitor.USERNAME";	
+	public final static String USERNAME = "com.team4.healthmonitor.USERNAME";
+	public final static String PASSWORD = "com.team4.healthmonitor.PASSWORD";
 	public static String username = "";
+	public static String password = "";
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
@@ -30,6 +32,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		
 		Intent i = getIntent();
 		username = i.getStringExtra(MainActivity.USERNAME);
+		password = i.getStringExtra(MainActivity.PASSWORD);
+		
 
 	/*	
 		Bundle bundle = new Bundle();
@@ -47,6 +51,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 */
 		Intent intent = new Intent(this, MedicineFragment.class);
 	    intent.putExtra(USERNAME, username);
+	    intent.putExtra(PASSWORD, password);
 		
 		
 		
@@ -79,6 +84,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 				// on changing the page
 				// make respected tab selected
 				actionBar.setSelectedNavigationItem(position);
+				//Toast.makeText(getApplicationContext(), position+"", Toast.LENGTH_SHORT).show();
 			}
 
 			@Override

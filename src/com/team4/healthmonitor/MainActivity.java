@@ -16,6 +16,7 @@ import com.team4.database.*;
 public class MainActivity extends Activity {
    
    public final static String USERNAME = "com.team4.healthmonitor.USERNAME";	
+   public final static String PASSWORD = "com.team4.healthmonitor.PASSWORD";	
    private EditText username=null;
    private EditText password=null;
    private TextView attempts;
@@ -32,24 +33,30 @@ public class MainActivity extends Activity {
       login = (Button)findViewById(R.id.button1);
    }
 
-   public void login(View view){
+   public void login(View view)
+   {
 	  DatabaseHandler db = new DatabaseHandler(this);
 	  String uname = username.getText().toString();
 	  String pass = password.getText().toString();
-      if(db.checkLoginInfo(uname, pass)){
-      Toast.makeText(getApplicationContext(), "Redirecting...",
-      Toast.LENGTH_SHORT).show();
-      Intent i = new Intent(this, MainAppActivity.class);
-      i.putExtra(USERNAME, uname);
-      startActivity(i);
-   }	
-   else{
+      
+	  if(db.checkLoginInfo(uname, pass))
+      {
+	      Toast.makeText(getApplicationContext(), "Redirecting...",
+	      Toast.LENGTH_SHORT).show();
+	      Intent i = new Intent(this, MainAppActivity.class);
+	      i.putExtra(USERNAME, uname);
+	      i.putExtra(PASSWORD, pass);
+	      startActivity(i);
+      }	
+   else
+   {
       Toast.makeText(getApplicationContext(), "Wrong Credentials",
       Toast.LENGTH_SHORT).show();
       attempts.setBackgroundColor(Color.RED);	
       counter--;
       attempts.setText(Integer.toString(counter));
-      if(counter==0){
+      if(counter==0)
+      {
          login.setEnabled(false);
       }
 

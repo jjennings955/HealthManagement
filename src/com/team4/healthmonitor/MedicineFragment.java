@@ -1,6 +1,8 @@
 package com.team4.healthmonitor;
 
 
+import com.team4.database.DatabaseHandler;
+import com.team4.database.User;
 import com.team4.healthmonitor.R;
 
 import android.app.Activity;
@@ -25,7 +27,8 @@ public class MedicineFragment extends Fragment
 {
 
 	private FragmentActivity myContext;
-	private String key = "username";
+	private String username;
+	private String password;
 	
 	
 	
@@ -48,38 +51,51 @@ public class MedicineFragment extends Fragment
 		String username = bundle.getString(key,"username");
 	*/	
 		
-		String username = "";
+		
 		Intent i = getActivity().getIntent();
 		username = i.getStringExtra(MainActivity.USERNAME);
+		password = i.getStringExtra(MainActivity.PASSWORD);
 		
-		Toast.makeText(getActivity(), username +"", Toast.LENGTH_SHORT).show();
+		DatabaseHandler db = new DatabaseHandler(getActivity());
+		User u = db.login(username, password);
+		
+		String f = u.getFirstName();
+		String l = u.getLastName();
+		int a = u.getAge();
+		char g = u.getGender();
+		
+		
+		
+		//Toast.makeText(getActivity(), username +" "+password, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getActivity(), myContext+"", Toast.LENGTH_SHORT).show();
+		
    
 		
-/*		
+		
 	    TableLayout ll = (TableLayout) rootView.findViewById(R.id.tableLayout);
 
 
-	    for (int i = 0; i <2; i++) 
+	    for (int j = 0; j < 4; j++) 
 	    {
 
 	        TableRow row= new TableRow(getActivity());
 	        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
 	        row.setLayoutParams(lp);
-	        TextView a = new TextView(getActivity());
+	        TextView aa = new TextView(getActivity());
 	        TextView b = new TextView(getActivity());
 	        TextView c = new TextView(getActivity());
 	        TextView d = new TextView(getActivity());
-	        a.setText("Column 1");
-	        b.setText("Column 2");
-	        c.setText("Column 3");
-	        d.setText("Column 4");
-	        row.addView(a);
+	        aa.setText(""+f);
+	        b.setText(""+l);
+	        c.setText(""+a);
+	        d.setText(""+g);
+	        row.addView(aa);
 	        row.addView(b);
 	        row.addView(c);
 	        row.addView(d);
-	        ll.addView(row,i);
+	        ll.addView(row,j);
 	    }
-	    */
+	    
 		
 		return rootView;
 	}
