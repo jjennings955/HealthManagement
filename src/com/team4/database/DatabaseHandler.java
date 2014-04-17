@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PHMS";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 20;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,6 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(statements[i]);
 		}
 		User jason = new User("admin", "admin", "jason", "jennings", 6, 1, 200, 26, 'M');
+		
 		ArrayList<Medication> meds = new ArrayList<Medication>();
 		
 		meds.add(new Medication("Tylenol", 1));
