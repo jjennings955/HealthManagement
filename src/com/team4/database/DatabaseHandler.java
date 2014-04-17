@@ -231,7 +231,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("height_inches", newUser.getHeight_inches());
 		  values.put("weight", newUser.getWeight());
 		  values.put("age", newUser.getAge());
-		  db.insert("user", null, values);
+		  long id = db.insert("user", null, values);
+		  newUser.setId((int)id);
 		  
 	}
 	public void store(MedicationEvent newEvent, SQLiteDatabase db)

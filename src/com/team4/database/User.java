@@ -25,21 +25,7 @@ public class User {
 	private char gender;
 	private int age;
 	
-	public final static boolean validatePhone(String phone)
-	{
-		return phone != null && PhoneNumberUtils.isGlobalPhoneNumber(phone);
-	}
-	public final static boolean validateName(String name)
-	{
-		return name != null && !name.equals("");
-	}
-	public final static boolean validateEmail(String target) {
-	    if (target == null) {
-	        return false;
-	    } else {
-	        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-	    }
-	}
+
 	public String toString()
 	{
 		return "userName: " + userName + " " + "name: " + firstName + " " + lastName + "\n" +

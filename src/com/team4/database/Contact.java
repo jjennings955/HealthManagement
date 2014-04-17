@@ -1,5 +1,7 @@
 package com.team4.database;
 
+import android.telephony.PhoneNumberUtils;
+
 public class Contact {
 	private int id;
 	private int user_id;
@@ -11,7 +13,21 @@ public class Contact {
 	{
 		
 	}
-	
+	public final static boolean validatePhone(String phone)
+	{
+		return phone != null && PhoneNumberUtils.isGlobalPhoneNumber(phone);
+	}
+	public final static boolean validateName(String name)
+	{
+		return name != null && !name.equals("");
+	}
+	public final static boolean validateEmail(String target) {
+	    if (target == null) {
+	        return false;
+	    } else {
+	        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+	    }
+	}
 	public Contact(User u, String name, String phone, String email)
 	{
 		this.user_id = u.getId();

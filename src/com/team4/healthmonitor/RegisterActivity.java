@@ -7,6 +7,7 @@ import android.content.Intent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.team4.database.Contact;
 import com.team4.database.DatabaseHandler;
 import com.team4.database.User;
 
@@ -84,6 +85,20 @@ public class RegisterActivity extends Activity {
 		String firstName = fName.getText().toString();
 		String lastName = lName.getText().toString();
 		char userGender = gender.charAt(0);
+		String doctorName = doc_name.getText().toString();
+		String doctorEmail = doc_email.getText().toString();
+		String doctorPhone = doc_phone.getText().toString();
+		
+		String contactName = relative_name.getText().toString();
+		String contactEmail = relative_email.getText().toString();
+		String contactPhone = relative_phone.getText().toString();
+		
+		
+		
+		
+		
+		
+		
 		int userAge = 0;
 		if (!age.getText().toString().equals(""))
 			userAge = Integer.parseInt(age.getText().toString());
@@ -159,6 +174,36 @@ public class RegisterActivity extends Activity {
 			valid = false;
 			height_inch.setError("Invalid Height");
 		}
+		if (!Contact.validateEmail(doctorEmail))
+		{
+			valid = false;
+			doc_email.setError("Invalid email address");
+		}
+		if (!Contact.validatePhone(doctorPhone))
+		{
+			valid = false;
+			doc_phone.setError("Invalid Phone Number");
+		}
+		if (!Contact.validateName(doctorName))
+		{
+			valid = false;
+			doc_name.setError("Invalid Name");
+		}
+		if (!Contact.validateEmail(contactEmail))
+		{
+			valid = false;
+			relative_email.setError("Invalid email address");
+		}
+		if (!Contact.validatePhone(contactPhone))
+		{
+			valid = false;
+			relative_phone.setError("Invalid Phone Number");
+		}
+		if (!Contact.validateName(contactName))
+		{
+			valid = false;
+			relative_name.setError("Invalid email address");
+		}
 		
 		if(valid)
 		{
@@ -173,7 +218,10 @@ public class RegisterActivity extends Activity {
 			  user.setHeight_feet(hf);
 			  user.setHeight_inches(hi);
 			  db.store(user);
-			  
+			  Contact doctor = new Contact(user, doctorName, doctorPhone, doctorEmail);
+			  Contact relative = new Contact(user, contactName, contactPhone, contactEmail);
+			  db.store(doctor);
+			  db.store(relative);
 
 			  finish();
 			  Intent i = new Intent(this, MainActivity.class);
