@@ -76,6 +76,7 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
 
      View view = inflater.inflate(R.layout.dialog_medicine, container);
      medName = (AutoCompleteTextView) view.findViewById(R.id.MedName);
+     
      dosage = (EditText) view.findViewById(R.id.Dosage);
      priority = (RadioGroup) view.findViewById(R.id.Priority);
      time = (TimePicker) view.findViewById(R.id.MedTime);
@@ -84,6 +85,9 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
 
      
      medName.setAdapter(adapter);
+     
+     
+     
      AutoCompleteSelected foo = new AutoCompleteSelected();
      medName.setOnItemClickListener(foo);
      medName.setOnClickListener(foo);
