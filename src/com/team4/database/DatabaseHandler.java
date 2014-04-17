@@ -25,8 +25,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		//SQLiteDatabase foo = this.getWritableDatabase();
-		
-		String create_statement = "create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER);\n" +
+		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking" };
+		String create_statement = "" + 
+				"create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER);\n" +
 				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table food(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories REAL, fat REAL, protein REAL, carbs REAL, fiber REAL, sugar REAL);\n" +
@@ -192,23 +193,57 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("height_inches", newUser.getHeight_inches());
 		  values.put("weight", newUser.getWeight());
 		  values.put("age", newUser.getAge());
+		  values.put("gender",""+newUser.getGender());
 		  db.insert("user", null, values);
 		  
 	}
+	
 	public void store(User newUser)
 	{
-		this.store(newUser, this.getWritableDatabase());
+		SQLiteDatabase db = this.getWritableDatabase();
+		this.store(newUser, db);
+		db.close();
 	}
 	public boolean checkLoginInfo(String uname, String pass)
+	{
+		Log.w("PHMS", "" + (login(uname, pass) == null));
+		return login(uname, pass) != null;
+	}
+	public User login(String uname, String pass)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		String query = "SELECT * from user where username = ? and password = ?;";
 		//Helper.
 		Cursor cursor = db.rawQuery(query, new String[] { uname, Helper.hashPassword(pass) });
 		if (cursor.moveToFirst())
-			return true;
+		{
+			User contact = new User();
+            contact.setId(cursor.getInt(0));
+            contact.setUserName(cursor.getString(1));
+            contact.setPassword(cursor.getString(2));
+            contact.setFirstName(cursor.getString(3));
+            contact.setLastName(cursor.getString(4));
+            contact.setHeight_feet(cursor.getInt(5));
+            contact.setHeight_inches(cursor.getInt(6));
+            contact.setWeight(cursor.getFloat(7));
+            contact.setAge(cursor.getInt(8));
+            return contact;
+		}
 		else
+		{
+			return null;
+		}
+	}
+	public boolean usernameAvailable(String uname)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from user where username = ?;";
+		Cursor cursor = db.rawQuery(query, new String[] { uname });
+		if (cursor.moveToFirst())
 			return false;
+		else
+			return true;
+		
 	}
 	public ArrayList<User> getUsers()
 	{
@@ -437,10 +472,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
-		
-		
-		
+		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking" };
+		for (String t : tables)
+		{
+			db.execSQL("DROP TABLE IF EXISTS " + t);
+		}
+		onCreate(db);
 	}
 }
 
