@@ -7,12 +7,9 @@
 
  <RelativeLayout
       android:layout_width="fill_parent"
-<<<<<<< HEAD
       android:layout_height="619dp" >
-=======
       android:layout_height="663dp"
       android:background="#000000" >
->>>>>>> 0a78b5fcc55abb819c5840b8d573204e28da0abd
 
       <!-- Header  Starts -->
 
@@ -296,8 +293,6 @@
           android:orientation="vertical" >
       </RadioGroup>
 
-<<<<<<< HEAD
-=======
       <EditText
           android:id="@+id/Age"
           android:layout_width="55dip"

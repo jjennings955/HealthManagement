@@ -33,7 +33,7 @@ public class VitalDialog extends DialogFragment  {
 	 {
 			 View view2 = inflater.inflate(R.layout.dialog_vitals, container);
 			 
-			 
+
 			 systolic=(EditText) view2.findViewById(R.id.systolic);
 			 diastolic=(EditText) view2.findViewById(R.id.diastolic);
 			 bgl=(EditText) view2.findViewById(R.id.bgl);
