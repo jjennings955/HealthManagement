@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,7 +33,10 @@ public class RegisterActivity extends Activity {
 		
 		newUser=(EditText)findViewById(R.id.reg_username);
 		newPassword=(EditText)findViewById(R.id.reg_password);
-		
+		// Hiding the keyboard
+        ///InputMethodManager imm = (InputMethodManager) getSystemService(getContext().INPUT_METHOD_SERVICE);
+        //imm.hideSoftInputFromWindow(inputLabel.getWindowToken(), 0);
+
 
 	}
 

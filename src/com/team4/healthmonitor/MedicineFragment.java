@@ -1,6 +1,11 @@
 package com.team4.healthmonitor;
 
 
+import java.util.Date;
+import java.util.List;
+
+import com.team4.database.Medication;
+import com.team4.database.VitalSign;
 import com.team4.healthmonitor.R;
 
 import android.app.Activity;
@@ -14,6 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,9 +37,48 @@ public class MedicineFragment extends Fragment
 		setHasOptionsMenu(true);
 		//((MainAppActivity) getActivity()).setActionBarTitle("Medicine");
     
+		LinearLayout l1 = (LinearLayout)rootView.findViewById(R.id.fragment_med);
+		
+		TextView[] tv = new TextView[4];
+	       
+	       LinearLayout l =null;
+	       List<Medication> vt = MainActivity.dh.getMedications();       
+		     for (Medication cn1 : vt) {
+		    	  for(int j1=0; j1<4; j1++){
+		    		   l = new LinearLayout(getActivity().getBaseContext());
+		    		   l.setLayoutParams(new ViewGroup.LayoutParams(
+		    			        ViewGroup.LayoutParams.MATCH_PARENT,
+		    			        ViewGroup.LayoutParams.WRAP_CONTENT));
+		    		   //l.setBackgroundResource(R.id.myshape_s);
+
+		    		  tv[j1] = new TextView(getActivity());
+		    		  tv[j1].setLayoutParams(new ViewGroup.LayoutParams(
+		    			        ViewGroup.LayoutParams.WRAP_CONTENT,
+		    			        ViewGroup.LayoutParams.WRAP_CONTENT));
+		    		  tv[j1].setWidth(150);
+		    		  //tv[j1].setText("Dynamic Text!");
+		    	  	 //l.addView(tv[j1]);
+		    	  }
+		    	  Date d = new Date();
+		    	  tv[0].setText(""+cn1.getId());
+		    	  tv[1].setText(""+cn1.getName());
+		    	  tv[2].setText(""+cn1.getPriority());
+		    	  tv[3].setText(""+d.getMonth()+"/"+d.getDay()+"/"+d.getYear());
+		          
+		    	  for(int j1=0; j1<4; j1++){
+		    		 // tv[j1] = new TextView(container.getContext());
+		    	  	  l.addView(tv[j1]);
+		    	  }
+		    	  l1.addView(l);
+		          }
 		
 		return rootView;
+		//return l;
 	}
+		
+		
+		
+	
 	
 	@Override
 	public void onAttach(Activity activity)

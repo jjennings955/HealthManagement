@@ -15,7 +15,7 @@ import android.os.Build;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "PHMS";
+    private static final String DATABASE_NAME = "PHMS.db";
     private static final int DATABASE_VERSION = 1;
 
     public DatabaseHandler(Context context) {
@@ -40,8 +40,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			Log.w("PHMS", statements[i]);
 			db.execSQL(statements[i]);
 		}
-		User jason = new User("admin", "admin", "jason", "jennings", 6, 1, 200, 26, 'M');
-		this.store(jason, db);
+		//User jason = new User("admin", "admin", "jason", "jennings", 6, 1, 200, 26, 'M');
+		//this.store(jason, db);
 	}
 	public void store(MedicationEvent newEvent)
 	{
@@ -382,7 +382,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("type", vt.getType()); 
 	    values.put("value1", vt.getValue1());  
 	    values.put("value2", vt.getValue2()); 
-	    values.put("userId", vt.getUser_Id());  
+	    values.put("user", vt.getUser_Id());  
 	    
 	    db.insert("vitalsign", null, values);
 	    db.close(); 
@@ -434,11 +434,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	
+	
+	public ArrayList<VitalSign> getVitalSigns()
+	{
+		
+		ArrayList<VitalSign> results = new ArrayList<VitalSign>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from vitalsign;";
+		Cursor cursor = db.rawQuery(query,null);
+				
+        if (cursor.moveToFirst()) {
+            do {
+    			VitalSign v = new VitalSign();
+    			v.setId(cursor.getInt(0));
+    			v.setType(cursor.getInt(1));
+    			v.setValue1(cursor.getInt(2));
+    			v.setValue2(cursor.getInt(3));
+    			v.setUser_Id(cursor.getInt(4));
+
+    			results.add(v);
+            } while (cursor.moveToNext());
+        }
+		return results;	
+	}
+	
+	
+	
+	
+	/*
+	 "create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER);\n" +
+		"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
+		"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
+		"create table food(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories REAL, fat REAL, protein REAL, carbs REAL, fiber REAL, sugar REAL);\n" +
+		"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
+		"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, priority INTEGER);\n" +
+		"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
+		"create table medication_tracking(id INTEGER PRIMARY KEY AUTOINCREMENT, medication_schedule_id INTEGER, date INTEGER, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id));";
+
+	*/
+	
 		
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
-		
+		// on upgrade drop older tables
+        db.execSQL("DROP TABLE IF EXISTS user");
+        db.execSQL("DROP TABLE IF EXISTS vitalsign");
+        db.execSQL("DROP TABLE IF EXISTS article");
+        
+        db.execSQL("DROP TABLE IF EXISTS food");
+        db.execSQL("DROP TABLE IF EXISTS food_journal");
+        db.execSQL("DROP TABLE IF EXISTS medication");
+        db.execSQL("DROP TABLE IF EXISTS medication_schedule");
+        db.execSQL("DROP TABLE IF EXISTS medication_tracking");
+        
+        // create new tables
+        onCreate(db);
 		
 		
 	}

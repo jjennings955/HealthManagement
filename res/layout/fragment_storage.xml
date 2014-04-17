@@ -1,15 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Electronic Storage"
-        android:textSize="20dp"
-        android:layout_centerInParent="true"/>
-    
+    android:orientation="vertical"
+    >
 
-</RelativeLayout>
+     
+    
+   
+<LinearLayout
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+>
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Value1 : "
+android:textStyle="bold"
+android:textColor="#FF0000"
+android:gravity="center"
+/>
+<EditText
+android:id="@+id/value1"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:hint="Value1"
+android:inputType="numberDecimal"
+android:layout_weight="1"
+/>
+</LinearLayout>
+<LinearLayout
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+>
+
+    <TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Value2 : "
+android:textStyle="bold"
+android:textColor="#FF0000"
+android:gravity="center"
+/>
+<EditText
+android:id="@+id/value2"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:hint="Value2"
+android:inputType="numberDecimal"
+android:layout_weight="1"
+/>
+</LinearLayout>
+
+
+
+<LinearLayout
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+>
+<Button
+android:id="@+id/save"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Save"
+android:layout_weight="1"
+android:layout_marginLeft="25dip"
+android:layout_marginRight="25dip"
+/>
+<Button
+android:id="@+id/clear"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Clear"
+android:layout_weight="1"
+android:layout_marginLeft="25dip"
+android:layout_marginRight="25dip"
+/>
+</LinearLayout>
+ 
+</LinearLayout>
+
+
