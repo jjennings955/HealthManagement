@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.FragmentTransaction;
 
 import android.content.Intent;
 
@@ -13,8 +14,6 @@ import android.os.Build;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.app.FragmentTransaction;
-
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
@@ -23,12 +22,10 @@ import android.widget.Toast;
 public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener
 {
 
-
 	public final static String USERNAME = "com.team4.healthmonitor.USERNAME";
 	public final static String PASSWORD = "com.team4.healthmonitor.PASSWORD";
 	public static String username = "";
 	public static String password = "";
-
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
@@ -44,10 +41,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		
 		Intent i = getIntent();
 		username = i.getStringExtra(MainActivity.USERNAME);
-
 		password = i.getStringExtra(MainActivity.PASSWORD);
 		
-
 
 	/*	
 		Bundle bundle = new Bundle();
@@ -65,9 +60,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 */
 		Intent intent = new Intent(this, MedicineFragment.class);
 	    intent.putExtra(USERNAME, username);
-
 	    intent.putExtra(PASSWORD, password);
-
+		
 		
 		
 		setContentView(R.layout.activity_main_app);
@@ -141,8 +135,6 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) 
 	{
 	}
-
-
 	
 
 }
