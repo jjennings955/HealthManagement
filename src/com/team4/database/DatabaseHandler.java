@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PHMS";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 11;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,8 +28,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking" };
 		String create_statement = "" + 
 				"create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER, doctor_name TEXT, doctor_number TEXT, doctor_email TEXT, contact_name TEXT, contact_number TEXT, contact_email TEXT);\n" +
-				"create table contacts(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT, phone TEXT, email TEXT, FOREIGN KEY(user_id) REFERENCES user(id) );" +
-				"create table sessions(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, timestamp INTEGER, FOREIGN KEY(user_id) REFERENCES (user.id));" +
+				"create table contacts(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT, phone TEXT, email TEXT, FOREIGN KEY(user_id) REFERENCES user(id) );\n" +
+				"create table sessions(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, timestamp INTEGER, FOREIGN KEY(user_id) REFERENCES user(id));\n" +
 				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, datetime INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table food(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories REAL, fat REAL, protein REAL, carbs REAL, fiber REAL, sugar REAL);\n" +
@@ -46,6 +46,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		User jason = new User("admin", "admin", "jason", "jennings", 6, 1, 200, 26, 'M');
 		ArrayList<Medication> meds = new ArrayList<Medication>();
+		
 		meds.add(new Medication("Tylenol", 1));
 		meds.add(new Medication("Viagra", 1));
 		meds.add(new Medication("Aspirin", 1));
@@ -594,7 +595,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking" };
+		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking", "contacts", "sessions" };
 		for (String t : tables)
 		{
 			db.execSQL("DROP TABLE IF EXISTS " + t);
