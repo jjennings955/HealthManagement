@@ -25,14 +25,6 @@ public class User {
 	private char gender;
 	private int age;
 	
-	private String doctor_name;
-	private String doctor_phone;
-	private String doctor_email;
-	
-	private String contact_name;
-	private String contact_phone;
-	private String contact_email;
-	
 	public final static boolean validatePhone(String phone)
 	{
 		return phone != null && PhoneNumberUtils.isGlobalPhoneNumber(phone);
@@ -227,41 +219,6 @@ public class User {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	public String getDoctor_name() {
-		return doctor_name;
-	}
-	public void setDoctor_name(String doctor_name) {
-		this.doctor_name = doctor_name;
-	}
-	public String getDoctor_phone() {
-		return doctor_phone;
-	}
-	public void setDoctor_phone(String doctor_phone) {
-		this.doctor_phone = doctor_phone;
-	}
-	public String getDoctor_email() {
-		return doctor_email;
-	}
-	public void setDoctor_email(String doctor_email) {
-		this.doctor_email = doctor_email;
-	}
-	public String getContact_name() {
-		return contact_name;
-	}
-	public void setContact_name(String contact_name) {
-		this.contact_name = contact_name;
-	}
-	public String getContact_phone() {
-		return contact_phone;
-	}
-	public void setContact_phone(String contact_phone) {
-		this.contact_phone = contact_phone;
-	}
-	public String getContact_email() {
-		return contact_email;
-	}
-	public void setContact_email(String contact_email) {
-		this.contact_email = contact_email;
-	}
+
 
 }

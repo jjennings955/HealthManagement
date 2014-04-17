@@ -48,6 +48,10 @@ public class MainActivity extends Activity {
 	      Intent i = new Intent(this, MainAppActivity.class);
 	      i.putExtra(USERNAME, uname);
 	      i.putExtra(PASSWORD, pass);
+	      User u = db.login(uname, pass);
+	      Session sess = Session.create_session(u);
+	      db.store(sess);
+	      
 	      startActivity(i);
       }	
    else
