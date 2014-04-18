@@ -26,8 +26,10 @@ public class VitalsFragment extends Fragment
 	private FragmentActivity myContext;
 	private String username;
 	private String password;
-
+	private int userId;
+	
 	private FragmentActivity myContext2;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

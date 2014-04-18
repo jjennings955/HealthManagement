@@ -64,7 +64,7 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
  {
 	 DatabaseHandler db = new DatabaseHandler(this.getActivity());
-
+	 //Intent intent = this.getActivity().getIntent().getIntExtra("userid", defaultValue);
 	 List<String> suggestions = new ArrayList<String>();
 	 ArrayList<Medication> medications = db.getMedications();
 	 for (Medication m : medications)

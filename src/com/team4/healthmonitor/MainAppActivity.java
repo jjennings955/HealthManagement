@@ -26,6 +26,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	public final static String PASSWORD = "com.team4.healthmonitor.PASSWORD";
 	public static String username = "";
 	public static String password = "";
+	public static int userId;
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
@@ -42,7 +43,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		Intent i = getIntent();
 		username = i.getStringExtra(MainActivity.USERNAME);
 		password = i.getStringExtra(MainActivity.PASSWORD);
-		
+		userId = i.getIntExtra(MainActivity.USERID, -1);
 
 	/*	
 		Bundle bundle = new Bundle();
@@ -69,7 +70,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
-		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+		mAdapter = new TabsPagerAdapter(getSupportFragmentManager(), userId);
 
 		viewPager.setAdapter(mAdapter);
 		actionBar.setHomeButtonEnabled(false);

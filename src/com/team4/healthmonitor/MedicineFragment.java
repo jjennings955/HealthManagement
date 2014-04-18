@@ -1,11 +1,14 @@
 package com.team4.healthmonitor;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.team4.database.DatabaseHandler;
+import com.team4.database.MedSchedule;
 import com.team4.database.Medication;
+import com.team4.database.User;
 import com.team4.database.VitalSign;
 import com.team4.healthmonitor.R;
 
@@ -14,13 +17,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,20 +37,58 @@ public class MedicineFragment extends Fragment
 {
 
 	private FragmentActivity myContext;
-	
+	private int userId;
+	public MedicineFragment()
+	{
+		
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 
 		View rootView = inflater.inflate(R.layout.fragment_medicine, container, false);
+		Bundle foo = getArguments();
+		userId = foo.getInt("userid");
+		//Log.w("PHMS", ""+foo.getInt("userid"));
 		setHasOptionsMenu(true);
 		//((MainAppActivity) getActivity()).setActionBarTitle("Medicine");
     
-		LinearLayout l1 = (LinearLayout)rootView.findViewById(R.id.fragment_med);
+		//LinearLayout l1 = (LinearLayout)rootView.findViewById(R.id.fragment_med);
 		
-		TextView[] tv = new TextView[4];
-	       
-	       LinearLayout l =null;
+		//TextView[] tv = new TextView[4];
+		DatabaseHandler db = new DatabaseHandler(getActivity());
+		User currentUser = db.getUser(foo.getInt("userid"));
+		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
+		//ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule()
+		//MedSchedule foo = new MedSchedule()
+		//scheduleEntries.add(new MedSchedule(1, "Med", "20mg", "2:00", false));
+		//scheduleEntries.add(new MedSchedule(2, "Med2", "205mg", "3:00", false));
+		//scheduleEntries.add(new MedSchedule(3, "Med3", "120mg", "4:00", false));
+		//scheduleEntries.add(new MedSchedule(4, "Med4", "20mg", "2:00", false));
+		//scheduleEntries.add(new MedSchedule(5, "Med5", "20mg", "2:00", false));
+		//scheduleEntries.add(new MedSchedule(6, "Med6", "20mg", "2:00", false));
+	    MedScheduleAdapter adapter = new MedScheduleAdapter(this, getActivity(), scheduleEntries);
+	    ListView view = (ListView)rootView;
+	    view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+	    view.setAdapter(adapter);
+	    view.setSelector(android.R.color.darker_gray);
+	    view.setOnItemClickListener(new OnItemClickListener()
+	    {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long id) {
+				ArrayList<View> focusables = arg1.getFocusables(position);
+				for (View v : focusables)
+				{
+					v.setSelected(true);
+				}
+				//arg1.setSelected(true);
+				//view.getFocusables(direction)
+			}
+	    	
+	    });
+	       /*LinearLayout l =null;
 	       DatabaseHandler db = new DatabaseHandler(getActivity());
 	       List<Medication> vt = db.getMedications();       
 		     for (Medication cn1 : vt) {
@@ -72,7 +118,7 @@ public class MedicineFragment extends Fragment
 		    	  	  l.addView(tv[j1]);
 		    	  }
 		    	  l1.addView(l);
-		          }
+		          }*/
 		
 		return rootView;
 		//return l;
@@ -143,11 +189,20 @@ public class MedicineFragment extends Fragment
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-	
+    public void showEditMedicineDialog(int id)
+    {
+        FragmentManager fm = myContext.getSupportFragmentManager();
+        EditMedicineDialog md = new EditMedicineDialog();
+        Bundle args = new Bundle();
+        args.putInt("id", id);
+        md.setArguments(args);
+        md.show(fm, "fragment_edit_name");
+    }
     private void showMedicineDialog()
     {
         FragmentManager fm = myContext.getSupportFragmentManager();
         MedicineDialog md = new MedicineDialog();
+        
         md.show(fm, "fragment_edit_name");
     }
 }

@@ -1,45 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_med"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="6dip"
-    android:paddingTop="4dip" 
-    android:background="@layout/myshape">
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
     
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" 
-    android:background="@layout/myshape">
-
-        <TextView
-            android:layout_width="30dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:paddingLeft="8dp"
-            android:text="Nber" />
-
-        <TextView
-            android:layout_width="20dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.37"
-            android:text="Name" />
-
-        <TextView
-            android:layout_width="20dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.35"
-            android:text="Remaining" />
-
-        <TextView
-            android:layout_width="20dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.34"
-            android:text="ExDate" />
-
-    </LinearLayout>
-  
-</LinearLayout>
+</ListView>

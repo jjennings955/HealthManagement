@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PHMS";
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 21;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,7 +36,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, priority INTEGER);\n" +
 				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
-				"create table medication_tracking(id INTEGER PRIMARY KEY AUTOINCREMENT, medication_schedule_id INTEGER, date INTEGER, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id));";
+				"create table medication_tracking(id INTEGER PRIMARY KEY AUTOINCREMENT, medication_schedule_id INTEGER, date INTEGER, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id));\n" + 
+				"create view schedule as " +
+				"	select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry " +
+				"	from " +
+				"		(medication_schedule as S JOIN user as U JOIN medication as M ON " +
+				"			S.user = U.id and S.medication = M.id) " +
+				"		LEFT OUTER JOIN medication_tracking as MT ON " +
+				"			MT.medication_schedule_id = S.id;";
 		
 		String statements[] = create_statement.split("\n");
 		for (int i = 0; i < statements.length; i++)
@@ -54,7 +61,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		meds.add(new Medication("Viox", 1));
 		meds.add(new Medication("Heroin", 1));
 		meds.add(new Medication("Caffeine", 1));
-		//MedicationEvent mv = new MedicationEvent(5, 24, "wednesday", 5, 1, 1);
+		MedicationEvent mv = new MedicationEvent(5, 24, "wednesday", 5, 1, 1);
 		
 		
 		for (Medication m : meds)
@@ -63,21 +70,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
 		this.store(jason, db);
-		//this.store(mv, db);
-		//mv.setMedication_id(2);
-		//this.store(mv, db);
+		this.store(mv, db);
+		mv.setMedication_id(2);
+		this.store(mv, db);
 	}
 	
-	public ArrayList<String[]> getUserMedicationSchedule(User u)
+	public ArrayList<MedSchedule> getUserMedicationSchedule(User u)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
-		ArrayList<String[]> results = new ArrayList<String[]>();
-		String query = "select M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication_schedule as S, user as U, medication as M where S.user = U.id and U.id = M.id and U.id = ?";
+		ArrayList<MedSchedule> results = new ArrayList<MedSchedule>();
+		//String query = "create view schedule as select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry from (medication_schedule as S JOIN user as U JOIN medication as M ON S.user = U.id and U.id = M.id and S.medication = M.id) LEFT OUTER JOIN medication_tracking as MT ON MT.medication_schedule_id = S.id;";
+		String query = "select * from schedule where user_id = ?";
 		Cursor cursor = db.rawQuery(query, new String[] { "" + u.getId() } );
         if (cursor.moveToFirst()) {
             do {
+            	MedSchedule result = new MedSchedule(cursor.getInt(1), // ID
+            			cursor.getString(2), // Name
+            			cursor.getString(3), // dosage
+            			cursor.getString(4), // day
+            			"" + cursor.getInt(5) + ":" + cursor.getInt(6), //hours, mins
+            			cursor.getString(7) == null ? false : true); // taken?
     			String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
-    			results.add(row);
+    			//results.add(row);
+    			results.add(result);
             } while (cursor.moveToNext());
         }
         return results;
@@ -268,6 +283,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Log.w("PHMS", "" + (login(uname, pass) == null));
 		return login(uname, pass) != null;
 	}
+	public User getUser(int id)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from user where id = ?;";
+		//Helper.
+		Cursor cursor = db.rawQuery(query, new String[] { "" + id });
+		if (cursor.moveToFirst())
+		{
+			User userObj = new User();
+            userObj.setId(cursor.getInt(0));
+            userObj.setUserName(cursor.getString(1));
+            userObj.setPassword(cursor.getString(2));
+            userObj.setFirstName(cursor.getString(3));
+            userObj.setLastName(cursor.getString(4));
+            userObj.setHeight_feet(cursor.getInt(5));
+            userObj.setHeight_inches(cursor.getInt(6));
+            userObj.setWeight(cursor.getFloat(7));
+            userObj.setAge(cursor.getInt(8));
+            return userObj;
+		}
+		return null;
+	}
 	public User login(String uname, String pass)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -276,17 +313,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.rawQuery(query, new String[] { uname, Helper.hashPassword(pass) });
 		if (cursor.moveToFirst())
 		{
-			User contact = new User();
-            contact.setId(cursor.getInt(0));
-            contact.setUserName(cursor.getString(1));
-            contact.setPassword(cursor.getString(2));
-            contact.setFirstName(cursor.getString(3));
-            contact.setLastName(cursor.getString(4));
-            contact.setHeight_feet(cursor.getInt(5));
-            contact.setHeight_inches(cursor.getInt(6));
-            contact.setWeight(cursor.getFloat(7));
-            contact.setAge(cursor.getInt(8));
-            return contact;
+			User userObj = new User();
+            userObj.setId(cursor.getInt(0));
+            userObj.setUserName(cursor.getString(1));
+            userObj.setPassword(cursor.getString(2));
+            userObj.setFirstName(cursor.getString(3));
+            userObj.setLastName(cursor.getString(4));
+            userObj.setHeight_feet(cursor.getInt(5));
+            userObj.setHeight_inches(cursor.getInt(6));
+            userObj.setWeight(cursor.getFloat(7));
+            userObj.setAge(cursor.getInt(8));
+            return userObj;
 		}
 		else
 		{
