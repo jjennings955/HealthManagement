@@ -16,7 +16,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <AutoCompleteTextView
-            android:id="@+id/editText1"
+            android:id="@+id/edit_medicine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10" >
@@ -32,7 +32,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/edit_dosage"
             android:layout_width="83dp"
             android:layout_height="wrap_content"
             android:ems="10"
