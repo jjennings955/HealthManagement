@@ -13,10 +13,17 @@ import com.team4.database.VitalSign;
 import com.team4.healthmonitor.R;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,16 +40,63 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MedicineFragment extends Fragment 
+public class MedicineFragment extends Fragment
 {
 
 	private FragmentActivity myContext;
 	private int userId;
+	MedScheduleAdapter adapter;
+		
 	public MedicineFragment()
 	{
-		
+		//BroadcastReceiver foo;
+	}
+	@Override
+	public void onResume() {
+	  super.onResume();
+	  updateData();
+
+	  // Register mMessageReceiver to receive messages.
+	  LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+	      new IntentFilter("my-event"));
 	}
 
+	// handler for received Intents for the "my-event" event 
+	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+	  @Override
+	  public void onReceive(Context context, Intent intent) {
+	    // Extract data included in the Intent
+	    String message = intent.getStringExtra("message");
+	    Log.d("receiver", "Got message: " + message);
+	    updateData();
+	  }
+	};
+
+	@Override
+	public void onPause() {
+	  // Unregister since the activity is not visible
+	  LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+	  super.onPause();
+	} 
+	
+	public void updateData()
+	{
+		adapter.clear();
+		adapter.addAll(getSchedule());
+		adapter.notifyDataSetChanged();
+		//adapter.no
+		//adapter.clear();
+		//adapter.
+		//adapter.notifyDataSetChanged();
+	}
+	public ArrayList<MedSchedule> getSchedule()
+	{
+		DatabaseHandler db = new DatabaseHandler(getActivity());
+		User currentUser = db.getUser(userId);
+		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
+		return scheduleEntries;
+	}
+				
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
@@ -50,25 +104,18 @@ public class MedicineFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_medicine, container, false);
 		Bundle foo = getArguments();
 		userId = foo.getInt("userid");
-		//Log.w("PHMS", ""+foo.getInt("userid"));
 		setHasOptionsMenu(true);
-		//((MainAppActivity) getActivity()).setActionBarTitle("Medicine");
-    
-		//LinearLayout l1 = (LinearLayout)rootView.findViewById(R.id.fragment_med);
-		
-		//TextView[] tv = new TextView[4];
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		User currentUser = db.getUser(foo.getInt("userid"));
 		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
-		//ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule()
-		//MedSchedule foo = new MedSchedule()
-		//scheduleEntries.add(new MedSchedule(1, "Med", "20mg", "2:00", false));
-		//scheduleEntries.add(new MedSchedule(2, "Med2", "205mg", "3:00", false));
-		//scheduleEntries.add(new MedSchedule(3, "Med3", "120mg", "4:00", false));
-		//scheduleEntries.add(new MedSchedule(4, "Med4", "20mg", "2:00", false));
-		//scheduleEntries.add(new MedSchedule(5, "Med5", "20mg", "2:00", false));
-		//scheduleEntries.add(new MedSchedule(6, "Med6", "20mg", "2:00", false));
-	    MedScheduleAdapter adapter = new MedScheduleAdapter(this, getActivity(), scheduleEntries);
+	
+		String [] from = { "medication_name", "medication_dosage", "time_hours" };
+		int [] to = { R.id.medName_temp, R.id.medDosage_temp, R.id.medTime_temp };
+		//String [] from = { "schedule_id", "medication_name", "medication_dosage", "time_hours", "taken_entry" };
+	    //int [] to = { R.id.medEditBtn, R.id.medName_temp, R.id.medDosage_temp, R.id.medTime_temp, R.id.medStatus_temp };
+		//SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), R.layout.medschedule_item, db.getMedScheduleCursor(currentUser), from, to);
+		//adapter.setViewBinder(new ScheduleBinder(this));
+	    adapter = new MedScheduleAdapter(this, getActivity(), scheduleEntries);
 	    ListView view = (ListView)rootView;
 	    view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 	    view.setAdapter(adapter);
@@ -83,42 +130,11 @@ public class MedicineFragment extends Fragment
 				{
 					v.setSelected(true);
 				}
-				//arg1.setSelected(true);
-				//view.getFocusables(direction)
+
 			}
 	    	
 	    });
-	       /*LinearLayout l =null;
-	       DatabaseHandler db = new DatabaseHandler(getActivity());
-	       List<Medication> vt = db.getMedications();       
-		     for (Medication cn1 : vt) {
-		    	  for(int j1=0; j1<4; j1++){
-		    		   l = new LinearLayout(getActivity().getBaseContext());
-		    		   l.setLayoutParams(new ViewGroup.LayoutParams(
-		    			        ViewGroup.LayoutParams.MATCH_PARENT,
-		    			        ViewGroup.LayoutParams.WRAP_CONTENT));
-		    		   //l.setBackgroundResource(R.id.myshape_s);
 
-		    		  tv[j1] = new TextView(getActivity());
-		    		  tv[j1].setLayoutParams(new ViewGroup.LayoutParams(
-		    			        ViewGroup.LayoutParams.WRAP_CONTENT,
-		    			        ViewGroup.LayoutParams.WRAP_CONTENT));
-		    		  tv[j1].setWidth(150);
-		    		  //tv[j1].setText("Dynamic Text!");
-		    	  	 //l.addView(tv[j1]);
-		    	  }
-		    	  Date d = new Date();
-		    	  tv[0].setText(""+cn1.getId());
-		    	  tv[1].setText(""+cn1.getName());
-		    	  tv[2].setText(""+cn1.getPriority());
-		    	  tv[3].setText(""+d.getMonth()+"/"+d.getDay()+"/"+d.getYear());
-		          
-		    	  for(int j1=0; j1<4; j1++){
-		    		 // tv[j1] = new TextView(container.getContext());
-		    	  	  l.addView(tv[j1]);
-		    	  }
-		    	  l1.addView(l);
-		          }*/
 		
 		return rootView;
 		//return l;
@@ -139,36 +155,7 @@ public class MedicineFragment extends Fragment
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
 	   inflater.inflate(R.menu.medicine_menu, menu);
-	   
-		/*	add = (Button) getView().findViewById(R.id.add_item_medicine);
-	   
-		// add button listener
-				add.setOnClickListener(new OnClickListener() {
-		 
-				  @Override
-				  public void onClick(View arg0) {
-		 
-					// custom dialog
-					final Dialog dialog = new Dialog(context);
-					dialog.setContentView(R.layout.dialog_medicine);
-					dialog.setTitle("Title...");
-		 
-					// set the custom dialog components - text, image and button
-					TextView text = (TextView) dialog.findViewById(R.id.text);
-					text.setText("Android custom dialog example!");
-					Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-					// if button is clicked, close the custom dialog
-					dialogButton.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-						}
-					});
-		 
-					dialog.show();
-				  }
-				});*/
-	   
+	
 	   
 	}
 	
@@ -202,6 +189,9 @@ public class MedicineFragment extends Fragment
     {
         FragmentManager fm = myContext.getSupportFragmentManager();
         MedicineDialog md = new MedicineDialog();
+        Bundle args = new Bundle();
+        args.putInt("id", userId);
+        md.setArguments(args);
         
         md.show(fm, "fragment_edit_name");
     }

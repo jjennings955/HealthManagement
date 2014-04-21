@@ -34,7 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table food(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories REAL, fat REAL, protein REAL, carbs REAL, fiber REAL, sugar REAL);\n" +
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
-				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, priority INTEGER);\n" +
+				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
 				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table medication_tracking(id INTEGER PRIMARY KEY AUTOINCREMENT, medication_schedule_id INTEGER, date INTEGER, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id));\n" + 
 				"create view schedule as " +
@@ -74,7 +74,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		mv.setMedication_id(2);
 		this.store(mv, db);
 	}
-	
+	public Cursor getMedScheduleCursor(User u)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cur = db.rawQuery("select * from schedule where user_id = ?", new String[] { "" + u.getId() });
+		return cur;
+	}
 	public ArrayList<MedSchedule> getUserMedicationSchedule(User u)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -161,7 +166,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void updateMedicationEvent(MedicationEvent existingEvent)
 	{
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    
+	    ///"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
 	    ContentValues values = new ContentValues();
 		values.put("time_hours", existingEvent.getTime_hours());
 		values.put("time_mins", existingEvent.getTime_mins());
@@ -169,7 +174,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put("medication", existingEvent.getMedication_id());
 		values.put("user", existingEvent.getUserId());
 		values.put("day", existingEvent.getDay());
-		db.update("user", values, "id = ?", new String[] { ""+existingEvent.getId() });
+		db.update("medication_schedule", values, "id = ?", new String[] { ""+existingEvent.getId() });
 	}
 	public void delete(MedicationEvent target)
 	{
@@ -182,7 +187,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  ContentValues values = new ContentValues();
 		  values.put("name", newMedication.getName());
 		  values.put("priority", newMedication.getPriority());
-		  db.insert("medication", null, values);
+		  long id = db.insert("medication", null, values);
+		  newMedication.setId((int)id);
+	}
+	public Medication findMedication(String medName)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "select * from medication where name = ?;";
+		Cursor cursor = db.rawQuery(query, new String[]{ medName } );
+		if (cursor.getCount() == 0)
+		{
+			return null;
+		}
+		else
+		{
+			cursor.moveToFirst();
+			Medication med = new Medication();
+			med.setId(cursor.getInt(0));
+			med.setName(cursor.getString(1));
+			med.setPriority(cursor.getInt(2));
+			return med;
+		}
+		
 	}
 	public void update(Medication existingMedication)
 	{

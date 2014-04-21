@@ -131,7 +131,10 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 			}
 		}
 	}
-
+	public void updateMedicationData()
+	{
+		
+	}
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) 
 	{

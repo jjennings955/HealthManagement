@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
       DatabaseHandler db = new DatabaseHandler(this);
-      username = (EditText)findViewById(R.id.editText1);
+      username = (EditText)findViewById(R.id.editDosage);
       password = (EditText)findViewById(R.id.editText2);
       attempts = (TextView)findViewById(R.id.textView5);
       attempts.setText(Integer.toString(counter));
