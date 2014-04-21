@@ -1,6 +1,9 @@
-package com.team4.healthmonitor;
+package com.team4.healthmonitor.adapters;
 
 import com.team4.database.MedSchedule;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.R.id;
+import com.team4.healthmonitor.fragments.MedicineFragment;
 
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;

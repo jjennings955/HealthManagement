@@ -91,7 +91,7 @@
                       android:singleLine="true" />
 
                   <TextView
-                      android:id="@+id/textView3"
+                      android:id="@+id/register_lastname_text"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="Last Name:"
@@ -119,7 +119,7 @@
                   android:orientation="vertical" >
 
                  <TextView
-                     android:id="@+id/medName_frag"
+                     android:id="@+id/register_gender_text"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_marginTop="5dip"
@@ -199,7 +199,7 @@
                   android:inputType="number" />
 
               <TextView
-                  android:id="@+id/textView2"
+                  android:id="@+id/register_ageWeightHeight_text"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_alignParentLeft="true"

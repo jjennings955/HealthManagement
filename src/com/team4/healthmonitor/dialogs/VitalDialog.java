@@ -1,4 +1,8 @@
-package com.team4.healthmonitor;
+package com.team4.healthmonitor.dialogs;
+
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.R.id;
+import com.team4.healthmonitor.R.layout;
 
 import android.content.Intent;
 import android.os.Bundle;

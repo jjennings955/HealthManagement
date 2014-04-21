@@ -1,8 +1,12 @@
-package com.team4.healthmonitor;
+package com.team4.healthmonitor.adapters;
 
 import java.util.ArrayList;
 
 import com.team4.database.MedSchedule;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.R.id;
+import com.team4.healthmonitor.R.layout;
+import com.team4.healthmonitor.fragments.MedicineFragment;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -38,7 +42,7 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
        TextView medDosage = (TextView) convertView.findViewById(R.id.medDosage_temp);
        TextView medTime = (TextView)convertView.findViewById(R.id.medTime_temp);
        CheckBox taken = (CheckBox)convertView.findViewById(R.id.medStatus_temp);
-       Button edit = (Button)convertView.findViewById(R.id.medEditBtn);
+       Button edit = (Button)convertView.findViewById(R.id.medEditBtn2);
 
        // Populate the data into the template view using the data object
        medName.setText(entry.name);
@@ -51,7 +55,6 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
 		public void onClick(View v) {
 			Log.w("PHMS", "Clicked edit on row with entry " + id);
 			parentFragment.showEditMedicineDialog(id);
-			
 		}
        });
        // Return the completed view to render on screen

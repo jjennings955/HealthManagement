@@ -29,11 +29,11 @@ public class MainActivity extends Activity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
       DatabaseHandler db = new DatabaseHandler(this);
-      username = (EditText)findViewById(R.id.editDosage);
-      password = (EditText)findViewById(R.id.editText2);
-      attempts = (TextView)findViewById(R.id.textView5);
+      username = (EditText)findViewById(R.id.main_edit_login);
+      password = (EditText)findViewById(R.id.main_edit_password);
+      attempts = (TextView)findViewById(R.id.main_attempts_text);
       attempts.setText(Integer.toString(counter));
-      login = (Button)findViewById(R.id.medEditBtn);
+      login = (Button)findViewById(R.id.main_login_btn);
    }
 
    public void login(View view)

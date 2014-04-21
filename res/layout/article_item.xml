@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/artTitle"
+            android:layout_width="178dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="Article Title"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/artUrl"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:autoLink="web"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:linksClickable="true"
+        android:text="http://www.exampleurl.com" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/artDesc"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="0.19"
+            android:ellipsize="middle"
+            android:maxLines="3"
+            android:minLines="1"
+            android:text="description" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -43,7 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"		(medication_schedule as S JOIN user as U JOIN medication as M ON " +
 				"			S.user = U.id and S.medication = M.id) " +
 				"		LEFT OUTER JOIN medication_tracking as MT ON " +
-				"			MT.medication_schedule_id = S.id;";
+				"			MT.medication_schedule_id = S.id;"; 
 		
 		String statements[] = create_statement.split("\n");
 		for (int i = 0; i < statements.length; i++)
@@ -84,8 +84,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<MedSchedule> results = new ArrayList<MedSchedule>();
-		//String query = "create view schedule as select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry from (medication_schedule as S JOIN user as U JOIN medication as M ON S.user = U.id and U.id = M.id and S.medication = M.id) LEFT OUTER JOIN medication_tracking as MT ON MT.medication_schedule_id = S.id;";
-		String query = "select * from schedule where user_id = ?";
+		//String query = "create view schedule as select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry from (medication_schedule as S JOIN user as U JOIN medication as M ON S.user = U.id and U.id = M.id and S.medication = M.id) LEFT OUTER JOIN medication_tracking as MT ON MT.medication_schedule_id = S.id ORDER BY (S.time_hours, S.time_mins, M.name);";
+		String query = "select * from schedule where user_id = ? order by time_hours, time_mins, medication_name";
 		Cursor cursor = db.rawQuery(query, new String[] { "" + u.getId() } );
         if (cursor.moveToFirst()) {
             do {
@@ -439,7 +439,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("url", article.getUrl()); 
 	    values.put("title", article.getTitle()); 
 	    values.put("description", article.getDescription()); 
-	    values.put("userId", article.getUserId()); 
+	    values.put("user", article.getUserId()); 
 	    
 	    db.insert("article", null, values);
 	    //db.close(); 
@@ -451,11 +451,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public Article getArticle(int id) {
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    
-	    
-	    //Cursor c = db.rawQuery("select * from article where userId= ?", new String[]{String.valueOf(id)});
-	 
 	    Cursor cursor = db.query("article", new String[] {"id", "type",
-	            "url", "title", "description","userId" }, "userId =?",
+	            "url", "title", "description","user" }, "id =?",
 	            new String[] { String.valueOf(id) }, null, null, null, null);
 	    if (cursor != null)
 	        cursor.moveToFirst();
@@ -463,11 +460,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    Article article = new Article(Integer.parseInt(cursor.getString(0)),
 	            cursor.getString(1), cursor.getString(2),cursor.getString(3),
 	            cursor.getString(4),Integer.parseInt(cursor.getString(5)));
-	    // return contact
 	    
 	    
-	    
+	    	    
 	    return article;
+	}
+	public ArrayList<Article> getUserArticle(int uid) {
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    ArrayList<Article> results = new ArrayList<Article>();
+	    
+	    Cursor cursor = db.query("article", new String[] {"id", "type",
+	            "url", "title", "description","user" }, "user = ?",
+	            new String[] { String.valueOf(uid) }, null, null, null, null);
+	    if (cursor.moveToFirst())
+	    {
+	    	do
+	    	{
+	    		Article a = new Article();
+	    		a.setId(cursor.getInt(0));
+	    		a.setType(cursor.getString(1));
+	    		a.setUrl(cursor.getString(2));
+	    		a.setTitle(cursor.getString(3));
+	    		a.setDescription(cursor.getString(4));
+	    		a.setUserId(cursor.getInt(5));
+	    		results.add(a);
+	    	} while (cursor.moveToNext());
+	    }
+	 
+	    return results;
 	}
 	
 	/*

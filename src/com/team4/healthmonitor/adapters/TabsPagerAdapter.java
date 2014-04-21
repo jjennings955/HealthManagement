@@ -1,10 +1,11 @@
-package com.team4.healthmonitor.swipeadapter;
+package com.team4.healthmonitor.adapters;
 
-import com.team4.healthmonitor.MedicineFragment;
-import com.team4.healthmonitor.VitalsFragment;
-import com.team4.healthmonitor.StorageFragment;
-import com.team4.healthmonitor.DietFragment;
-import com.team4.healthmonitor.SearchFragment;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.fragments.DietFragment;
+import com.team4.healthmonitor.fragments.MedicineFragment;
+import com.team4.healthmonitor.fragments.SearchFragment;
+import com.team4.healthmonitor.fragments.StorageFragment;
+import com.team4.healthmonitor.fragments.VitalsFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter
 	{
 		Fragment result = null;
 		Bundle extras = new Bundle();
-		extras.putInt("userid", userId);
+		extras.putInt(Arguments.USERID, userId);
 		switch (index)
 		{
 		case 0:

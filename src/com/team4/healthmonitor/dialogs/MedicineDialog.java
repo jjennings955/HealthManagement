@@ -1,4 +1,4 @@
-package com.team4.healthmonitor;
+package com.team4.healthmonitor.dialogs;
 
 
 import java.util.ArrayList;
@@ -7,6 +7,10 @@ import java.util.List;
 import com.team4.database.DatabaseHandler;
 import com.team4.database.Medication;
 import com.team4.database.MedicationEvent;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.R.id;
+import com.team4.healthmonitor.R.layout;
 
 import android.content.DialogInterface;
 import android.view.View.OnClickListener;
@@ -68,7 +72,7 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
  {
 	 Bundle args = getArguments();
-	 userId = args.getInt("id");
+	 userId = args.getInt(Arguments.USERID);
 	 DatabaseHandler db = new DatabaseHandler(this.getActivity());
 	 //Intent intent = this.getActivity().getIntent().getIntExtra("userid", defaultValue);
 	 List<String> suggestions = new ArrayList<String>();
@@ -182,9 +186,7 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
         	 med.setDay("sunday"); // FIX ME!
         	 db.store(med);
     	 }
-		Intent mshg = new Intent("my-event");
-		mshg.putExtra("message", "data");
-		LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(mshg);
+		sendUpdate();
 
 		dismiss();
 
@@ -192,6 +194,12 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
      //time.get
      //getActivity();
  }
+
+private void sendUpdate() {
+	Intent mshg = new Intent("my-event");
+	mshg.putExtra("message", "data");
+	LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(mshg);
+}
 private class AutoCompleteSelected implements OnItemClickListener, OnItemSelectedListener, OnClickListener
 {
 

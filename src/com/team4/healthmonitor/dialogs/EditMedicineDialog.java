@@ -1,8 +1,13 @@
-package com.team4.healthmonitor;
+package com.team4.healthmonitor.dialogs;
 
 import com.team4.database.DatabaseHandler;
 import com.team4.database.Medication;
 import com.team4.database.MedicationEvent;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.R.id;
+import com.team4.healthmonitor.R.layout;
+import com.team4.healthmonitor.fragments.MedicineFragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -47,9 +52,9 @@ public class EditMedicineDialog extends DialogFragment implements OnClickListene
 	 {
 		 View view = inflater.inflate(R.layout.dialog_edit_medicine, container);
 		 Bundle args = this.getArguments();
-		 id = args.getInt("id");
+		 id = args.getInt(Arguments.USERID);
 		 dosage = (EditText)view.findViewById(R.id.edit_dosage);
-		 interval = (EditText)view.findViewById(R.id.editDosage);
+		 interval = (EditText)view.findViewById(R.id.edit_dosage_interval);
 		 name = (AutoCompleteTextView)view.findViewById(R.id.edit_medicine);
 		 time = (TimePicker)view.findViewById(R.id.timePicker1);
 		 db = new DatabaseHandler(getActivity());

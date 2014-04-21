@@ -1,7 +1,9 @@
 package com.team4.healthmonitor;
 
 
-import com.team4.healthmonitor.swipeadapter.*;
+import com.team4.healthmonitor.adapters.TabsPagerAdapter;
+import com.team4.healthmonitor.fragments.MedicineFragment;
+import com.team4.healthmonitor.adapters.TabsPagerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
