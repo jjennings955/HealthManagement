@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import android.telephony.PhoneNumberUtils;
+
 public class User {
 	
 	private int _id;
@@ -22,10 +24,8 @@ public class User {
 	//private Date date_of_birth;
 	private char gender;
 	private int age;
-	private String contact_name;
-	private String contact_phone;
-	private String contact_email;
 	
+
 	public String toString()
 	{
 		return "userName: " + userName + " " + "name: " + firstName + " " + lastName + "\n" +
@@ -90,7 +90,7 @@ public class User {
 	{
 		
 	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -101,20 +101,20 @@ public class User {
 	public static boolean validateUserName(String userName)
 	{
 
-		return Helper.stringMatchesPattern(userName, "[a-zA-Z0-9_]{4,16}");
+		return userName != null && Helper.stringMatchesPattern(userName, "[a-zA-Z0-9_]{4,16}");
 	}
 
 	public static boolean validatePassword(String password)
 	{
-		return Helper.stringMatchesPattern(password, "[a-zA-Z0-9_]{4,16}");
+		return password != null && Helper.stringMatchesPattern(password, "[a-zA-Z0-9_]{4,16}");
 	}
 	public static boolean validFirstName(String firstName)
 	{
-		return Helper.stringMatchesPattern(firstName, "[a-zA-Z0-9_]{1,40}");
+		return firstName != null && Helper.stringMatchesPattern(firstName, "[a-zA-Z0-9_]{1,40}");
 	}
 	public static boolean validLastName(String lastName)
 	{
-		return Helper.stringMatchesPattern(lastName, "[a-zA-Z0-9_]{1,40}");
+		return lastName != null && Helper.stringMatchesPattern(lastName, "[a-zA-Z0-9_]{1,40}");
 	}
 	public static boolean validHeightInch(int inch)
 	{
@@ -205,5 +205,6 @@ public class User {
 	public void setAge(int age) {
 		this.age = age;
 	}
+
 
 }

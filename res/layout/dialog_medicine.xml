@@ -13,20 +13,21 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/medName_frag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name of medication:"
-        android:layout_marginTop="70dip"
+        android:layout_marginTop="120dip"
         android:textSize="14sp" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/MedName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:clickable="true" >
 
         <requestFocus />
-    </EditText>
+    </AutoCompleteTextView>
 
     <TextView
         android:id="@+id/textView2"
@@ -95,13 +96,27 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number" />
+<TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time between dosages"
+        android:textSize="14sp" />
+
+<EditText
+    android:id="@+id/edit_dosage_interval"
+    android:layout_width="72dp"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:inputType="number" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Medication"
-        android:onClick="onAddButtonClicked" />
+        android:layout_height="53dp"
+        android:text="Submit" />
 
+    
 </LinearLayout>
 </ScrollView>
+

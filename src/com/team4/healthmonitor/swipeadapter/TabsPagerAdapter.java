@@ -5,36 +5,50 @@ import com.team4.healthmonitor.VitalsFragment;
 import com.team4.healthmonitor.StorageFragment;
 import com.team4.healthmonitor.DietFragment;
 import com.team4.healthmonitor.SearchFragment;
+
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter 
 {
-
-	public TabsPagerAdapter(FragmentManager fm) 
+	private int userId;
+	public TabsPagerAdapter(FragmentManager fm, int userId) 
 	{
 		super(fm);
+		this.userId = userId;
 	}
 
 	@Override
 	public Fragment getItem(int index) 
 	{
+		Fragment result = null;
+		Bundle extras = new Bundle();
+		extras.putInt("userid", userId);
 		switch (index)
 		{
 		case 0:
-			return new MedicineFragment();
+			result = new MedicineFragment();
+			break;
 		case 1:
-			return new VitalsFragment();
+			result = new VitalsFragment();
+			break;
 		case 2:
-			return new StorageFragment();
+			result = new StorageFragment();
+			break;
 		case 3:
-			return new DietFragment();
+			result = new DietFragment();
+			break;
 		case 4:
-			return new SearchFragment();
+			result = new SearchFragment();
+			break;
+		default:
+			result = null;
+				
 		}
-
-		return null;
+		result.setArguments(extras);
+		return result;
 	}
 
 	@Override

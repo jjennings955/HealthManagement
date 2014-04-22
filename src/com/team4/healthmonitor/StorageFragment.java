@@ -19,6 +19,11 @@ public class StorageFragment extends Fragment
 	private String username;
 	private String password;
 
+	public StorageFragment() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

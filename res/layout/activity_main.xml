@@ -6,11 +6,11 @@
    android:paddingLeft="@dimen/activity_horizontal_margin"
    android:paddingRight="@dimen/activity_horizontal_margin"
    android:paddingTop="@dimen/activity_vertical_margin"
- 
+   android:background="@layout/myshape"
    tools:context=".MainActivity" >
    
    <TextView
-      android:id="@+id/textView1"
+      android:id="@+id/medName_frag"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentTop="true"
@@ -24,13 +24,13 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentLeft="true"
-      android:layout_below="@+id/textView1"
+      android:layout_below="@+id/medName_frag"
       android:layout_marginTop="50dp"
       android:text="@string/username"
       android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-      android:id="@+id/editText1"
+      android:id="@+id/editDosage"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignBottom="@+id/textView2"
@@ -57,7 +57,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignBottom="@+id/textView3"
-      android:layout_alignLeft="@+id/editText1"
+      android:layout_alignLeft="@+id/editDosage"
       android:ems="10"
       android:inputType="textPassword" />
 
@@ -76,12 +76,12 @@
       android:id="@+id/textView5"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignRight="@+id/textView1"
+      android:layout_alignRight="@+id/medName_frag"
       android:layout_alignTop="@+id/textView4"
       android:text="@string/TextView" />
 
    <Button
-       android:id="@+id/button1"
+       android:id="@+id/medEditBtn"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_below="@+id/textView4"
@@ -94,7 +94,7 @@
        android:id="@+id/button2"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_below="@+id/button1"
+       android:layout_below="@+id/medEditBtn"
        android:layout_centerHorizontal="true"
        android:layout_marginTop="16dp"
        android:onClick="register"
