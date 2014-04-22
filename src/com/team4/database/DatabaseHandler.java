@@ -43,11 +43,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"		(medication_schedule as S JOIN user as U JOIN medication as M ON " +
 				"			S.user = U.id and S.medication = M.id) " +
 				"		LEFT OUTER JOIN medication_tracking as MT ON " +
-<<<<<<< HEAD
-				"			MT.medication_schedule_id = S.id;";
-=======
+
 				"			MT.medication_schedule_id = S.id;"; 
->>>>>>> jason
 		
 		String statements[] = create_statement.split("\n");
 		for (int i = 0; i < statements.length; i++)
@@ -88,42 +85,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<MedSchedule> results = new ArrayList<MedSchedule>();
-<<<<<<< HEAD
 		//String query = "create view schedule as select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry from (medication_schedule as S JOIN user as U JOIN medication as M ON S.user = U.id and U.id = M.id and S.medication = M.id) LEFT OUTER JOIN medication_tracking as MT ON MT.medication_schedule_id = S.id;";
-		String query = "select * from schedule where user_id = ?";
+		
+		
+
+		//String query = "create view schedule as select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry from (medication_schedule as S JOIN user as U JOIN medication as M ON S.user = U.id and U.id = M.id and S.medication = M.id) LEFT OUTER JOIN medication_tracking as MT ON MT.medication_schedule_id = S.id ORDER BY (S.time_hours, S.time_mins, M.name);";
+		String query = "select * from schedule where user_id = ? order by time_hours, time_mins, medication_name";
 		Cursor cursor = db.rawQuery(query, new String[] { "" + u.getId() } );
-		
-		
         if (cursor.moveToFirst()) {
             do {
-            	
     			String minutesAdjusted = cursor.getInt(6)+"";
             	
         		if(cursor.getInt(6) < 10)
         		{
         			minutesAdjusted = "0"+cursor.getInt(6);
         		}
-=======
-		//String query = "create view schedule as select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry from (medication_schedule as S JOIN user as U JOIN medication as M ON S.user = U.id and U.id = M.id and S.medication = M.id) LEFT OUTER JOIN medication_tracking as MT ON MT.medication_schedule_id = S.id ORDER BY (S.time_hours, S.time_mins, M.name);";
-		String query = "select * from schedule where user_id = ? order by time_hours, time_mins, medication_name";
-		Cursor cursor = db.rawQuery(query, new String[] { "" + u.getId() } );
-        if (cursor.moveToFirst()) {
-            do {
->>>>>>> jason
+
             	MedSchedule result = new MedSchedule(cursor.getInt(1), // ID
             			cursor.getString(2), // Name
             			cursor.getString(3), // dosage
             			cursor.getString(4), // day
-<<<<<<< HEAD
+
             			"" + cursor.getInt(5) + ":" + minutesAdjusted, //hours, mins
             			cursor.getString(7) == null ? false : true); // taken?
     			String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
     			//results.add(row);
-=======
-            			"" + cursor.getInt(5) + ":" + cursor.getInt(6), //hours, mins
-            			cursor.getString(7) == null ? false : true); // taken?
-    			 
->>>>>>> jason
     			results.add(result);
             } while (cursor.moveToNext());
         }
@@ -713,8 +699,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + t);
 		}
 		onCreate(db);
-<<<<<<< HEAD
-=======
+
 	}
 	public void delete(Article a)
 	{
@@ -732,7 +717,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("user", a.getUserId());
 		db.update("article", values, "id = ?", new String[] { ""+a.getId() });		
 			
->>>>>>> jason
 	}
 }
 

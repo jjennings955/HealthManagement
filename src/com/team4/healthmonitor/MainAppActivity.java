@@ -1,32 +1,27 @@
 package com.team4.healthmonitor;
 
 
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.team4.database.DatabaseHandler;
 import com.team4.database.MedSchedule;
 import com.team4.database.User;
-import com.team4.healthmonitor.swipeadapter.*;
-=======
+
+
 import com.team4.healthmonitor.adapters.TabsPagerAdapter;
-import com.team4.healthmonitor.fragments.MedicineFragment;
-import com.team4.healthmonitor.adapters.TabsPagerAdapter;
->>>>>>> jason
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
-<<<<<<< HEAD
+
 import android.app.PendingIntent;
 
 import android.content.Context;
-=======
-
->>>>>>> jason
 import android.content.Intent;
 
 import android.os.Build;
@@ -47,11 +42,9 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	public final static String MEDNAME = "com.team4.healthmonitor.NAME";
 	public static String username = "";
 	public static String password = "";
-<<<<<<< HEAD
+
 	public static String medname = "";
 	public static String medtime="";
-=======
->>>>>>> jason
 	public static int userId;
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
@@ -70,8 +63,6 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		username = i.getStringExtra(MainActivity.USERNAME);
 		password = i.getStringExtra(MainActivity.PASSWORD);
 		userId = i.getIntExtra(MainActivity.USERID, -1);
-<<<<<<< HEAD
-		
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		User currentUser = db.getUser(userId);
 		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
@@ -88,8 +79,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 			medTime.set(Calendar.MINUTE, Integer.parseInt(str.substring(str.length() - 2, str.length())));
 		    medTime.set(Calendar.SECOND, 0);
 			medTime.set(Calendar.MILLISECOND, 0);
-	
-			//Toast.makeText(getApplicationContext(), now.getTime()+"", Toast.LENGTH_SHORT).show();
+			
+			
 			//Toast.makeText(getApplicationContext(), medTime.getTime()+"", Toast.LENGTH_SHORT).show();
 			//Toast.makeText(getApplicationContext(), scheduleEntries.get(2).getTime()+"", Toast.LENGTH_SHORT).show();
 			//Toast.makeText(getApplicationContext(), Integer.parseInt(str.substring(0,1))+"", Toast.LENGTH_SHORT).show();
@@ -98,13 +89,14 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 			if(medTime.compareTo(now) > 0)
 			{
 			    //Today Set time had NOT passed
+				Toast.makeText(getApplicationContext(), now.getTime()+"", Toast.LENGTH_SHORT).show();
 				Toast.makeText(getApplicationContext(), medTime.getTime()+"", Toast.LENGTH_SHORT).show();
 				//Toast.makeText(getApplicationContext(), "in", Toast.LENGTH_SHORT).show();
 				
 				medtime = medTime.getTime()+"";
 				medname = scheduleEntries.get(a).getName();
 				
-				Toast.makeText(getApplicationContext(), medname+"", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), medname+"", Toast.LENGTH_SHORT).show();
 				
 				
 				setAlarm(medTime, a+1, medtime, medname);
@@ -120,8 +112,6 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		}
 */		
 		
-=======
->>>>>>> jason
 
 	/*	
 		Bundle bundle = new Bundle();

@@ -7,21 +7,14 @@
     android:background="#000000">
 
     <TextView
-<<<<<<< HEAD
-        android:id="@+id/medName_frag"
-=======
         android:id="@+id/vitals_bplabel"
->>>>>>> jason
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Blood Pressure:"
         android:textSize="17sp" />
     
-<<<<<<< HEAD
    
 
-=======
->>>>>>> jason
     <TextView
         android:id="@+id/vitals_sys_label"
         android:layout_width="wrap_content"

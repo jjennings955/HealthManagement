@@ -40,7 +40,7 @@
              android:label="@string/app_name"
              android:screenOrientation="portrait">
         </activity>
-        <receiver android:name=".AlarmReceiver" android:process=":remote" />
+        <receiver android:name="com.team4.AlarmReceiver" android:process=":remote" />
         
         <!-- Register Activity -->
         <activity

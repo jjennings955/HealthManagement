@@ -119,11 +119,7 @@
                   android:orientation="vertical" >
 
                  <TextView
-<<<<<<< HEAD
-                     android:id="@+id/medName_frag"
-=======
                      android:id="@+id/register_gender_text"
->>>>>>> jason
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_marginTop="5dip"

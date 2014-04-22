@@ -103,19 +103,12 @@
         android:text="Time between dosages"
         android:textSize="14sp" />
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> jason
 <EditText
     android:id="@+id/edit_dosage_interval"
     android:layout_width="72dp"
     android:layout_height="wrap_content"
     android:ems="10"
     android:inputType="number" />
-<<<<<<< HEAD
-=======
 
 <TextView
     android:id="@+id/textView1"
@@ -127,7 +120,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-
+<!-- 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -196,9 +189,9 @@
             android:text="Sun" />
 
     </LinearLayout>
-
+ -->
 </LinearLayout>
->>>>>>> jason
+
 
     <Button
         android:id="@+id/btnSubmit"

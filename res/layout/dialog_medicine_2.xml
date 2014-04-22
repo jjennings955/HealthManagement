@@ -30,11 +30,7 @@
     </AutoCompleteTextView>
 
     <TextView
-<<<<<<< HEAD
         android:id="@+id/textView2"
-=======
-        android:id="@+id/artDesc"
->>>>>>> jason
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dosage:"
@@ -47,11 +43,7 @@
         android:inputType="number" />
 
     <TextView
-<<<<<<< HEAD
         android:id="@+id/textView3"
-=======
-        android:id="@+id/artUrl"
->>>>>>> jason
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Priority:"

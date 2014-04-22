@@ -49,7 +49,7 @@ public class EditMedicineDialog extends DialogFragment implements OnClickListene
 		 Bundle args = this.getArguments();
 		 id = args.getInt("id");
 		 dosage = (EditText)view.findViewById(R.id.edit_dosage);
-		 interval = (EditText)view.findViewById(R.id.editDosage);
+		 interval = (EditText)view.findViewById(R.id.edit_dosage_interval);
 		 name = (AutoCompleteTextView)view.findViewById(R.id.edit_medicine);
 		 time = (TimePicker)view.findViewById(R.id.timePicker1);
 		 db = new DatabaseHandler(getActivity());
