@@ -95,8 +95,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             			cursor.getString(4), // day
             			"" + cursor.getInt(5) + ":" + cursor.getInt(6), //hours, mins
             			cursor.getString(7) == null ? false : true); // taken?
-    			String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
-    			//results.add(row);
+    			 
     			results.add(result);
             } while (cursor.moveToNext());
         }
@@ -686,6 +685,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + t);
 		}
 		onCreate(db);
+	}
+	public void delete(Article a)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete("article", "id = ?", new String[] { ""+a.getId() });
+	}
+	public void update(Article a) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	    
+	    ContentValues values = new ContentValues();
+	    values.put("type", a.getType());
+	    values.put("url", a.getUrl());
+	    values.put("title", a.getTitle());
+	    values.put("description", a.getDescription());
+	    values.put("user", a.getUserId());
+		db.update("article", values, "id = ?", new String[] { ""+a.getId() });		
+			
 	}
 }
 

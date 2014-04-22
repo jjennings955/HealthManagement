@@ -13,6 +13,7 @@ import com.team4.healthmonitor.R.layout;
 import com.team4.healthmonitor.R.menu;
 import com.team4.healthmonitor.adapters.ArticleAdapter;
 import com.team4.healthmonitor.adapters.Utility;
+import com.team4.healthmonitor.dialogs.EditMedicineDialog;
 import com.team4.healthmonitor.dialogs.StorageDialog;
 
 import android.content.BroadcastReceiver;
@@ -82,13 +83,25 @@ public class StorageFragment extends Fragment
 		userId = args.getInt(Arguments.USERID, -1);
 		User currentUser = db.getUser(userId);
 		ArrayList<Article> articles = db.getUserArticle(userId);
-		adapter = new ArticleAdapter(getActivity(), R.layout.article_item, articles);
+		adapter = new ArticleAdapter(this, getActivity(), R.layout.article_item, articles);
 		rootList.setAdapter(adapter);
 		//Utility.setListViewHeightBasedOnChildren(rootList);
 		setHasOptionsMenu(true);
 	
 		return rootView;
 	}
+    public void showEditArticleDialog(int id)
+    {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        StorageDialog md = new StorageDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.USERID, userId);
+        args.putInt(Arguments.ITEMID, id);
+        args.putBoolean(Arguments.DIALOGTYPE, StorageDialog.UPDATE);
+        md.setArguments(args);
+        md.show(fm, "dialog_edit_article");
+    }
+    
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
@@ -112,6 +125,7 @@ public class StorageFragment extends Fragment
         StorageDialog storage = new StorageDialog();
         Bundle args = new Bundle();
         args.putInt(Arguments.USERID, userId);
+        args.putBoolean(Arguments.DIALOGTYPE, StorageDialog.CREATE);
         storage.setArguments(args);
         
         storage.show(fm, "fragment_add_storage");

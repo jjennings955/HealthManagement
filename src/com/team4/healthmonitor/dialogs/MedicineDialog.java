@@ -99,9 +99,9 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
      
      
      AutoCompleteSelected foo = new AutoCompleteSelected();
-     medName.setOnItemClickListener(foo);
-     medName.setOnClickListener(foo);
-     medName.setOnItemSelectedListener(foo);
+     //medName.setOnItemClickListener(foo);
+     //medName.setOnClickListener(foo);
+     //medName.setOnItemSelectedListener(foo);
     	
 
 
@@ -212,7 +212,7 @@ private class AutoCompleteSelected implements OnItemClickListener, OnItemSelecte
 		Log.w("PHMS", "Found: " + foo);
 		if (foo != null)
 		{
-			Toast.makeText(getActivity(), "You have chosen " + " " + foo.toString(), Toast.LENGTH_LONG).show();
+			//Toast.makeText(getActivity(), "You have chosen " + " " + foo.toString(), Toast.LENGTH_LONG).show();
 			Log.w("PHMS", foo.toString());
 		}
 		
@@ -225,7 +225,7 @@ private class AutoCompleteSelected implements OnItemClickListener, OnItemSelecte
 		if (foo != null)
 		{
 			Log.w("PHMS", "THREE! " + foo.toString());
-			Toast.makeText(getActivity(), "You have chosen " + " " + foo.toString(), Toast.LENGTH_LONG).show();
+		//	Toast.makeText(getActivity(), "You have chosen " + " " + foo.toString(), Toast.LENGTH_LONG).show();
 		}
 		// TODO Auto-generated method stub
 		

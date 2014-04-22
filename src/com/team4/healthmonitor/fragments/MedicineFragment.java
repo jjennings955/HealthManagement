@@ -56,7 +56,7 @@ public class MedicineFragment extends Fragment
 		
 	public MedicineFragment()
 	{
-		//BroadcastReceiver foo;
+
 	}
 	@Override
 	public void onResume() {
@@ -91,10 +91,6 @@ public class MedicineFragment extends Fragment
 		adapter.clear();
 		adapter.addAll(getSchedule());
 		adapter.notifyDataSetChanged();
-		//adapter.no
-		//adapter.clear();
-		//adapter.
-		//adapter.notifyDataSetChanged();
 	}
 	public ArrayList<MedSchedule> getSchedule()
 	{
@@ -118,27 +114,11 @@ public class MedicineFragment extends Fragment
 	
 	    adapter = new MedScheduleAdapter(this, getActivity(), scheduleEntries);
 	    ListView view = (ListView)rootView;
-	    view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+	    view.setChoiceMode(ListView.CHOICE_MODE_NONE);
 	    view.setAdapter(adapter);
-	    view.setSelector(android.R.color.darker_gray);
-	    view.setOnItemClickListener(new OnItemClickListener()
-	    {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long id) {
-				ArrayList<View> focusables = arg1.getFocusables(position);
-				for (View v : focusables)
-				{
-					v.setSelected(true);
-				}
-
-			}
-	    	
-	    });
-
-		
+	    view.setSelector(android.R.color.transparent);
+	    		
 		return rootView;
-		//return l;
 	}
 		
 		

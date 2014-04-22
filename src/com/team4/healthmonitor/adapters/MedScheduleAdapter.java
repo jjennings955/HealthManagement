@@ -17,11 +17,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
 	private MedicineFragment parentFragment;
+	
     public MedScheduleAdapter(MedicineFragment medicineFragment, Context context, ArrayList<MedSchedule> items) {
     
        super(context, R.layout.medschedule_item, items);
@@ -42,7 +44,7 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
        TextView medDosage = (TextView) convertView.findViewById(R.id.medDosage_temp);
        TextView medTime = (TextView)convertView.findViewById(R.id.medTime_temp);
        CheckBox taken = (CheckBox)convertView.findViewById(R.id.medStatus_temp);
-       Button edit = (Button)convertView.findViewById(R.id.medEditBtn2);
+       ImageButton edit = (ImageButton)convertView.findViewById(R.id.medEditBtn2);
 
        // Populate the data into the template view using the data object
        medName.setText(entry.name);

@@ -29,11 +29,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
+            <ImageButton
+            android:id="@+id/medEditBtn2"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            
+            android:adjustViewBounds="true"
+            android:height="32dp"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_edit"
+            android:text="E"
+            android:width="16dp" />
+            
+    <!-- <Button
         android:id="@+id/medEditBtn2"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:text="Edit" />
-
+ -->
 </LinearLayout>
