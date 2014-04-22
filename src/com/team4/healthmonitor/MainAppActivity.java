@@ -1,6 +1,7 @@
 package com.team4.healthmonitor;
 
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -8,15 +9,24 @@ import com.team4.database.DatabaseHandler;
 import com.team4.database.MedSchedule;
 import com.team4.database.User;
 import com.team4.healthmonitor.swipeadapter.*;
+=======
+import com.team4.healthmonitor.adapters.TabsPagerAdapter;
+import com.team4.healthmonitor.fragments.MedicineFragment;
+import com.team4.healthmonitor.adapters.TabsPagerAdapter;
+>>>>>>> jason
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
+<<<<<<< HEAD
 import android.app.PendingIntent;
 
 import android.content.Context;
+=======
+
+>>>>>>> jason
 import android.content.Intent;
 
 import android.os.Build;
@@ -37,8 +47,11 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	public final static String MEDNAME = "com.team4.healthmonitor.NAME";
 	public static String username = "";
 	public static String password = "";
+<<<<<<< HEAD
 	public static String medname = "";
 	public static String medtime="";
+=======
+>>>>>>> jason
 	public static int userId;
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
@@ -57,6 +70,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		username = i.getStringExtra(MainActivity.USERNAME);
 		password = i.getStringExtra(MainActivity.PASSWORD);
 		userId = i.getIntExtra(MainActivity.USERID, -1);
+<<<<<<< HEAD
 		
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		User currentUser = db.getUser(userId);
@@ -106,6 +120,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		}
 */		
 		
+=======
+>>>>>>> jason
 
 	/*	
 		Bundle bundle = new Bundle();

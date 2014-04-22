@@ -1,7 +1,11 @@
 package com.team4.database;
 
+<<<<<<< HEAD
 public class MedSchedule 
 {
+=======
+public class MedSchedule {
+>>>>>>> jason
 	public String name;
 	public String dosage;
 	public String time;
@@ -18,6 +22,7 @@ public class MedSchedule
 		this.time = time;
 		this.status = status;
 	}
+<<<<<<< HEAD
 	
 	public String getTime()
 	{
@@ -46,6 +51,8 @@ public class MedSchedule
 	}
 
 
+=======
+>>>>>>> jason
 
 
 }

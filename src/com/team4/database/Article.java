@@ -16,7 +16,7 @@ public class Article {
 	 * */
 
 	
-	private int Id = 0;
+	private int Id = -1;
 	private String type;
 	private String url;
 	private String title;
@@ -33,6 +33,12 @@ public class Article {
 		this.title = title;
 		this.description = description;
 		this.userId = userId;
+	}
+
+
+
+	public Article() {
+		// TODO Auto-generated constructor stub
 	}
 
 
@@ -107,6 +113,11 @@ public class Article {
 		this.userId = userId;
 	}
 	
+	public String toString()
+	{
+		return "(id = " + Id + "; title = " + title + "; desc = " + description + "; url = " + url + "; user = " + userId + ")";
+		
+	}
 	
 	
 }

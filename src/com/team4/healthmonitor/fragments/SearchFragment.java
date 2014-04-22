@@ -1,7 +1,10 @@
-package com.team4.healthmonitor;
+package com.team4.healthmonitor.fragments;
 
 
 import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.R.layout;
+import com.team4.healthmonitor.R.menu;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
