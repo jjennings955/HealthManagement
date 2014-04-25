@@ -23,6 +23,12 @@
    <string name="Medication">Medication</string>
    <string name="VitalSigns">Vital Signs</string>
    <string name="Search">Search</string>
- 
+     <string-array name="vital_types">
+        <item>Blood Pressure</item>
+        <item>Blood Sugar</item>
+        <item>Cholesterol</item>
+        <item>Weight</item>
+    </string-array>
+   
 </resources>
   

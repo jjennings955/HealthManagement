@@ -2,6 +2,7 @@ package com.team4.healthmonitor;
 
 
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -30,6 +31,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
@@ -68,31 +70,35 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
 		
 		Calendar now = Calendar.getInstance();
-		Calendar medTime = (Calendar) now.clone();
+		now.setTimeInMillis(System.currentTimeMillis() + 1000*15);
+		setAlarm(now, 0, "WHATEVER?", "TESTING");
 		
 		for(int a = 0; a < scheduleEntries.size(); a++)
 		{
+			Calendar medTime = (Calendar) now.clone();
+			medTime.setTimeInMillis(System.currentTimeMillis());
+			MedSchedule entry = scheduleEntries.get(a);
+			String str = entry.getTime();
 			
-			String str = scheduleEntries.get(a).getTime();
-			
-			medTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(str.substring(0,1)));
-			medTime.set(Calendar.MINUTE, Integer.parseInt(str.substring(str.length() - 2, str.length())));
+			medTime.set(Calendar.HOUR_OF_DAY, entry.getHour());
+			medTime.set(Calendar.MINUTE, entry.getMinutes());
 		    medTime.set(Calendar.SECOND, 0);
 			medTime.set(Calendar.MILLISECOND, 0);
-			
+			Timestamp time2 = new Timestamp(medTime.getTimeInMillis());
+			Timestamp nowstamp = new Timestamp(now.getTimeInMillis());
 			
 			//Toast.makeText(getApplicationContext(), medTime.getTime()+"", Toast.LENGTH_SHORT).show();
 			//Toast.makeText(getApplicationContext(), scheduleEntries.get(2).getTime()+"", Toast.LENGTH_SHORT).show();
 			//Toast.makeText(getApplicationContext(), Integer.parseInt(str.substring(0,1))+"", Toast.LENGTH_SHORT).show();
 			//Toast.makeText(getApplicationContext(), Integer.parseInt(str.substring(str.length() - 2, str.length()))+"", Toast.LENGTH_SHORT).show();
-			
-			if(medTime.compareTo(now) > 0)
+			Log.w("PHMS", entry.getName() + " " + entry.dosage + " " + time2.toString() + " " + nowstamp.toString());
+			if(medTime.after(now))
 			{
 			    //Today Set time had NOT passed
-				Toast.makeText(getApplicationContext(), now.getTime()+"", Toast.LENGTH_SHORT).show();
-				Toast.makeText(getApplicationContext(), medTime.getTime()+"", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), now.getTime()+"", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), medTime.getTime()+"", Toast.LENGTH_SHORT).show();
 				//Toast.makeText(getApplicationContext(), "in", Toast.LENGTH_SHORT).show();
-				
+				Log.w("PHMS", "Starting alarm for: " + entry.getName() + " " + entry.dosage + " " + time2.toString());	
 				medtime = medTime.getTime()+"";
 				medname = scheduleEntries.get(a).getName();
 				

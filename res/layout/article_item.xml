@@ -15,9 +15,22 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
             android:text="Article Title"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <ImageButton
+            android:id="@+id/storageEditBtn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:adjustViewBounds="true"
+            android:height="32dp"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_edit"
+            android:text="E"
+            android:width="16dp" />
     </LinearLayout>
 
     <TextView
@@ -52,21 +65,5 @@
             android:minLines="1"
             android:text="description" />
     </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/storageEditBtn"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_above="@+id/artUrl"
-            android:layout_alignRight="@+id/LinearLayout2"
-            android:layout_alignTop="@+id/LinearLayout2"
-            android:adjustViewBounds="true"
-            android:height="32dp"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@android:drawable/ic_menu_edit"
-            android:text="E"
-            android:width="16dp" />
 
 </RelativeLayout>

@@ -16,9 +16,10 @@ public class AlarmReceiver extends BroadcastReceiver
 	 public void onReceive(Context arg0, Intent arg1) 
 	 {
 		 
+		 Log.w("PHMS", "Alarm Received: " + arg1.getAction() + " " + arg1.getExtras().getString("MEDNAME")+"");
 
 		 Toast.makeText(arg0, arg1.getExtras().getString("MEDNAME")+"", Toast.LENGTH_LONG).show();
-
+		 
 		
 		 Toast.makeText(arg0, "Alarm received!", Toast.LENGTH_LONG).show();
 	

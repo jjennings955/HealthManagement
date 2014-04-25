@@ -18,7 +18,12 @@ public class VitalSign {
 	private int type;
 	private int value1;
 	private int value2;
+	private long datetime;
 	private int user_Id;
+	public static final int BLOOD_PRESSURE = 0;
+	public static final int BLOOD_SUGAR = 1;
+	public static final int WEIGHT = 2;
+	public static final int CHOLESTEROL = 3;
 	
 	public VitalSign()
 	{
@@ -72,6 +77,12 @@ public class VitalSign {
 	}
 	public void setUser_Id(int user_Id) {
 		this.user_Id = user_Id;
+	}
+	public long getDatetime() {
+		return datetime;
+	}
+	public void setDatetime(long l) {
+		this.datetime = l;
 	}
 	
 	

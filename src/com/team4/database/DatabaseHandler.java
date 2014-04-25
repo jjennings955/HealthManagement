@@ -24,7 +24,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		//SQLiteDatabase foo = this.getWritableDatabase();
 		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking" };
 		String create_statement = "" + 
 				"create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER, doctor_name TEXT, doctor_number TEXT, doctor_email TEXT, contact_name TEXT, contact_number TEXT, contact_email TEXT);\n" +
@@ -638,8 +637,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("type", vt.getType()); 
 	    values.put("value1", vt.getValue1());  
 	    values.put("value2", vt.getValue2()); 
-	    values.put("userId", vt.getUser_Id());  
-	    
+	    values.put("user", vt.getUser_Id());  
+	    values.put("datetime", vt.getDatetime());
 	    db.insert("vitalsign", null, values);
 	    //db.close(); 
 	}
@@ -654,14 +653,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    //Cursor c = db.rawQuery("select * from article where userId= ?", new String[]{String.valueOf(id)});
 	 
 	    Cursor cursor = db.query("vitalsign", new String[] {"id", "type",
-	            "value1","value2","userId"}, "userId =?",
+	            "value1","value2","user"}, "user = ?",
 	            new String[] { String.valueOf(id) }, null, null, null, null);
 	    if (cursor != null)
 	        cursor.moveToFirst();
-	    VitalSign vt = new VitalSign(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(0)),
-	    		Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(0)),
-	    		Integer.parseInt(cursor.getString(2)));
-	       
+	    VitalSign vt = new VitalSign();
+	    vt.setId(cursor.getInt(0));
+	    vt.setType(cursor.getInt(1));
+	    vt.setValue1(cursor.getInt(2));
+	    vt.setValue2(cursor.getInt(3));
+	    vt.setDatetime(cursor.getInt(4));
+	    vt.setUser_Id(cursor.getInt(5));
 	    
 	    return vt;
 	}
@@ -681,19 +683,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     			v.setType(cursor.getInt(1));
     			v.setValue1(cursor.getInt(2));
     			v.setValue2(cursor.getInt(3));
-    			v.setUser_Id(cursor.getInt(4));
+    		    v.setDatetime(cursor.getInt(4));
+    		    v.setUser_Id(cursor.getInt(5));
 
     			results.add(v);
             } while (cursor.moveToNext());
         }
 		return results;	
 	}
+	public void update(VitalSign sign)
+	{
+	    SQLiteDatabase db = this.getWritableDatabase();
+	    
+	    ContentValues values = new ContentValues();
+	    values.put("type", sign.getType()); 
+	    values.put("value1", sign.getValue1());  
+	    values.put("value2", sign.getValue2()); 
+	    values.put("user", sign.getUser_Id());  
+	    values.put("datetime", sign.getDatetime());
+
+	    db.update("vitalsign", values, "id = ?", new String[] { ""+sign.getId() });		
+	}
 	
 	
 		
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking", "contacts", "sessions" };
+		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking", "contacts", "sessions", "schedule" };
 		for (String t : tables)
 		{
 			db.execSQL("DROP TABLE IF EXISTS " + t);
@@ -706,9 +722,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete("article", "id = ?", new String[] { ""+a.getId() });
 	}
+	
 	public void update(Article a) {
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    
 	    ContentValues values = new ContentValues();
 	    values.put("type", a.getType());
 	    values.put("url", a.getUrl());
@@ -716,7 +732,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("description", a.getDescription());
 	    values.put("user", a.getUserId());
 		db.update("article", values, "id = ?", new String[] { ""+a.getId() });		
-			
+	}
+
+	public ArrayList<VitalSign> getUserVitals(int userid) {
+		ArrayList<VitalSign> results = new ArrayList<VitalSign>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from vitalsign where user = ?;";
+		Cursor cursor = db.rawQuery(query, new String[] { "" + userid });
+				
+        if (cursor.moveToFirst()) {
+            do {
+        	    VitalSign vt = new VitalSign();
+        	    vt.setId(cursor.getInt(0));
+        	    vt.setType(cursor.getInt(1));
+        	    vt.setValue1(cursor.getInt(2));
+        	    vt.setValue2(cursor.getInt(3));
+        	    vt.setDatetime(cursor.getInt(4));
+        	    vt.setUser_Id(cursor.getInt(5));
+        	   results.add(vt);
+            } while (cursor.moveToNext());
+        }
+        return results;
 	}
 }
 
