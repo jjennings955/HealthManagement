@@ -2,8 +2,14 @@ package com.team4.database;
 
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
+
+import com.team4.healthmonitor.R;
 
 import android.annotation.TargetApi;
 import android.content.ContentValues;
@@ -16,10 +22,11 @@ import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PHMS";
-    private static final int DATABASE_VERSION = 21;
-
+    private static final int DATABASE_VERSION = 25;
+    private Context myContext;
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        myContext = context;
     }
     
 	@Override
@@ -32,10 +39,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, datetime INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table food(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories REAL, fat REAL, protein REAL, carbs REAL, fiber REAL, sugar REAL);\n" +
+				"create table food2(id INTEGER PRIMARY KEY, calories REAL, protein REAL, lipid REAL, carbs REAL, fiber REAL, sugar REAL, potassium REAL, sodium REAL, fat_sat REAL, fat_mono REAL, fat_poly REAL, cholesterol REAL, weight_serving1 REAL, desc_serving1 TEXT, weight_serving2 REAL, desc_serving2 TEXT, description TEXT);\n" +
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
+				"create virtual table food_search using fts3(id INTEGER, description TEXT);\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
 				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
-				"create table medication_tracking(id INTEGER PRIMARY KEY AUTOINCREMENT, medication_schedule_id INTEGER, date INTEGER, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id));\n" + 
+				"create table medication_tracking(medication_schedule_id INTEGER, date TEXT, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id), primary key (medication_schedule_id, date));\n" + 
 				"create view schedule as " +
 				"	select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry " +
 				"	from " +
@@ -74,6 +83,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		mv.setMedication_id(2);
 		this.store(mv, db);
 	}
+	public void medicationTaken(int id, String date)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put("date", date);
+		cv.put("medication_schedule_id", id);
+		db.insert("medication_tracking", null, cv);
+	}
+	public void medicationNotTaken(int id, String date)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		db.delete("medication_tracking", "date = ? and medication_schedule_id = ?", new String[] { "" + date, "" + id });
+	}
 	public Cursor getMedScheduleCursor(User u)
 	{
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -84,11 +106,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<MedSchedule> results = new ArrayList<MedSchedule>();
-		//String query = "create view schedule as select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry from (medication_schedule as S JOIN user as U JOIN medication as M ON S.user = U.id and U.id = M.id and S.medication = M.id) LEFT OUTER JOIN medication_tracking as MT ON MT.medication_schedule_id = S.id;";
-		
-		
 
-		//String query = "create view schedule as select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry from (medication_schedule as S JOIN user as U JOIN medication as M ON S.user = U.id and U.id = M.id and S.medication = M.id) LEFT OUTER JOIN medication_tracking as MT ON MT.medication_schedule_id = S.id ORDER BY (S.time_hours, S.time_mins, M.name);";
 		String query = "select * from schedule where user_id = ? order by time_hours, time_mins, medication_name";
 		Cursor cursor = db.rawQuery(query, new String[] { "" + u.getId() } );
         if (cursor.moveToFirst()) {
@@ -115,6 +133,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return results;
 		
 	}
+	
 	public void store(MedicationEvent newEvent)
 	{
 
@@ -520,6 +539,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    db.insert("food", null, values);
 	    //db.close(); 
 	}
+	public Food2 getFood(int id)
+	{
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		Cursor cur = db.rawQuery("select * from food2 where id = ?", new String[] { "" + id });
+		if (cur.moveToFirst())
+		{
+			Food2 result = new Food2();
+			result.setId(cur.getInt(0));
+			result.setCalories(cur.getFloat(1));
+			result.setProtein(cur.getFloat(2));
+			result.setLipid(cur.getFloat(3));
+			result.setCarbs(cur.getFloat(4));
+			result.setFiber(cur.getFloat(5));
+			result.setSugar(cur.getFloat(6));
+			result.setPotassium(cur.getFloat(7));
+			result.setSodium(cur.getFloat(8));
+			result.setFat_sat(cur.getFloat(9));
+			result.setFat_mono(cur.getFloat(10));
+			result.setFat_poly(cur.getFloat(11));
+			result.setCholesterol(cur.getFloat(12));
+			result.setWeight_serving1(cur.getFloat(13));
+			result.setDesc_serving1(cur.getString(14));
+			result.setWeight_serving2(cur.getFloat(15));
+			result.setDesc_serving2(cur.getString(16));
+			result.setDescription(cur.getString(17));
+			return result;
+		}
+		else
+		{
+			return null;
+		}
+		
+	}
 	
 	/*
 	 * Add food_journal
@@ -753,6 +807,54 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return results;
+	}
+	public ArrayList<VitalSign> getUserVitals(int userid, int type) {
+		ArrayList<VitalSign> results = new ArrayList<VitalSign>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from vitalsign where user = ? and type = ?;";
+		Cursor cursor = db.rawQuery(query, new String[] { "" + userid, ""+type });
+				
+        if (cursor.moveToFirst()) {
+            do {
+        	    VitalSign vt = new VitalSign();
+        	    vt.setId(cursor.getInt(0));
+        	    vt.setType(cursor.getInt(1));
+        	    vt.setValue1(cursor.getInt(2));
+        	    vt.setValue2(cursor.getInt(3));
+        	    vt.setDatetime(cursor.getInt(4));
+        	    vt.setUser_Id(cursor.getInt(5));
+        	   results.add(vt);
+            } while (cursor.moveToNext());
+        }
+        return results;
+	}
+	
+	public static boolean importFoodDatabase(SQLiteDatabase db, InputStream infile)
+	{
+		Scanner scan = new Scanner(infile);
+		String line = "";
+		String split[];
+		String columns[] = "id,calories,protein,lipid,carbs,fiber,sugar,potassium,sodium,fat_sat,fat_mono,fat_poly,cholesterol,weight_serving1,desc_serving1,weight_serving2,desc_serving2,description".split(",");
+		//db.beginTransaction();
+		scan.nextLine();
+		while (scan.hasNextLine()) {
+			line = scan.nextLine();
+			split = line.split("\t");
+			//Log.w("PHMS", "Description = " + split[split.length-1]);
+			ContentValues values = new ContentValues();
+			for (int i = 0; i < columns.length; i++)
+			{
+				values.put(columns[i], split[i]);
+			}
+			db.insert("food2", null, values);
+			ContentValues values2 = new ContentValues();
+			values2.put("id", split[0]);
+			values2.put("description", split[split.length-1]);
+			db.insert("food_search", null, values2);
+		}
+		//db.endTransaction();
+		scan.close();
+		return true;
 	}
 }
 

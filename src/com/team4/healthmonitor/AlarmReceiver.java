@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+import com.team4.healthmonitor.R;
 
 public class AlarmReceiver extends BroadcastReceiver 
 {
 	 public AlarmReceiver()
 	 {
+
 		 Log.w("PHMS", "Alarm Receiver created");
 	 }
 	 @Override

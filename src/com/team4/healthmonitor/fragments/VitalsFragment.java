@@ -2,19 +2,8 @@ package com.team4.healthmonitor.fragments;
 
 
 import java.util.ArrayList;
-
-import com.team4.database.DatabaseHandler;
-import com.team4.database.MedSchedule;
-import com.team4.database.User;
-import com.team4.database.VitalSign;
-import com.team4.healthmonitor.Arguments;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-import com.team4.healthmonitor.R.menu;
-import com.team4.healthmonitor.adapters.MedScheduleAdapter;
-import com.team4.healthmonitor.adapters.VitalAdapter;
-import com.team4.healthmonitor.dialogs.VitalDialog;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -33,9 +22,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
- 
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.VitalSign;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.adapters.VitalAdapter;
+import com.team4.healthmonitor.dialogs.VitalDialog;
+//import com.team4.healthmonitor.R;
+
 
 public class VitalsFragment extends Fragment 
 {
@@ -46,14 +44,13 @@ public class VitalsFragment extends Fragment
 	private int userId;
 	
 	private FragmentActivity myContext2;
-	private VitalAdapter adapter;
 	private DatabaseHandler db;
+	private HashMap<Integer, VitalAdapter> adapters;
+	private HashMap<Integer, ListView> listViews;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
 		View rootView = inflater.inflate(R.layout.fragment_vitals, container, false);
-		
 		setHasOptionsMenu(true);
 		  LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
 			      new IntentFilter("com.team4.healthmonitor.UPDATEVITALS"));
@@ -61,15 +58,53 @@ public class VitalsFragment extends Fragment
 		userId = foo.getInt(Arguments.USERID);
 		setHasOptionsMenu(true);
 		db = new DatabaseHandler(getActivity());
+//		getResources().openRawResource(R.raw.nutrition);
+		ArrayList<VitalSign> bps = db.getUserVitals(userId, VitalSign.BLOOD_PRESSURE);
+		ArrayList<VitalSign> weights = db.getUserVitals(userId, VitalSign.WEIGHT);
+		ArrayList<VitalSign> cholesterol = db.getUserVitals(userId, VitalSign.CHOLESTEROL);
+		ArrayList<VitalSign> bloodsugar = db.getUserVitals(userId, VitalSign.BLOOD_SUGAR);
+		VitalAdapter bpadapter;
+		VitalAdapter weightadapter;
+		VitalAdapter choladapter;
+		VitalAdapter sugaradapter;
 		
-		ArrayList<VitalSign> userVitals = db.getUserVitals(userId);
-	
-	    //adapter = new VitalAdapter(this, getActivity(), userVitals);
-	    ListView view = (ListView)rootView.findViewById(R.id.vitals_bplistview);
-	    adapter = new VitalAdapter(this, getActivity(), view.getId(), userVitals);
-	    view.setChoiceMode(ListView.CHOICE_MODE_NONE);
-	    view.setAdapter(adapter);
-	    view.setSelector(android.R.color.transparent);
+	    ListView bplist = (ListView)rootView.findViewById(R.id.vitals_bplistview);
+	    bpadapter = new VitalAdapter(this, getActivity(), bplist.getId(), bps);
+	    
+	    ListView weightlist = (ListView)rootView.findViewById(R.id.vitals_weightlistview);
+	    weightadapter = new VitalAdapter(this, getActivity(), weightlist.getId(), weights);
+	    
+	    ListView cholesterolList = (ListView)rootView.findViewById(R.id.vitals_cholesterol_listview);
+	    choladapter = new VitalAdapter(this, getActivity(), cholesterolList.getId(), cholesterol);
+	    
+	    ListView sugarList = (ListView)rootView.findViewById(R.id.vitals_bloodsugar_listview);
+	    sugaradapter = new VitalAdapter(this, getActivity(), sugarList.getId(), bloodsugar);
+	    listViews = new HashMap<Integer, ListView>();
+	    adapters = new HashMap<Integer, VitalAdapter>();
+	    listViews.put(VitalSign.BLOOD_PRESSURE, bplist);
+	    listViews.put(VitalSign.WEIGHT, weightlist);
+	    listViews.put(VitalSign.CHOLESTEROL, cholesterolList);
+	    listViews.put(VitalSign.BLOOD_SUGAR, sugarList);
+	    
+	    adapters.put(VitalSign.BLOOD_PRESSURE, bpadapter);
+	    adapters.put(VitalSign.WEIGHT, weightadapter);
+	    adapters.put(VitalSign.BLOOD_SUGAR, sugaradapter);
+	    adapters.put(VitalSign.CHOLESTEROL, choladapter);
+	    
+	    
+	    //listViews = new ListView[]{ bplist, weightlist, cholesterolList, sugarList };
+	    //adapters = new VitalAdapter[]{ bpadapter, weightadapter, choladapter, sugaradapter };
+	    listViews.size();
+	    
+	    for (Entry<Integer, ListView> entry : listViews.entrySet())
+	    {
+	    	int key = entry.getKey();
+	    	ListView val = entry.getValue();
+	    	val.setChoiceMode(ListView.CHOICE_MODE_NONE);
+	    	val.setAdapter(adapters.get(key));
+	    	val.setSelector(android.R.color.transparent);
+	    }
+
 		return rootView;
 		
 	}
@@ -77,17 +112,21 @@ public class VitalsFragment extends Fragment
 		  @Override
 		  public void onReceive(Context context, Intent intent) {
 		    // Extract data included in the Intent
-		    String message = intent.getStringExtra("message");
-		    Log.d("Vitals", "Got message: " + message);
-		    updateData();
+		    int type = intent.getIntExtra("type", 0);
+		    updateData(type);
 		  }
 		};
 
-		public void updateData()
+		public void updateData(int type)
 		{
-			adapter.clear();
-			adapter.addAll(db.getUserVitals(userId));
-			adapter.notifyDataSetChanged();
+			if (adapters.containsKey(type))
+			{
+				VitalAdapter adapter = adapters.get(type);
+				adapter.clear();
+				adapter.addAll(db.getUserVitals(userId, type));
+				adapter.notifyDataSetChanged();
+			}
+			
 		}
 		
 	public void onAttach(Activity activity)

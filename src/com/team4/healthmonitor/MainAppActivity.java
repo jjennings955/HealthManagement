@@ -139,6 +139,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		setContentView(R.layout.activity_main_app);
 
 		// Initilization
+
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager(), userId);

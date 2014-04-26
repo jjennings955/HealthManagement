@@ -1,5 +1,6 @@
 package com.team4.healthmonitor.dialogs;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.team4.database.DatabaseHandler;
 import com.team4.database.VitalSign;
@@ -127,15 +128,31 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 		
 	}
 
-	private void sendUpdate() {
+	private void sendUpdate(int type) {
 		Intent mshg = new Intent("com.team4.healthmonitor.UPDATEVITALS");
-		mshg.putExtra("message", "data");
+		mshg.putExtra("type", type);
 		LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(mshg);
 	}
 	@Override
 	public void onClick(View view) {
 		DatabaseHandler db = new DatabaseHandler(getActivity());
-		if (mode.equals("Weight") || mode.equals("Blood Sugar"))
+		int type;
+		HashMap<String, Integer> modeMap = new HashMap<String, Integer>();
+		modeMap.put("Weight", VitalSign.WEIGHT);
+		modeMap.put("Blood Pressure", VitalSign.BLOOD_PRESSURE);
+		modeMap.put("Blood Sugar", VitalSign.BLOOD_SUGAR);
+		modeMap.put("Cholesterol", VitalSign.CHOLESTEROL);
+		
+		if (modeMap.containsKey(mode))
+		{
+			type = modeMap.get(mode);
+		}
+		else
+		{
+			return;
+		}
+		
+		if (type == VitalSign.BLOOD_SUGAR || type == VitalSign.WEIGHT)
 		{
 			String val1 = vital1.getText().toString();
 			if (!val1.matches("[0-9]+"))
@@ -148,12 +165,9 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 				v.setUser_Id(userId);
 				v.setDatetime(System.currentTimeMillis());
 				v.setValue1(Integer.parseInt(val1));
-				if (mode.equals("Weight"))
-					v.setType(VitalSign.WEIGHT);
-				else
-					v.setType(VitalSign.BLOOD_SUGAR);
+				v.setType(type);
 				db.store(v);
-				sendUpdate();
+				sendUpdate(type);
 				dismiss();
 			}
 				
@@ -180,13 +194,10 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 				v.setDatetime(System.currentTimeMillis());
 				v.setValue1(Integer.parseInt(val1));
 				v.setValue2(Integer.parseInt(val2));
-				if (mode.equals("Cholesterol"))
-					v.setType(VitalSign.CHOLESTEROL);
-				if (mode.equals("Blood Pressure"))
-					v.setType(VitalSign.BLOOD_PRESSURE);
+				v.setType(type);
 				
 				db.store(v);
-				sendUpdate();
+				sendUpdate(type);
 				dismiss();
 			}
 			
