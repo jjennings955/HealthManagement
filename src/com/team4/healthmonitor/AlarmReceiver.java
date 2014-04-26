@@ -8,10 +8,7 @@ import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver 
 {
-	 public AlarmReceiver()
-	 {
-		 Log.w("PHMS", "Alarm Receiver created");
-	 }
+
 	 @Override
 	 public void onReceive(Context arg0, Intent arg1) 
 	 {

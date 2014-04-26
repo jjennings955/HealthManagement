@@ -27,7 +27,7 @@
     <CheckBox
         android:id="@+id/medStatus_temp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
             <ImageButton
             android:id="@+id/medEditBtn2"
@@ -54,5 +54,5 @@
 
 =======
  -->
->>>>>>> jason
+
 </LinearLayout>

@@ -19,6 +19,7 @@ public class VitalSign {
 	private int value1;
 	private int value2;
 	private int user_Id;
+	private int datetime;
 	
 	public VitalSign()
 	{
@@ -73,7 +74,12 @@ public class VitalSign {
 	public void setUser_Id(int user_Id) {
 		this.user_Id = user_Id;
 	}
-	
+	public int getDatetime() {
+		return datetime;
+	}
+	public void setDatetime(int datetime) {
+		this.datetime = datetime;
+	}
 	
 
 }

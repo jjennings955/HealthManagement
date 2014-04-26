@@ -65,7 +65,7 @@ public class StorageFragment extends Fragment
 			adapter.clear();
 			adapter.addAll(db.getUserArticle(userId));
 			adapter.notifyDataSetChanged();
-			Utility.setListViewHeightBasedOnChildren(listView);
+			//Utility.setListViewHeightBasedOnChildren(listView);
 			//Utility.setListViewHeightBasedOnChildren(adapter.getVi
 		}
 

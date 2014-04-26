@@ -18,6 +18,7 @@ import com.team4.healthmonitor.R.menu;
 import com.team4.healthmonitor.adapters.MedScheduleAdapter;
 import com.team4.healthmonitor.dialogs.EditMedicineDialog;
 import com.team4.healthmonitor.dialogs.MedicineDialog;
+import com.team4.healthmonitor.dialogs.SettingsDialog;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -150,8 +151,7 @@ public class MedicineFragment extends Fragment
 	        	showMedicineDialog();
 	            return true;
 	        case R.id.settings_item:
-	        	Toast.makeText(getActivity(), "Search",
-	        		      Toast.LENGTH_SHORT).show();
+	        	showSettingsDialog(userId);
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -165,6 +165,15 @@ public class MedicineFragment extends Fragment
         args.putInt(Arguments.USERID, id);
         md.setArguments(args);
         md.show(fm, "dialog_edit_medicine");
+    }
+    public void showSettingsDialog(int id)
+    {
+        FragmentManager fm = myContext.getSupportFragmentManager();
+        SettingsDialog md = new SettingsDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.USERID, id);
+        md.setArguments(args);
+        md.show(fm, "dialog_settings_medicine");
     }
     private void showMedicineDialog()
     {

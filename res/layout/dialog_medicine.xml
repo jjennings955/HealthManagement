@@ -8,16 +8,14 @@
 <LinearLayout
     android:id="@+id/edit_name"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+    android:layout_height="520dp"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/medName_frag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name of medication:"
-        android:layout_marginTop="120dip"
         android:textSize="14sp" />
 
     <AutoCompleteTextView

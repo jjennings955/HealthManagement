@@ -2,11 +2,13 @@ package com.team4.healthmonitor.adapters;
 
 import java.util.ArrayList;
 
+import com.team4.database.DatabaseHandler;
+import com.team4.database.Helper;
 import com.team4.database.MedSchedule;
+import com.team4.healthmonitor.fragments.MedicineFragment;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.R.id;
 import com.team4.healthmonitor.R.layout;
-import com.team4.healthmonitor.fragments.MedicineFragment;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -17,14 +19,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.HeterogeneousExpandableList;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
+public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> 
+{
 	private MedicineFragment parentFragment;
-	
-    public MedScheduleAdapter(MedicineFragment medicineFragment, Context context, ArrayList<MedSchedule> items) {
+    public MedScheduleAdapter(MedicineFragment medicineFragment, Context context, ArrayList<MedSchedule> items) 
+    {
     
        super(context, R.layout.medschedule_item, items);
        parentFragment = medicineFragment;
@@ -52,15 +60,45 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
        medTime.setText(entry.time);
        taken.setChecked(entry.status);
        final int id = entry.id;
-       edit.setOnClickListener(new View.OnClickListener() {
-	   @Override
-		public void onClick(View v) {
-			Log.w("PHMS", "Clicked edit on row with entry " + id);
-			parentFragment.showEditMedicineDialog(id);
-		}
+       final int pos = position;
+       edit.setOnClickListener(new View.OnClickListener() 
+       {
+		    @Override
+			public void onClick(View v) 
+		    {
+				Log.w("PHMS", "Clicked edit on row with entry " + id);
+				parentFragment.showEditMedicineDialog(id);
+				
+			}
        });
+       
+       taken.setOnCheckedChangeListener(new OnCheckedChangeListener() 
+       {
+		
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				DatabaseHandler db = new DatabaseHandler(getContext());
+				
+				if(isChecked == true)
+				{
+					db.medicationTaken(id, Helper.getDate());
+					MedSchedule i = getItem(pos);
+					i.status = true;
+				}
+				else if(isChecked == false)
+				{
+					db.medicationNotTaken(id, Helper.getDate());
+					MedSchedule i = getItem(pos);
+					i.status = false;
+				}
+			}
+       });
+       
        // Return the completed view to render on screen
        return convertView;
    }
+    
+   
 
 }
