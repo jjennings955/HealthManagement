@@ -45,14 +45,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
 				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table medication_tracking(medication_schedule_id INTEGER, date TEXT, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id), primary key (medication_schedule_id, date));\n" + 
+				//select count(*) from schedule where schedule_id = ? and 
 				"create view schedule as " +
-				"	select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry " +
+				"	select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry" +
 				"	from " +
 				"		(medication_schedule as S JOIN user as U JOIN medication as M ON " +
 				"			S.user = U.id and S.medication = M.id) " +
 				"		LEFT OUTER JOIN medication_tracking as MT ON " +
-
-				"			MT.medication_schedule_id = S.id;"; 
+				"			MT.medication_schedule_id = S.id" +
+				""; 
 		
 		String statements[] = create_statement.split("\n");
 		for (int i = 0; i < statements.length; i++)
@@ -102,34 +103,56 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cur = db.rawQuery("select * from schedule where user_id = ?", new String[] { "" + u.getId() });
 		return cur;
 	}
-	public ArrayList<MedSchedule> getUserMedicationSchedule(User u)
+	public ArrayList<MedSchedule> getUserMedicationSchedule(User u, String date)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<MedSchedule> results = new ArrayList<MedSchedule>();
-
-		String query = "select * from schedule where user_id = ? order by time_hours, time_mins, medication_name";
-		Cursor cursor = db.rawQuery(query, new String[] { "" + u.getId() } );
-        if (cursor.moveToFirst()) {
+		String query1 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication as M, medication_schedule as S where M.id = S.medication and not exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? order by S.time_hours, S.time_mins, M.name;";
+		String query2 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication as M, medication_schedule as S where M.id = S.medication and exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? order by S.time_hours, S.time_mins, M.name;";
+		
+		Cursor cursor = db.rawQuery(query1, new String[] { "" + date, "" + u.getId() });
+		if (cursor.moveToFirst()) {
             do {
-    			String minutesAdjusted = cursor.getInt(6)+"";
+    			String minutesAdjusted = cursor.getInt(5)+"";
             	
-        		if(cursor.getInt(6) < 10)
+        		if(cursor.getInt(5) < 10)
         		{
-        			minutesAdjusted = "0"+cursor.getInt(6);
+        			minutesAdjusted = "0"+cursor.getInt(5);
         		}
 
-            	MedSchedule result = new MedSchedule(cursor.getInt(1), // ID
-            			cursor.getString(2), // Name
-            			cursor.getString(3), // dosage
-            			cursor.getString(4), // day
-
-            			"" + cursor.getInt(5) + ":" + minutesAdjusted, //hours, mins
-            			cursor.getString(7) == null ? false : true); // taken?
-    			String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
+            	MedSchedule result = new MedSchedule(cursor.getInt(0), // ID
+            			cursor.getString(1), // Name
+            			cursor.getString(2), // dosage
+            			cursor.getString(3), // day
+            			"" + cursor.getInt(4) + ":" + minutesAdjusted, //hours, mins
+            			false); // taken?
+    			//String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
     			//results.add(row);
     			results.add(result);
             } while (cursor.moveToNext());
-        }
+		}
+       cursor = db.rawQuery(query2, new String[] { "" + date, "" + u.getId() });
+		if (cursor.moveToFirst()) {
+            do {
+    			String minutesAdjusted = cursor.getInt(5)+"";
+            	
+        		if(cursor.getInt(5) < 10)
+        		{
+        			minutesAdjusted = "0"+cursor.getInt(5);
+        		}
+
+            	MedSchedule result = new MedSchedule(cursor.getInt(0), // ID
+            			cursor.getString(1), // Name
+            			cursor.getString(2), // dosage
+            			cursor.getString(3), // day
+            			"" + cursor.getInt(4) + ":" + minutesAdjusted, //hours, mins
+            			true); // taken?
+//    			String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
+    			//results.add(row);
+    			results.add(result);
+            } while (cursor.moveToNext());
+		}
+
         return results;
 		
 	}

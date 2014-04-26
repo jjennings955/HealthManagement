@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.team4.database.DatabaseHandler;
+import com.team4.database.Helper;
 import com.team4.database.MedSchedule;
 import com.team4.database.Medication;
 import com.team4.database.User;
@@ -96,7 +97,7 @@ public class MedicineFragment extends Fragment
 	{
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		User currentUser = db.getUser(userId);
-		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
+		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDate());
 		return scheduleEntries;
 	}
 				
@@ -110,7 +111,7 @@ public class MedicineFragment extends Fragment
 		setHasOptionsMenu(true);
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		User currentUser = db.getUser(userId);
-		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
+		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDate());
 	
 	    adapter = new MedScheduleAdapter(this, getActivity(), scheduleEntries);
 	    ListView view = (ListView)rootView;

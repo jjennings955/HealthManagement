@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team4.database.DatabaseHandler;
@@ -47,6 +48,8 @@ public class VitalsFragment extends Fragment
 	private DatabaseHandler db;
 	private HashMap<Integer, VitalAdapter> adapters;
 	private HashMap<Integer, ListView> listViews;
+	private HashMap<Integer, TextView> labels;
+	private TextView tip;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class VitalsFragment extends Fragment
 		userId = foo.getInt(Arguments.USERID);
 		setHasOptionsMenu(true);
 		db = new DatabaseHandler(getActivity());
+		tip = (TextView)rootView.findViewById(R.id.vitalTip);
 //		getResources().openRawResource(R.raw.nutrition);
 		ArrayList<VitalSign> bps = db.getUserVitals(userId, VitalSign.BLOOD_PRESSURE);
 		ArrayList<VitalSign> weights = db.getUserVitals(userId, VitalSign.WEIGHT);
@@ -90,7 +94,11 @@ public class VitalsFragment extends Fragment
 	    adapters.put(VitalSign.WEIGHT, weightadapter);
 	    adapters.put(VitalSign.BLOOD_SUGAR, sugaradapter);
 	    adapters.put(VitalSign.CHOLESTEROL, choladapter);
-	    
+	    labels = new HashMap<Integer, TextView>();
+	    labels.put(VitalSign.BLOOD_PRESSURE, (TextView) rootView.findViewById(R.id.vitals_BP_label));
+	    labels.put(VitalSign.BLOOD_SUGAR, (TextView) rootView.findViewById(R.id.vitals_bloodsugar_label));
+	    labels.put(VitalSign.CHOLESTEROL, (TextView) rootView.findViewById(R.id.vitals_cholesterol_label));
+	    labels.put(VitalSign.WEIGHT, (TextView) rootView.findViewById(R.id.vitals_weight_label));
 	    
 	    //listViews = new ListView[]{ bplist, weightlist, cholesterolList, sugarList };
 	    //adapters = new VitalAdapter[]{ bpadapter, weightadapter, choladapter, sugaradapter };
@@ -103,10 +111,29 @@ public class VitalsFragment extends Fragment
 	    	val.setChoiceMode(ListView.CHOICE_MODE_NONE);
 	    	val.setAdapter(adapters.get(key));
 	    	val.setSelector(android.R.color.transparent);
+	    	updateData(key);
+	    	
 	    }
-
+	    checkTip();
 		return rootView;
 		
+	}
+	private void checkTip()
+	{
+		if (shouldDisplayTip())
+			tip.setVisibility(View.VISIBLE);
+		else
+			tip.setVisibility(View.GONE);
+	}
+	private boolean shouldDisplayTip()
+	{
+		boolean result = true;
+		for (Entry<Integer, VitalAdapter> entry : adapters.entrySet())
+		{
+			if (entry.getValue().getCount() > 0)
+				return false;
+		}
+		return true;
 	}
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 		  @Override
@@ -124,8 +151,20 @@ public class VitalsFragment extends Fragment
 				VitalAdapter adapter = adapters.get(type);
 				adapter.clear();
 				adapter.addAll(db.getUserVitals(userId, type));
+				if (adapter.getCount() == 0)
+				{
+					labels.get(type).setVisibility(View.GONE);
+					listViews.get(type).setVisibility(View.GONE);
+				}
+				else
+				{
+					labels.get(type).setVisibility(View.VISIBLE);
+					listViews.get(type).setVisibility(View.VISIBLE);
+				}
+
 				adapter.notifyDataSetChanged();
 			}
+			checkTip();
 			
 		}
 		

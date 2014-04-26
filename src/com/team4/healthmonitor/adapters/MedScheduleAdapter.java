@@ -2,24 +2,21 @@ package com.team4.healthmonitor.adapters;
 
 import java.util.ArrayList;
 
-import com.team4.database.MedSchedule;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-import com.team4.healthmonitor.fragments.MedicineFragment;
-
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.team4.database.MedSchedule;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.fragments.MedicineFragment;
 
 public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
 	private MedicineFragment parentFragment;
@@ -28,6 +25,7 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
     
        super(context, R.layout.medschedule_item, items);
        parentFragment = medicineFragment;
+
     }
 
     @Override
@@ -52,6 +50,7 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
        medTime.setText(entry.time);
        taken.setChecked(entry.status);
        final int id = entry.id;
+       
        edit.setOnClickListener(new View.OnClickListener() {
 	   @Override
 		public void onClick(View v) {
@@ -59,6 +58,15 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
 			parentFragment.showEditMedicineDialog(id);
 		}
        });
+       
+       taken.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			Log.w("PHMS", "Check changed!");
+			
+		}
+	});
        // Return the completed view to render on screen
        return convertView;
    }

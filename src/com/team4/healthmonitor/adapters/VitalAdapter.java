@@ -1,6 +1,7 @@
 package com.team4.healthmonitor.adapters;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.team4.database.Article;
+import com.team4.database.Helper;
 import com.team4.database.VitalSign;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.fragments.StorageFragment;
@@ -42,18 +44,40 @@ public class VitalAdapter extends ArrayAdapter<VitalSign> {
        if (convertView == null) {
           convertView = LayoutInflater.from(getContext()).inflate(R.layout.vital_item, null);
        }
+       String rowString = "";
+       
+	   rowString = Helper.formatTime(entry.getDatetime());
+	   rowString += "\t";
+       if (entry.getType() == VitalSign.WEIGHT)
+       {
+    	    rowString += " " + entry.getValue1() + " lbs";
+       }
+       if (entry.getType() == VitalSign.BLOOD_PRESSURE)
+       {
+    	   rowString += " Systolic: " + entry.getValue1() + " Diastolic: " + entry.getValue2();
+       }
+       if (entry.getType() == VitalSign.BLOOD_SUGAR)
+       {
+    	   rowString += " " + entry.getValue1() + " mg/dL";
+       }
+       if (entry.getType() == VitalSign.CHOLESTEROL)
+       {
+    	   rowString += " LDL: " + entry.getValue1() + " mg/dL";
+    	   rowString += " HDL: " + entry.getValue2() + " mg/dL";
+    	   
+       }
        TextView field1 = (TextView)convertView.findViewById(R.id.vitalField1);
-       TextView field2 = (TextView)convertView.findViewById(R.id.vitalField2);
-       TextView field3 = (TextView)convertView.findViewById(R.id.vitalField3);
+     //  TextView field2 = (TextView)convertView.findViewById(R.id.vitalField2);
+      // TextView field3 = (TextView)convertView.findViewById(R.id.vitalField3);
        String val1 = ""+entry.getValue1();
        String val2 = ""+entry.getValue2();
        String type = map[entry.getType()];
-       field1.setText(type);
-       field2.setText(val1);
-       if (entry.getType() == VitalSign.WEIGHT || entry.getType() == VitalSign.BLOOD_SUGAR)
+       field1.setText(rowString);
+       //field2.setText(val1);
+    /*   if (entry.getType() == VitalSign.WEIGHT || entry.getType() == VitalSign.BLOOD_SUGAR)
     	   field3.setText("");
        else
-    	   field3.setText(val2);
+    	   field3.setText(val2);*/
        ImageButton edit = (ImageButton)convertView.findViewById(R.id.vitalEditBtn);
 
        final int id = entry.getId();

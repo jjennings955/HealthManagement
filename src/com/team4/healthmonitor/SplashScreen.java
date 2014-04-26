@@ -44,6 +44,7 @@ public class SplashScreen extends Activity {
         setContentView(R.layout.activity_splash);
         DatabaseHandler db = new DatabaseHandler(this);
         db.medicationTaken(1, Helper.getDate());
+        db.medicationNotTaken(1, "fish");
        /* Food2 test = db.getFood(93600);
         Log.w("PHMS", Helper.getDate());
         if (test == null)

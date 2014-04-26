@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.team4.database.DatabaseHandler;
+import com.team4.database.Helper;
 import com.team4.database.MedSchedule;
 import com.team4.database.User;
 
@@ -67,7 +68,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		userId = i.getIntExtra(MainActivity.USERID, -1);
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		User currentUser = db.getUser(userId);
-		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
+		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDate());
 		
 		Calendar now = Calendar.getInstance();
 		now.setTimeInMillis(System.currentTimeMillis() + 1000*15);
