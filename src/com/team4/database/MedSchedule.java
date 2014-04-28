@@ -6,7 +6,6 @@ public class MedSchedule
 	public String dosage;
 	public String time;
 	public String day;
-	private String date;
 	public boolean status;
 	public int id;
 	
@@ -44,14 +43,6 @@ public class MedSchedule
 	public String getName()
 	{
 		return name;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 

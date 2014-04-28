@@ -4,9 +4,6 @@ package com.team4.database;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,21 +43,5 @@ public class Helper {
 			
 		}
 		return Helper.getHex(hash);
-	}
-	public static String getDate()
-	{
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println(cal.getTime());
-		String formatted = format1.format(cal.getTime());
-		return formatted;
-	}
-	public static String formatTime(long millis)
-	{
-		Date date = new Date(millis);
-		SimpleDateFormat format1 = new SimpleDateFormat("H:mmaa");
-		String formatted = format1.format(date.getTime());
-		return formatted;
-
 	}
 }

@@ -1,13 +1,9 @@
-package com.team4.healthmonitor.fragments;
+package com.team4.healthmonitor;
 
 
 import java.util.ArrayList;
 
 import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-import com.team4.healthmonitor.R.menu;
-import com.team4.healthmonitor.dialogs.VitalDialog;
 
 import android.app.Activity;
 import android.os.Bundle;

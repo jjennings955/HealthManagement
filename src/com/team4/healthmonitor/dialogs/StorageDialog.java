@@ -1,8 +1,5 @@
 package com.team4.healthmonitor.dialogs;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.team4.database.Article;
 import com.team4.database.DatabaseHandler;
 import com.team4.healthmonitor.Arguments;
@@ -16,7 +13,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,9 +92,7 @@ public class StorageDialog extends android.support.v4.app.DialogFragment impleme
 				valid = false;
 				this.title.setError("Title must not be empty.");
 			}
-			Pattern p = Patterns.WEB_URL;
-			Matcher m = p.matcher(url);
-			if (!m.matches())
+			if (!URLUtil.isNetworkUrl(url))
 			{
 				Log.w("PHMS", url);
 				valid = false;

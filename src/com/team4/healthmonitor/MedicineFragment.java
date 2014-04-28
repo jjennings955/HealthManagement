@@ -1,4 +1,4 @@
-package com.team4.healthmonitor.fragments;
+package com.team4.healthmonitor;
 
 
 import java.util.ArrayList;
@@ -10,14 +10,7 @@ import com.team4.database.MedSchedule;
 import com.team4.database.Medication;
 import com.team4.database.User;
 import com.team4.database.VitalSign;
-import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-import com.team4.healthmonitor.R.menu;
-import com.team4.healthmonitor.adapters.MedScheduleAdapter;
-import com.team4.healthmonitor.dialogs.EditMedicineDialog;
-import com.team4.healthmonitor.dialogs.MedicineDialog;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -45,7 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.team4.healthmonitor.Arguments;
+
 
 public class MedicineFragment extends Fragment
 {
@@ -56,7 +49,7 @@ public class MedicineFragment extends Fragment
 		
 	public MedicineFragment()
 	{
-
+		//BroadcastReceiver foo;
 	}
 	@Override
 	public void onResume() {
@@ -91,6 +84,10 @@ public class MedicineFragment extends Fragment
 		adapter.clear();
 		adapter.addAll(getSchedule());
 		adapter.notifyDataSetChanged();
+		//adapter.no
+		//adapter.clear();
+		//adapter.
+		//adapter.notifyDataSetChanged();
 	}
 	public ArrayList<MedSchedule> getSchedule()
 	{
@@ -106,19 +103,41 @@ public class MedicineFragment extends Fragment
 
 		View rootView = inflater.inflate(R.layout.fragment_medicine, container, false);
 		Bundle foo = getArguments();
-		userId = foo.getInt(Arguments.USERID);
+		userId = foo.getInt("userid");
 		setHasOptionsMenu(true);
 		DatabaseHandler db = new DatabaseHandler(getActivity());
-		User currentUser = db.getUser(userId);
+		User currentUser = db.getUser(foo.getInt("userid"));
 		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser);
 	
+		String [] from = { "medication_name", "medication_dosage", "time_hours" };
+		int [] to = { R.id.medName_temp, R.id.medDosage_temp, R.id.medTime_temp };
+		//String [] from = { "schedule_id", "medication_name", "medication_dosage", "time_hours", "taken_entry" };
+	    //int [] to = { R.id.medEditBtn, R.id.medName_temp, R.id.medDosage_temp, R.id.medTime_temp, R.id.medStatus_temp };
+		//SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), R.layout.medschedule_item, db.getMedScheduleCursor(currentUser), from, to);
+		//adapter.setViewBinder(new ScheduleBinder(this));
 	    adapter = new MedScheduleAdapter(this, getActivity(), scheduleEntries);
 	    ListView view = (ListView)rootView;
-	    view.setChoiceMode(ListView.CHOICE_MODE_NONE);
+	    view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 	    view.setAdapter(adapter);
-	    view.setSelector(android.R.color.transparent);
-	    		
+	    view.setSelector(android.R.color.darker_gray);
+	    view.setOnItemClickListener(new OnItemClickListener()
+	    {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long id) {
+				ArrayList<View> focusables = arg1.getFocusables(position);
+				for (View v : focusables)
+				{
+					v.setSelected(true);
+				}
+
+			}
+	    	
+	    });
+
+		
 		return rootView;
+		//return l;
 	}
 		
 		
@@ -162,18 +181,18 @@ public class MedicineFragment extends Fragment
         FragmentManager fm = myContext.getSupportFragmentManager();
         EditMedicineDialog md = new EditMedicineDialog();
         Bundle args = new Bundle();
-        args.putInt(Arguments.USERID, id);
+        args.putInt("id", id);
         md.setArguments(args);
-        md.show(fm, "dialog_edit_medicine");
+        md.show(fm, "fragment_edit_name");
     }
     private void showMedicineDialog()
     {
         FragmentManager fm = myContext.getSupportFragmentManager();
         MedicineDialog md = new MedicineDialog();
         Bundle args = new Bundle();
-        args.putInt(Arguments.USERID, userId);
+        args.putInt("id", userId);
         md.setArguments(args);
         
-        md.show(fm, "dialog_add_medicine");
+        md.show(fm, "fragment_edit_name");
     }
 }

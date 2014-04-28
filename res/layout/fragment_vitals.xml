@@ -1,80 +1,979 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/vitalParent"
+    android:id="@+id/fragment_vs"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="6dip"
+    android:paddingTop="4dip" 
+    android:background="@layout/myshape">
+    
 
-    <TextView
-        android:id="@+id/vitalTip"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="180dp"
-        android:textColor="#939393"
-        android:text="You have not tracked any vital signs today. Add some by clicking the + button at the top of your screen!"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/vitals_BP_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:text="Blood Pressure"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <ListView
-        android:id="@+id/vitals_bplistview"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:paddingBottom="6dip"
-        android:paddingTop="4dip" >
-    </ListView>
+        android:orientation="horizontal" 
+    android:background="@layout/myshape">
 
-    <TextView
-        android:id="@+id/vitals_weight_label"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+  
+    
+    <!--
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:text="Weight"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
 
-    <ListView
-        android:id="@+id/vitals_weightlistview"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/_21"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_22"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_23"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_24"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp" >
-    </ListView>
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
 
-    <TextView
-        android:id="@+id/vitals_bloodsugar_label"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/_31"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_32"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_33"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_34"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:text="Blood Sugar"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
 
-    <ListView
-        android:id="@+id/vitals_bloodsugar_listview"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/_41"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_42"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_43"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_44"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp" >
-    </ListView>
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
 
-    <TextView
-        android:id="@+id/vitals_cholesterol_label"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/_11"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_12"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_13"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_14"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:text="Cholesterol"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
 
-    <ListView
-        android:id="@+id/vitals_cholesterol_listview"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/_21"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_22"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_23"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_24"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp" >
-    </ListView>
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
 
+        <TextView
+            android:id="@+id/_31"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_32"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_33"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_34"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_41"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_42"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_43"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_44"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_11"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_12"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_13"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_14"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_21"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_22"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_23"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_24"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_31"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_32"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_33"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_34"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_41"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_42"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_43"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_44"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_11"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_12"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_13"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_14"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_21"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_22"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_23"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_24"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_31"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_32"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_33"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_34"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_41"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_42"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_43"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_44"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_11"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_12"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_13"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_14"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_21"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_22"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_23"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_24"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_31"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_32"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_33"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_34"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_41"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_42"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_43"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_44"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_11"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_12"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_13"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_14"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_21"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_22"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_23"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_24"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_31"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_32"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_33"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_34"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:text="Date" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_41"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_42"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_43"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_44"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+    android:background="@layout/myshape_spaced">
+
+        <TextView
+            android:id="@+id/_41"
+            android:layout_width="30dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:paddingLeft="8dp"
+            android:text="Nber" />
+
+        <TextView
+            android:id="@+id/_42"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.37"
+            android:text="Type" />
+
+        <TextView
+            android:id="@+id/_43"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/_44"
+            android:layout_width="20dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"/>
+            
+
+    </LinearLayout>
+    
+    -->
+    
+    
 </LinearLayout>

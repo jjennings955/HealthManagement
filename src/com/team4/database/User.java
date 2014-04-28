@@ -192,6 +192,7 @@ public class User {
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
+	
 	public int getId() {
 		return _id;
 	}

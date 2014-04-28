@@ -40,7 +40,7 @@
              android:label="@string/app_name"
              android:screenOrientation="portrait">
         </activity>
-        <receiver android:name=".AlarmReceiver" />
+        <receiver android:name=".AlarmReceiver" android:process=":remote" />
         
         <!-- Register Activity -->
         <activity
@@ -48,10 +48,6 @@
              android:label="@string/app_name"
              android:screenOrientation="portrait">
         </activity>
-          <service
-            android:name="com.team4.database.DatabaseImporter"
-            android:exported="false"/>
-        
     </application>
 
 </manifest>
