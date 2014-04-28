@@ -29,7 +29,6 @@ public class MainActivity extends Activity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
       DatabaseHandler db = new DatabaseHandler(this);
-
       username = (EditText)findViewById(R.id.main_edit_login);
       password = (EditText)findViewById(R.id.main_edit_password);
       attempts = (TextView)findViewById(R.id.main_attempts_text);
@@ -40,6 +39,7 @@ public class MainActivity extends Activity {
    public void login(View view)
    {
 	  DatabaseHandler db = new DatabaseHandler(this);
+	  
 	  String uname = username.getText().toString();
 	  String pass = password.getText().toString();
 	  User u = db.login(uname, pass);

@@ -1,38 +1,62 @@
 package com.team4.healthmonitor;
 
 
+import com.team4.database.DatabaseHandler;
+import com.team4.database.DatabaseImporter;
+import com.team4.database.Food2;
+import com.team4.database.Helper;
+
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
- 
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.widget.Toast;
+import android.content.BroadcastReceiver;
+
 public class SplashScreen extends Activity {
  
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 500;
- 
+    
+	private BroadcastReceiver databaseUpdater = new BroadcastReceiver() {
+		  @Override
+		  public void onReceive(Context context, Intent intent) {
+		    // Extract data included in the Intent
+		    String message = intent.getStringExtra("message");
+		    Log.d("receiver", "Got message: " + message);
+		    Toast foo = Toast.makeText(context, "Finished importing food database", Toast.LENGTH_SHORT);
+		    foo.show();
+            //Intent i = new Intent(SplashScreen.this, MainActivity.class);
+            //startActivity(i);
+		    //finish();
+		  }
+		};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
- 
-        new Handler().postDelayed(new Runnable() {
- 
-            /*
-              Showing splash screen with a timer.
-             */
- 
-            @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(i);
- 
-                // close this activity
-                finish();
-            }
-        }, SPLASH_TIME_OUT);
-    }
+        DatabaseHandler db = new DatabaseHandler(this);
+        db.medicationTaken(1, Helper.getDate());
+        db.medicationNotTaken(1, "fish");
+       /* Food2 test = db.getFood(93600);
+        Log.w("PHMS", Helper.getDate());
+        if (test == null)
+        {
+	        LocalBroadcastManager.getInstance(this).registerReceiver(databaseUpdater,new IntentFilter(Events.DATABASE_IMPORTED));
+	        Intent mServiceIntent = new Intent(this, DatabaseImporter.class);
+	        this.startService(mServiceIntent);
+	        
+        }*/
+        Intent i = new Intent(SplashScreen.this, MainActivity.class);
+        startActivity(i);
+	    finish();
+   }
  
 }

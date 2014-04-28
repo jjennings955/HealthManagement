@@ -67,6 +67,7 @@ public class DietFragment extends Fragment
 	    switch (item.getItemId()) 
 	    {
 	        case R.id.add_item_diet:
+	        	
 	        	showVitalDialog();
 	            return true;
 	        case R.id.settings_item:
