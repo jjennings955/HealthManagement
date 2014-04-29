@@ -130,7 +130,6 @@
                      android:id="@+id/radio_male"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:onClick="onRadioButtonClicked"
                      android:text="Male" />
                  
                 <RadioButton
@@ -139,7 +138,6 @@
                   android:layout_height="wrap_content"
                   android:layout_alignBottom="@+id/gender"
                   android:layout_centerHorizontal="true"
-                  android:onClick="onRadioButtonClicked"
                   android:text="Female" />
                   
               </RadioGroup>

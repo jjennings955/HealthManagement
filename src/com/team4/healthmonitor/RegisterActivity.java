@@ -27,7 +27,6 @@ public class RegisterActivity extends Activity {
 	 private EditText verifyPassword = null;
 	 private EditText fName = null;
 	 private EditText lName = null;
-	 private String gender = "X";
 	 private EditText age = null;
 	 private EditText weight = null;
 	 private EditText height_feet = null;
@@ -38,6 +37,9 @@ public class RegisterActivity extends Activity {
 	 private EditText relative_name = null;
 	 private EditText relative_phone = null;
 	 private EditText relative_email = null;
+	 private RadioGroup radioGenderGroup;
+	 private RadioButton radioGenderButton;
+	 
 	 
 	 
 	 
@@ -52,7 +54,6 @@ public class RegisterActivity extends Activity {
 	 {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
-		gender = "X";
 		newUser=(EditText)findViewById(R.id.reg_username);
 		newPassword=(EditText)findViewById(R.id.reg_password);
 		verifyPassword = (EditText)findViewById(R.id.reg_verifyPassword);
@@ -68,6 +69,7 @@ public class RegisterActivity extends Activity {
 		relative_name = (EditText)findViewById(R.id.personalName);
 		relative_phone = (EditText)findViewById(R.id.personalPhone);
 		relative_email = (EditText)findViewById(R.id.personalEmail);
+		radioGenderGroup = (RadioGroup)findViewById(R.id.gender);
 		
 		
 		
@@ -84,7 +86,12 @@ public class RegisterActivity extends Activity {
 		String password2 = verifyPassword.getText().toString();
 		String firstName = fName.getText().toString();
 		String lastName = lName.getText().toString();
-		char userGender = gender.charAt(0);
+		int selectedID = radioGenderGroup.getCheckedRadioButtonId();
+		radioGenderButton = (RadioButton)findViewById(selectedID);
+		char userGender = radioGenderButton.getText().charAt(0);
+		
+		//Toast.makeText(getApplicationContext(), userGender+"", Toast.LENGTH_SHORT).show();
+		
 		String doctorName = doc_name.getText().toString();
 		String doctorEmail = doc_email.getText().toString();
 		String doctorPhone = doc_phone.getText().toString();
@@ -148,12 +155,12 @@ public class RegisterActivity extends Activity {
 			valid = false;
 			lName.setError("Invalid last name");
 		}
-		if (!User.validateGender(userGender))
+		/*if (!User.validateGender(userGender))
 		{
 			valid = false;
 			RadioButton foo = (RadioButton)findViewById(R.id.radio_male);
 			foo.setError("Please choose a gender");
-		}
+		}*/
 		if (!User.validateAge(userAge))
 		{
 			valid = false;
@@ -260,7 +267,7 @@ public class RegisterActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void onRadioButtonClicked(View view) 
+	/*public void onRadioButtonClicked(View view) 
 	{
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
@@ -271,19 +278,21 @@ public class RegisterActivity extends Activity {
 	        case R.id.radio_male:
 	            if (checked)
 	            {
-	            	gender = "MALE";
-	            	male.setError(null);
+	            	gender = 'M';
+	            	//male.setError(null);
 	            }
 	            break;
 	        case R.id.radio_female:
 	            if (checked)
 	            {
-	            	gender = "FEMALE";
-	            	male.setError(null);
+	            	gender = 'F';
+	            	//male.setError(null);
 	            }
 	            break;
 	    }
-	}
+	}*/
+	
+	
 	
 
 

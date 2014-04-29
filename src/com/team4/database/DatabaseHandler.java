@@ -605,13 +605,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String query = "SELECT * from contacts where id = ?";
 		Cursor cursor = db.rawQuery(query, new String[] { ""+id });
-		Contact result = new Contact();
-		result.setId(cursor.getInt(0));
-		result.setUser_id(cursor.getInt(1));
-		result.setName(cursor.getString(2));
-		result.setPhone(cursor.getString(3));
-		result.setEmail(cursor.getString(4));
-		return result;		
+		if (cursor.moveToFirst())
+		{
+			Contact result = new Contact();
+			result.setId(cursor.getInt(0));
+			result.setUser_id(cursor.getInt(1));
+			result.setName(cursor.getString(2));
+			result.setPhone(cursor.getString(3));
+			result.setEmail(cursor.getString(4));
+			return result;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	public ArrayList<Integer> getContactsList(int userid)
 	{

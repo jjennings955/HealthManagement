@@ -8,6 +8,7 @@ import com.team4.database.Medication;
 import com.team4.database.MedicationEvent;
 import com.team4.database.User;
 import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.MainActivity;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.R.id;
 import com.team4.healthmonitor.R.layout;
@@ -31,6 +32,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
 
@@ -54,9 +56,11 @@ public class SettingsDialog extends DialogFragment implements OnClickListener
 	 private EditText relative_phone = null;
 	 private EditText relative_email = null;
 	 private Button update;
+	 private RadioGroup radioGenderGroup;
+	 private RadioButton radioGenderButton;
 	 private RadioButton male;
 	 private RadioButton female;
-	 
+	 private User user;
 	 private DatabaseHandler db;
 	 private int id;
 	 
@@ -90,12 +94,13 @@ public class SettingsDialog extends DialogFragment implements OnClickListener
 		relative_phone = (EditText)view.findViewById(R.id.personalPhone);
 		relative_email = (EditText)view.findViewById(R.id.personalEmail);
 		update = (Button)view.findViewById(R.id.btnRegister);
+		radioGenderGroup = (RadioGroup)view.findViewById(R.id.gender);
 		male = (RadioButton)view.findViewById(R.id.radio_male);
 		female = (RadioButton)view.findViewById(R.id.radio_female);
 		
 		db = new DatabaseHandler(getActivity());
 		
-		User user = db.getUser(id);
+		user = db.getUser(id);
 		
 		if(user.getGender() == 'm' || user.getGender() == 'M')
 		{
@@ -117,25 +122,18 @@ public class SettingsDialog extends DialogFragment implements OnClickListener
 		ArrayList<Integer> contactIDs = new ArrayList<Integer>();
 		contactIDs = db.getContactsList(id);
 		
-		for(int z = 0; z < contactIDs.size(); z++)
-		{
-			Log.w("FORLOOP", ""+contactIDs.get(z));
-		}
-		
 		if(contactIDs.size() == 2)
 		{
-			Log.w("CONTACTS.GET(0)", contactIDs.get(0)+"");
-			Log.w("SECOND TEST", db.getContact(2).getName()+"");
 			
 			Contact one = db.getContact(contactIDs.get(0));
-			//Contact two = db.getContact(contacts.get(1));
+			Contact two = db.getContact(contactIDs.get(1));
 			
 			doc_name.setText(one.getName()+"");
 			doc_phone.setText(one.getPhone()+"");
 			doc_email.setText(one.getEmail()+"");
-		//	relative_name.setText(two.getName()+"");
-	//		relative_phone.setText(two.getPhone()+"");
-	//		relative_email.setText(two.getEmail()+"");
+			relative_name.setText(two.getName()+"");
+			relative_phone.setText(two.getPhone()+"");
+			relative_email.setText(two.getEmail()+"");
 		}
 		
 		 
@@ -154,26 +152,172 @@ public class SettingsDialog extends DialogFragment implements OnClickListener
 		@Override
 		public void onClick(View arg0) {
 
-			if (arg0.getId() == R.id.medEditBtn2)
+			if (arg0.getId() == R.id.btnRegister)
 			{
+				//int selectedID = radioGenderGroup.getCheckedRadioButtonId();
+				//radioGenderButton = (RadioButton)arg0.findViewById(selectedID);
+				//char userGender = radioGenderButton.getText().charAt(0);
 				handleUpdate();
 			}
 		}
 		
 		public void handleUpdate()
 		{
-			/*
-			int time_hrs = time.getCurrentHour();
-			int time_mins = time.getCurrentMinute();
-			float dose = Float.parseFloat(dosage.getText().toString());
-			event.setTime_hours(time_hrs);
-			event.setTime_mins(time_mins);
-			event.setDosage(dose);
-			db.updateMedicationEvent(event);
+			Log.w("TEST", "BUTTON CLICKED");
+			
+			String userName = newUser.getText().toString();
+			String password = newPassword.getText().toString();
+			String password2 = verifyPassword.getText().toString();
+			String firstName = fName.getText().toString();
+			String lastName = lName.getText().toString();
+			
+			
+			String doctorName = doc_name.getText().toString();
+			String doctorEmail = doc_email.getText().toString();
+			String doctorPhone = doc_phone.getText().toString();
+			
+			String contactName = relative_name.getText().toString();
+			String contactEmail = relative_email.getText().toString();
+			String contactPhone = relative_phone.getText().toString();
+			
+			
+			
+			
+			
+			
+			
+			int userAge = 0;
+			if (!age.getText().toString().equals(""))
+				userAge = Integer.parseInt(age.getText().toString());
+			float userWeight = 0.0f;
+			if (!weight.getText().toString().equals(""))
+				userWeight = Float.parseFloat(weight.getText().toString());
+			int hf = -1, hi = -1;
+			
+			if (!height_feet.getText().toString().equals(""))
+				hf = Integer.parseInt(height_feet.getText().toString());
+			if (!height_inch.getText().toString().equals(""))
+				hi = Integer.parseInt(height_inch.getText().toString());
+			
+			boolean valid = true;
+			
+			if (!User.validateUserName(userName))
+			{
+				valid = false;
+				newUser.setError("Invalid username");
+			}
+			if (!db.usernameAvailable(userName))
+			{
+				valid = false;
+				newUser.setError("Username already exists");
+			}
+			if (password.equals(password2))
+			{
+				if (!User.validatePassword(password))
+				{
+					valid = false;
+					newPassword.setError("Invalid password");
+				}
+			}
+			else
+			{
+				valid = false;
+				verifyPassword.setError("Passwords don't match");
+			}
+			
+			if (!User.validFirstName(firstName))
+			{
+				valid = false;
+				fName.setError("Invalid first name");
+			}
+			if (!User.validLastName(lastName))
+			{
+				valid = false;
+				lName.setError("Invalid last name");
+			}
+			/*if (!User.validateGender(userGender))
+			{
+				valid = false;
+				RadioButton foo = (RadioButton)findViewById(R.id.radio_male);
+				foo.setError("Please choose a gender");
+			}*/
+			if (!User.validateAge(userAge))
+			{
+				valid = false;
+				age.setError("Invalid age");
+			}
+			if (!User.validateWeight(userWeight))
+			{
+				valid = false;
+				weight.setError("Invalid weight");
+			}
+			if (!User.validHeightFeet(hf))
+			{
+				valid = false;
+				height_feet.setError("Invalid Height");
+			}
+			if (!User.validHeightInch(hi))
+			{
+				valid = false;
+				height_inch.setError("Invalid Height");
+			}
+			if (!Contact.validateEmail(doctorEmail))
+			{
+				valid = false;
+				doc_email.setError("Invalid email address");
+			}
+			if (!Contact.validatePhone(doctorPhone))
+			{
+				valid = false;
+				doc_phone.setError("Invalid Phone Number");
+			}
+			if (!Contact.validateName(doctorName))
+			{
+				valid = false;
+				doc_name.setError("Invalid Name");
+			}
+			if (!Contact.validateEmail(contactEmail))
+			{
+				valid = false;
+				relative_email.setError("Invalid email address");
+			}
+			if (!Contact.validatePhone(contactPhone))
+			{
+				valid = false;
+				relative_phone.setError("Invalid Phone Number");
+			}
+			if (!Contact.validateName(contactName))
+			{
+				valid = false;
+				relative_name.setError("Invalid email address");
+			}
+			
+			if(valid)
+			{
+			
+				  user.setUserName(userName);
+				  user.setPassword(password);
+				  user.setFirstName(firstName);
+				  user.setLastName(lastName);
+				 //.setGender(gen);
+				  user.setAge(userAge);
+				  user.setWeight(userWeight);
+				  user.setHeight_feet(hf);
+				  user.setHeight_inches(hi);
+				  db.store(user);
+				  Contact doctor = new Contact(user, doctorName, doctorPhone, doctorEmail);
+				  Contact relative = new Contact(user, contactName, contactPhone, contactEmail);
+				  db.store(doctor);
+				  db.store(relative);
+				  db.updateUser(user);
+				 
+			}
+			
 			Intent mshg = new Intent("my-event");
 			mshg.putExtra("message", "data");
 			LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(mshg);
-*/
+			
+			Log.w("TEST", "test");
 			dismiss();
 		}
 }
