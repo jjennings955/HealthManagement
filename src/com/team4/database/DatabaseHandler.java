@@ -36,15 +36,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
 				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TEXT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
-				"create table medication_tracking(id INTEGER PRIMARY KEY AUTOINCREMENT, medication_schedule_id INTEGER, date INTEGER, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id));\n" + 
+				"create table medication_tracking(id INTEGER PRIMARY KEY AUTOINCREMENT, medication_schedule_id INTEGER, date INTEGER, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id));\n" +
+				"CREATE VIRTUAL TABLE V_article USING fts3(id,type,url,title,description, user);\n"+
 				"create view schedule as " +
 				"	select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry " +
 				"	from " +
 				"		(medication_schedule as S JOIN user as U JOIN medication as M ON " +
 				"			S.user = U.id and S.medication = M.id) " +
 				"		LEFT OUTER JOIN medication_tracking as MT ON " +
-				"			MT.medication_schedule_id = S.id;"; 
-		
+				"			MT.medication_schedule_id = S.id;";
 		String statements[] = create_statement.split("\n");
 		for (int i = 0; i < statements.length; i++)
 		{
@@ -679,7 +679,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking", "contacts", "sessions" };
+		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking", "contacts", "sessions"};
 		for (String t : tables)
 		{
 			db.execSQL("DROP TABLE IF EXISTS " + t);
