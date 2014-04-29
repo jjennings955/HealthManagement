@@ -624,6 +624,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do 
             {
             	int result = cursor.getInt(0);
+            	Log.w("TESTING", result+"");
             	contacts.add(result);
             } 
             while (cursor.moveToNext());

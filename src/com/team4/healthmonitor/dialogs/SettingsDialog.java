@@ -114,12 +114,20 @@ public class SettingsDialog extends DialogFragment implements OnClickListener
 		height_feet.setText(user.getHeight_feet()+"");
 		height_inch.setText(user.getHeight_inches()+"");
 		
-		ArrayList<Integer> contacts = new ArrayList<Integer>();
-		contacts = db.getContactsList(id);
+		ArrayList<Integer> contactIDs = new ArrayList<Integer>();
+		contactIDs = db.getContactsList(id);
 		
-		if(contacts.size() == 2)
+		for(int z = 0; z < contactIDs.size(); z++)
 		{
-			Contact one = db.getContact(contacts.get(0));
+			Log.w("FORLOOP", ""+contactIDs.get(z));
+		}
+		
+		if(contactIDs.size() == 2)
+		{
+			Log.w("CONTACTS.GET(0)", contactIDs.get(0)+"");
+			Log.w("SECOND TEST", db.getContact(2).getName()+"");
+			
+			Contact one = db.getContact(contactIDs.get(0));
 			//Contact two = db.getContact(contacts.get(1));
 			
 			doc_name.setText(one.getName()+"");
