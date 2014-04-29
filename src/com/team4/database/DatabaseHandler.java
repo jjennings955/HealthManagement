@@ -35,7 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		String[] tables = { "user", "vitalsign", "article", "food", "food_journal", "medication", "medication_schedule", "medication_tracking" };
 		String create_statement = "" + 
-				"create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER, doctor_name TEXT, doctor_number TEXT, doctor_email TEXT, contact_name TEXT, contact_number TEXT, contact_email TEXT);\n" +
+				"create table user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, first_name TEXT, last_name TEXT, gender TEXT, height_feet TINYINT, height_inches TINYINT, weight INTEGER, age INTEGER, doctor_name TEXT, doctor_number TEXT, doctor_email TEXT, contact_name TEXT, contact_number TEXT, contact_email TEXT);\n" +
 				"create table contacts(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT, phone TEXT, email TEXT, FOREIGN KEY(user_id) REFERENCES user(id) );\n" +
 				"create table sessions(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, timestamp INTEGER, FOREIGN KEY(user_id) REFERENCES user(id));\n" +
 				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, datetime INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
@@ -293,12 +293,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 		{
 			cursor.moveToFirst();
-			Medication med = new Medication();
-			med.setId(cursor.getInt(0));
-			med.setName(cursor.getString(1));
-			med.setPriority(cursor.getInt(2));
+			Medication med = getMedication(cursor);
 			return med;
 		}
+	}
+	private Medication getMedication(Cursor cursor)
+	{
+		Medication med = new Medication();
+		med.setId(cursor.getInt(0));
+		med.setName(cursor.getString(1));
+		med.setPriority(cursor.getInt(2));
+		return med;		
 	}
 	public ArrayList<Medication> getMedications()
 	{
@@ -331,6 +336,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("password", newUser.getPasswordHash());
 		  values.put("first_name", newUser.getFirstName());
 		  values.put("last_name", newUser.getLastName());
+		  values.put("gender", ""+newUser.getGender());
 		  values.put("height_feet", newUser.getHeight_feet());
 		  values.put("height_inches", newUser.getHeight_inches());
 		  values.put("weight", newUser.getWeight());
@@ -379,17 +385,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.rawQuery(query, new String[] { "" + id });
 		if (cursor.moveToFirst())
 		{
-			User userObj = new User();
-            userObj.setId(cursor.getInt(0));
-            userObj.setUserName(cursor.getString(1));
-            userObj.setPassword(cursor.getString(2));
-            userObj.setFirstName(cursor.getString(3));
-            userObj.setLastName(cursor.getString(4));
-            userObj.setHeight_feet(cursor.getInt(5));
-            userObj.setHeight_inches(cursor.getInt(6));
-            userObj.setWeight(cursor.getFloat(7));
-            userObj.setAge(cursor.getInt(8));
-            return userObj;
+			User userObj = getUser(cursor);
+			return userObj;
 		}
 		return null;
 	}
@@ -429,6 +426,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			return true;
 		
 	}
+	private User getUser(Cursor cursor)
+	{
+		User userObj = new User();
+        userObj.setId(cursor.getInt(0));
+        userObj.setUserName(cursor.getString(1));
+        userObj.setPassword(cursor.getString(2));
+        userObj.setFirstName(cursor.getString(3));
+        userObj.setLastName(cursor.getString(4));
+        userObj.setGender(cursor.getString(5));
+        userObj.setHeight_feet(cursor.getInt(6));
+        userObj.setHeight_inches(cursor.getInt(7));
+        userObj.setWeight(cursor.getFloat(8));
+        userObj.setAge(cursor.getInt(9));
+        return userObj;
+	}
 	public ArrayList<User> getUsers()
 	{
 		ArrayList<User> results = new ArrayList<User>();
@@ -438,22 +450,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                User contact = new User();
-                contact.setId(cursor.getInt(0));
-                contact.setUserName(cursor.getString(1));
-                contact.setPassword(cursor.getString(2));
-                contact.setFirstName(cursor.getString(3));
-                contact.setLastName(cursor.getString(4));
-                contact.setHeight_feet(cursor.getInt(5));
-                contact.setHeight_inches(cursor.getInt(6));
-                contact.setWeight(cursor.getFloat(7));
-                contact.setAge(cursor.getInt(8));
-                
-                //Date foo = new Date(cursor.getLong(8)/1000);
-                //Log.w("PHMS", "Date = " + foo);
-                //contact.setDate_of_birth(foo);
-                //contact.setAge(cursor.get)
-                
+                User contact = getUser(cursor);
                 results.add(contact);
             } while (cursor.moveToNext());
         }
@@ -645,12 +642,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String query = "SELECT * from contacts where id = ?";
 		Cursor cursor = db.rawQuery(query, new String[] { ""+id });
 		Contact result = new Contact();
+		if (cursor.moveToFirst())
+		{
 		result.setId(cursor.getInt(0));
 		result.setUser_id(cursor.getInt(1));
 		result.setName(cursor.getString(2));
 		result.setPhone(cursor.getString(3));
 		result.setEmail(cursor.getString(4));
-		return result;		
+		return result;
+		}
+		else
+			return null;
 	}
 	public ArrayList<Contact> getContacts(int userid)
 	{
@@ -669,11 +671,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String query = "SELECT * from sessions where id = ?";
 		Cursor cursor = db.rawQuery(query, new String[] { ""+id });
-		Session result = new Session();
-		result.setSession_id(cursor.getInt(0));
-		result.setUser_id(cursor.getInt(1));
-		result.setTimestamp(cursor.getLong(2));
-		return result;
+		if (cursor.moveToFirst())
+		{
+			Session result = new Session();
+			result.setSession_id(cursor.getInt(0));
+			result.setUser_id(cursor.getInt(1));
+			result.setTimestamp(cursor.getLong(2));
+			return result;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	public ArrayList<Session> userSessions(int userId)
 	{

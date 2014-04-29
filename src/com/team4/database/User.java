@@ -192,6 +192,11 @@ public class User {
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
+	public void setGender(String gender)
+	{
+		if (gender != null)
+			this.gender = gender.charAt(0);
+	}
 	public int getId() {
 		return _id;
 	}

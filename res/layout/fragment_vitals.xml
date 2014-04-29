@@ -18,13 +18,14 @@
             android:textSize="8sp"
             android:text="@string/leftArrow" />
 
-        <TextView
+        <EditText
             android:id="@+id/vitals_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="1-1-2011"
+            android:enabled="false"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <Button
