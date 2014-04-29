@@ -1,84 +1,149 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/edit_name"
-    android:layout_width="wrap_content"
+    android:id="@+id/dietParent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical" 
-    android:background="#000000">
+    android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/TextView01"
+        android:id="@+id/diet_foodlabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Food Intake"
-        android:textSize="17sp" />
-
-    <RadioGroup
-        android:id="@+id/Priority"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-    </RadioGroup>
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:text="Food Name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <AutoCompleteTextView
-        android:id="@+id/autoCompleteDiet"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="" />
-    
-     <TextView
-         android:id="@+id/TextView02"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text=""
-         android:textSize="17sp" />
-      <TextView
-         android:id="@+id/TextView02"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text=""
-         android:textSize="17sp" />
-
-    <TextView
-        android:id="@+id/diet_quantity_text"
+        android:id="@+id/autoCompleteFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quantity"
-        android:textSize="17sp" />
-
-    <EditText
-        android:id="@+id/quantity"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:completionThreshold="1"
         android:ems="10"
-        android:inputType="number" >
+        android:text="" >
 
         <requestFocus />
-    </EditText>
-    
-     <TextView
-        android:id="@+id/TextView03"
+    </AutoCompleteTextView>
+
+    <TextView
+        android:id="@+id/diet_amount_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="15sp" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:text="Amount"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <LinearLayout
+        android:layout_width="130dp"
+        android:layout_height="wrap_content" >
 
-     
-      <TextView
-         android:id="@+id/TextView02"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text=""
-         android:textSize="17sp" />
-  
-       
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:text="Calories" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:text="Fat" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:text="Carbs" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:text="Protein" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </TableRow>
+    </TableLayout>
 
     <Button
-        android:id="@+id/btnSubmitDiet"
-        android:layout_width="wrap_content"
+        android:id="@+id/diet_submitBtn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:text="Save" />
 
 </LinearLayout>

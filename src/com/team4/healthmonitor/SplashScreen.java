@@ -43,17 +43,15 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         DatabaseHandler db = new DatabaseHandler(this);
-        db.medicationTaken(1, Helper.getDate());
-        db.medicationNotTaken(1, "fish");
-       /* Food2 test = db.getFood(93600);
+        
         Log.w("PHMS", Helper.getDate());
-        if (test == null)
+        if (db.getFoodCount() < 1)
         {
 	        LocalBroadcastManager.getInstance(this).registerReceiver(databaseUpdater,new IntentFilter(Events.DATABASE_IMPORTED));
 	        Intent mServiceIntent = new Intent(this, DatabaseImporter.class);
 	        this.startService(mServiceIntent);
 	        
-        }*/
+        }
         Intent i = new Intent(SplashScreen.this, MainActivity.class);
         startActivity(i);
 	    finish();

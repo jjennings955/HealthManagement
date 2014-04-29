@@ -1,7 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-</ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <TextView
+            android:id="@+id/med_sun"
+            android:layout_width="0dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sun" />
+        <TextView
+            android:id="@+id/med_mon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mon"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/med_tue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Tue" />
+
+        <TextView
+            android:id="@+id/med_wed"
+            android:layout_width="0dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Wed" />
+
+        <TextView
+            android:id="@+id/med_thu"
+            android:layout_width="0dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thur" />
+
+        <TextView
+            android:id="@+id/med_fri"
+            android:layout_width="0dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fri" />
+
+        <TextView
+            android:id="@+id/med_sat"
+            android:layout_width="0dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sat" />
+
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/medicineList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/medicineT"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:text="You do not have any medications scheduled for today. Add some by clicking the + button at the top of your screen!"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#939393" />
+
+</LinearLayout>

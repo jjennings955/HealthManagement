@@ -1,22 +1,23 @@
 package com.team4.database;
 
-public class MedSchedule 
+public class MedSchedule implements Comparable<MedSchedule>
 {
 	public String name;
 	public String dosage;
 	public String time;
-	public String day;
+	public int day;
 	private String date;
 	public boolean status;
 	public int id;
 	
-	public MedSchedule(int id, String name, String dosage, String day, String time, boolean status)
+	public MedSchedule(int id, String name, String dosage, int day, String time, String date, boolean status)
 	{
 		this.id = id;
 		this.name = name;
 		this.day = day;
 		this.dosage = dosage;
 		this.time = time;
+		this.date = date;
 		this.status = status;
 	}
 	
@@ -52,6 +53,12 @@ public class MedSchedule
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	@Override
+	public int compareTo(MedSchedule another) {
+		return (getHour() * 60 + getMinutes()) - (another.getHour() * 60 + another.getMinutes());
+		
 	}
 
 

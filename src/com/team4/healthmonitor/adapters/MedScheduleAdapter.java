@@ -14,6 +14,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.team4.database.DatabaseHandler;
+import com.team4.database.Helper;
 import com.team4.database.MedSchedule;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.fragments.MedicineFragment;
@@ -31,14 +33,14 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
        // Get the data item for this position
-       MedSchedule entry = getItem(position);  
-       Log.w("PHMS", "ListAdapter" + position);
+       MedSchedule entry = getItem(position);
+       final String date = entry.getDate();
        // Check if an existing view is being reused, otherwise inflate the view
        if (convertView == null) {
           convertView = LayoutInflater.from(getContext()).inflate(R.layout.medschedule_item, null);
        }
        // Lookup view for data population
-       TextView medName = (TextView) convertView.findViewById(R.id.medName_temp);
+       TextView medName = (TextView) convertView.findViewById(R.id.medName_1);
        TextView medDosage = (TextView) convertView.findViewById(R.id.medDosage_temp);
        TextView medTime = (TextView)convertView.findViewById(R.id.medTime_temp);
        CheckBox taken = (CheckBox)convertView.findViewById(R.id.medStatus_temp);
@@ -63,8 +65,11 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
 		
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			Log.w("PHMS", "Check changed!");
-			
+			DatabaseHandler db = new DatabaseHandler(parentFragment.getActivity());
+			if (isChecked)
+				db.medicationTaken(id, date);
+			else
+				db.medicationNotTaken(id, date);
 		}
 	});
        // Return the completed view to render on screen

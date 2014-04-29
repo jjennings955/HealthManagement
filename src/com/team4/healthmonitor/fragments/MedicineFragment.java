@@ -2,6 +2,9 @@ package com.team4.healthmonitor.fragments;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Paint;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,6 +42,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
@@ -53,8 +58,10 @@ public class MedicineFragment extends Fragment
 
 	private FragmentActivity myContext;
 	private int userId;
+	private TextView tip;
+	private int day;
 	MedScheduleAdapter adapter;
-		
+	TextView selectedDay;	
 	public MedicineFragment()
 	{
 
@@ -92,36 +99,81 @@ public class MedicineFragment extends Fragment
 		adapter.clear();
 		adapter.addAll(getSchedule());
 		adapter.notifyDataSetChanged();
+		//checkTip();
 	}
 	public ArrayList<MedSchedule> getSchedule()
 	{
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		User currentUser = db.getUser(userId);
-		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDate());
+		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, day, Helper.getDate());
 		return scheduleEntries;
 	}
-				
+	private OnClickListener clickHandler = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			ArrayList<Integer> ids = new ArrayList<Integer>(Arrays.asList(new Integer[]{ -1, R.id.med_sun, R.id.med_mon, R.id.med_tue, R.id.med_wed, R.id.med_thu, R.id.med_fri, R.id.med_sat }));
+			//((TextView)v).setPaintFlags(0);
+			selectedDay.setPaintFlags(0);
+			day = ids.indexOf(v.getId());
+			updateData();
+			selectedDay = (TextView)getActivity().findViewById(ids.get(day));
+			Log.w("PHMS", "Day = " + day);
+			((TextView)v).setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+		}
+	};
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-
 		View rootView = inflater.inflate(R.layout.fragment_medicine, container, false);
 		Bundle foo = getArguments();
+		tip = (TextView) rootView.findViewById(R.id.medicineT);
 		userId = foo.getInt(Arguments.USERID);
 		setHasOptionsMenu(true);
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		User currentUser = db.getUser(userId);
-		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDate());
-	
+		day = Helper.getDay();
+		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, day, Helper.getDate());
+		Log.w("PHMS", "Helper.getDate() returned! " + Helper.getDate());
 	    adapter = new MedScheduleAdapter(this, getActivity(), scheduleEntries);
-	    ListView view = (ListView)rootView;
+	    ListView view = (ListView)rootView.findViewById(R.id.medicineList);
 	    view.setChoiceMode(ListView.CHOICE_MODE_NONE);
 	    view.setAdapter(adapter);
 	    view.setSelector(android.R.color.transparent);
-	    		
+	    view.setEmptyView(tip);
+	    int viewIds[] = { -1, R.id.med_sun, R.id.med_mon, R.id.med_tue, R.id.med_wed, R.id.med_thu, R.id.med_fri, R.id.med_sat };
+	    
+	    for (int i = 1 ; i < viewIds.length; i++)
+	    {
+	    	
+	    	TextView current = (TextView)rootView.findViewById(viewIds[i]);
+	    	
+	    	current.setOnClickListener(clickHandler);
+	    	if (i == day)
+	    	{
+	    		selectedDay = current;
+	    		selectedDay.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+	    	}
+	    }
+	    Log.w("PHMS", "day = " + day);
+	    updateData();
+	    //checkTip();
 		return rootView;
 	}
-		
+	
+	private void checkTip()
+	{
+		if (shouldDisplayTip())
+			tip.setVisibility(View.VISIBLE);
+		else
+			tip.setVisibility(View.GONE);
+	}
+	private boolean shouldDisplayTip()
+	{
+		//boolean result = true;
+		return adapter == null || adapter.getCount() == 0;
+		//return true;
+	}
 		
 		
 	

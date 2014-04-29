@@ -2,7 +2,10 @@ package com.team4.healthmonitor.dialogs;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.team4.database.DatabaseHandler;
 import com.team4.database.Medication;
@@ -37,6 +40,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -58,16 +62,11 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
 	 private EditText perDay;
 	 private EditText interval;
 	 private int userId;
+	 private HashMap<Integer, CheckBox> checkMap;
  public MedicineDialog() 
  {
-     // Empty constructor required for DialogFragment
  }
  
- //@Override
- public void onAddButtonClicked(View view)
- {
-	 
- }
  @Override
  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
  {
@@ -93,28 +92,26 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
      perDay = (EditText) view.findViewById(R.id.NumberOfTimes);
      getDialog().setTitle("Add a Medication");
 
-     
+	
+	 checkMap = new HashMap<Integer, CheckBox>();
+	 checkMap.put(Calendar.SUNDAY, (CheckBox)view.findViewById(R.id.medicine_takenSun));
+	 checkMap.put(Calendar.MONDAY, (CheckBox)view.findViewById(R.id.medicine_takenMon));
+	 checkMap.put(Calendar.TUESDAY, (CheckBox)view.findViewById(R.id.medicine_takenTue));
+	 checkMap.put(Calendar.WEDNESDAY, (CheckBox)view.findViewById(R.id.medicine_takenWed));
+	 checkMap.put(Calendar.THURSDAY, (CheckBox)view.findViewById(R.id.medicine_takenThu));
+	 checkMap.put(Calendar.FRIDAY, (CheckBox)view.findViewById(R.id.medicine_takenFri));
+	 checkMap.put(Calendar.SATURDAY, (CheckBox)view.findViewById(R.id.medicine_takenSat));
+	 
      medName.setAdapter(adapter);
      
      
      
      AutoCompleteSelected foo = new AutoCompleteSelected();
-     //medName.setOnItemClickListener(foo);
-     //medName.setOnClickListener(foo);
-     //medName.setOnItemSelectedListener(foo);
     	
 
 
      Button button = (Button)view.findViewById(R.id.btnSubmit);
      button.setOnClickListener(this);
-   /*8  button.setOnClickListener(new OnClickListener() {
-         public void onClick(View v) {
-        	 
-             // When button is clicked, call up to owning activity.
-             dismiss();
-         }
-     });
-*/
      return view;
      
  }
@@ -173,26 +170,29 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
     	 ArrayList<MedicationEvent> schedule = new ArrayList<MedicationEvent>();
     	 int medId = db.findMedication(enteredMedName).getId();
     	 int inter = Integer.parseInt(interval);
-    	 
-    	 for (int i = 0; i < numTimes; i++)
+
+    	 for (Entry<Integer, CheckBox> e : checkMap.entrySet())
     	 {
-    		 MedicationEvent med = new MedicationEvent();
-    		 //med.setUserId(
-        	 med.setMedication_id(medId);
-        	 med.setUserId(userId);
-        	 med.setTime_hours(hours + i*inter);
-        	 med.setTime_mins(mins);
-        	 med.setDosage(dosage);
-        	 med.setDay("sunday"); // FIX ME!
-        	 db.store(med);
+    		 if (e.getValue().isChecked())
+    		 {
+		    	 for (int i = 0; i < numTimes; i++)
+		    	 {
+		    		 MedicationEvent med = new MedicationEvent();
+		        	 med.setMedication_id(medId);
+		        	 med.setUserId(userId);
+		        	 med.setTime_hours(hours + i*inter);
+		        	 med.setTime_mins(mins);
+		        	 med.setDosage(dosage);
+		        	 med.setDay(e.getKey()); // FIX ME!
+		        	 db.store(med);
+		    	 }
+    		 }
     	 }
 		sendUpdate();
 
 		dismiss();
 
      }
-     //time.get
-     //getActivity();
  }
 
 private void sendUpdate() {
@@ -206,13 +206,9 @@ private class AutoCompleteSelected implements OnItemClickListener, OnItemSelecte
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		DatabaseHandler db = new DatabaseHandler(getActivity());
-		Log.w("PHMS", "ONE! " + medName.getText().toString());
-		//Log.w("PHMS", "TWO! "+parent.getSelectedItemPosition());
 		Medication foo = db.findMedication(medName.getText().toString());
-		Log.w("PHMS", "Found: " + foo);
 		if (foo != null)
 		{
-			//Toast.makeText(getActivity(), "You have chosen " + " " + foo.toString(), Toast.LENGTH_LONG).show();
 			Log.w("PHMS", foo.toString());
 		}
 		
@@ -225,9 +221,7 @@ private class AutoCompleteSelected implements OnItemClickListener, OnItemSelecte
 		if (foo != null)
 		{
 			Log.w("PHMS", "THREE! " + foo.toString());
-		//	Toast.makeText(getActivity(), "You have chosen " + " " + foo.toString(), Toast.LENGTH_LONG).show();
 		}
-		// TODO Auto-generated method stub
 		
 	}
 

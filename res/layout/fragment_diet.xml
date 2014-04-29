@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
->
+    android:orientation="vertical" >
+    <TextView
+        android:id="@+id/dietTip"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:textColor="#939393"
+        android:text="You have not tracked any food yet today. Add some by clicking the + button at the top of your screen!"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
     
-    
-    
-
-</RelativeLayout>
+    <ListView
+        android:id="@+id/food_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+    </ListView>
+</LinearLayout>

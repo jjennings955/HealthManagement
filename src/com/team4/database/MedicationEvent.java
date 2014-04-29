@@ -14,7 +14,7 @@ public class MedicationEvent {
 	private int time_mins;
 	private float dosage;
 	private int medication_id;
-	private String day;
+	private int day;
 	
 	private int user_id;
 	public static boolean validateHours(int hr)
@@ -41,7 +41,7 @@ public class MedicationEvent {
 		
 	}
 
-	public MedicationEvent(int time_hours, int time_mins, String day, float dosage, int medication_id, int user_id)
+	public MedicationEvent(int time_hours, int time_mins, int day, float dosage, int medication_id, int user_id)
 	{
 		this.time_hours = time_hours;
 		this.time_mins = time_mins;
@@ -91,10 +91,10 @@ public class MedicationEvent {
 	public void setUserId(int user_id) {
 		this.user_id = user_id;
 	}
-	public String getDay() {
+	public int getDay() {
 		return day;
 	}
-	public void setDay(String day) {
+	public void setDay(int day) {
 		this.day = day;
 	}
 	

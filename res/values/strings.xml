@@ -29,6 +29,8 @@
         <item>Cholesterol</item>
         <item>Weight</item>
     </string-array>
+        <string name="leftArrow">&lt;</string>
+        <string name="rightArrow">></string>
    
 </resources>
   

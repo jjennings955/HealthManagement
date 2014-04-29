@@ -41,6 +41,7 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 	private Spinner vitalPicker;
 	private int userId;
 	private String mode;
+	private int offset;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) 
@@ -48,6 +49,8 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 			 View view2 = inflater.inflate(R.layout.dialog_vitals2, container);
 			 Bundle arguments = this.getArguments();
 			 userId = arguments.getInt(Arguments.USERID, -1);
+			 offset = arguments.getInt(Arguments.OFFSET, 0);
+			 
 			 getDialog().setTitle("Add Vital Signs");
 			label1 = (TextView)view2.findViewById(R.id.vital_label1);
 			label2 = (TextView)view2.findViewById(R.id.vital_label2);
@@ -163,7 +166,7 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 			{
 				VitalSign v = new VitalSign();
 				v.setUser_Id(userId);
-				v.setDatetime(System.currentTimeMillis());
+				v.setDatetime(System.currentTimeMillis() + 1000*24*60*60*offset);
 				v.setValue1(Integer.parseInt(val1));
 				v.setType(type);
 				db.store(v);
@@ -191,7 +194,7 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 			{
 				VitalSign v = new VitalSign();
 				v.setUser_Id(userId);
-				v.setDatetime(System.currentTimeMillis());
+				v.setDatetime(System.currentTimeMillis() + 1000*24*60*60*offset);
 				v.setValue1(Integer.parseInt(val1));
 				v.setValue2(Integer.parseInt(val2));
 				v.setType(type);

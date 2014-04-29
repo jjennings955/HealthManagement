@@ -4,7 +4,17 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-
+    
+    <TextView
+        android:id="@+id/storageTip"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:textColor="#939393"
+        android:text="You have not entered any favorite articles. Add some by clicking the + button at the top of your screen!"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
     <ListView
         android:id="@+id/storage_list"
         android:layout_width="fill_parent"

@@ -22,18 +22,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team4.database.DatabaseHandler;
+import com.team4.database.Helper;
 import com.team4.database.VitalSign;
 import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.adapters.VitalAdapter;
 import com.team4.healthmonitor.dialogs.VitalDialog;
-//import com.team4.healthmonitor.R;
+
 
 
 public class VitalsFragment extends Fragment 
@@ -43,34 +45,69 @@ public class VitalsFragment extends Fragment
 	private String username;
 	private String password;
 	private int userId;
-	
+	private int offset = 0;
 	private FragmentActivity myContext2;
 	private DatabaseHandler db;
 	private HashMap<Integer, VitalAdapter> adapters;
 	private HashMap<Integer, ListView> listViews;
 	private HashMap<Integer, TextView> labels;
 	private TextView tip;
+	private TextView date;
+	private Button backButton;
+	private Button forwardButton;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_vitals, container, false);
 		setHasOptionsMenu(true);
-		  LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
-			      new IntentFilter("com.team4.healthmonitor.UPDATEVITALS"));
 		Bundle foo = getArguments();
+		
+		backButton = (Button)rootView.findViewById(R.id.vital_backButton);
+		forwardButton = (Button)rootView.findViewById(R.id.vital_forwardButton);
 		userId = foo.getInt(Arguments.USERID);
-		setHasOptionsMenu(true);
+		date = (TextView)rootView.findViewById(R.id.vitals_date);
 		db = new DatabaseHandler(getActivity());
 		tip = (TextView)rootView.findViewById(R.id.vitalTip);
-//		getResources().openRawResource(R.raw.nutrition);
-		ArrayList<VitalSign> bps = db.getUserVitals(userId, VitalSign.BLOOD_PRESSURE);
-		ArrayList<VitalSign> weights = db.getUserVitals(userId, VitalSign.WEIGHT);
-		ArrayList<VitalSign> cholesterol = db.getUserVitals(userId, VitalSign.CHOLESTEROL);
-		ArrayList<VitalSign> bloodsugar = db.getUserVitals(userId, VitalSign.BLOOD_SUGAR);
+		  LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+			      new IntentFilter("com.team4.healthmonitor.UPDATEVITALS"));
+		
+
+		updateDate();
+		setHasOptionsMenu(true);
+		
+		ArrayList<VitalSign> bps = db.getUserVitals(userId, VitalSign.BLOOD_PRESSURE, offset);
+		ArrayList<VitalSign> weights = db.getUserVitals(userId, VitalSign.WEIGHT, offset);
+		ArrayList<VitalSign> cholesterol = db.getUserVitals(userId, VitalSign.CHOLESTEROL, offset);
+		ArrayList<VitalSign> bloodsugar = db.getUserVitals(userId, VitalSign.BLOOD_SUGAR, offset);
 		VitalAdapter bpadapter;
 		VitalAdapter weightadapter;
 		VitalAdapter choladapter;
 		VitalAdapter sugaradapter;
+		backButton = (Button)rootView.findViewById(R.id.vital_backButton);
+		forwardButton = (Button)rootView.findViewById(R.id.vital_forwardButton);
+		
+       backButton.setOnClickListener(new View.OnClickListener() {
+    	   @Override
+    		public void onClick(View v) {
+    			offset--;
+    			updateData(VitalSign.WEIGHT);
+    			updateData(VitalSign.CHOLESTEROL);
+    			updateData(VitalSign.BLOOD_SUGAR);
+    			updateData(VitalSign.BLOOD_PRESSURE);
+    			updateDate();
+    		}
+           });
+       forwardButton.setOnClickListener(new View.OnClickListener() {
+    	   @Override
+    		public void onClick(View v) {
+    			offset++;
+    			updateData(VitalSign.WEIGHT);
+    			updateData(VitalSign.CHOLESTEROL);
+    			updateData(VitalSign.BLOOD_SUGAR);
+    			updateData(VitalSign.BLOOD_PRESSURE);
+    			updateDate();
+    		}
+           });
 		
 	    ListView bplist = (ListView)rootView.findViewById(R.id.vitals_bplistview);
 	    bpadapter = new VitalAdapter(this, getActivity(), bplist.getId(), bps);
@@ -118,6 +155,17 @@ public class VitalsFragment extends Fragment
 		return rootView;
 		
 	}
+	private void updateDate() {
+		date.setText(Helper.getDateWithOffset(offset));
+		if (offset == 0)
+			forwardButton.setVisibility(View.INVISIBLE);
+		else
+			forwardButton.setVisibility(View.VISIBLE);
+	}
+	public int getOffset()
+	{
+		return offset;
+	}
 	private void checkTip()
 	{
 		if (shouldDisplayTip())
@@ -150,7 +198,7 @@ public class VitalsFragment extends Fragment
 			{
 				VitalAdapter adapter = adapters.get(type);
 				adapter.clear();
-				adapter.addAll(db.getUserVitals(userId, type));
+				adapter.addAll(db.getUserVitals(userId, type, offset));
 				if (adapter.getCount() == 0)
 				{
 					labels.get(type).setVisibility(View.GONE);
@@ -205,6 +253,7 @@ public class VitalsFragment extends Fragment
         VitalDialog vd = new VitalDialog();
         Bundle args = new Bundle();
         args.putInt(Arguments.USERID, userId);
+        args.putInt(Arguments.OFFSET, offset);
         vd.setArguments(args);
         vd.show(fm2, "fragment_edit_name");
     }

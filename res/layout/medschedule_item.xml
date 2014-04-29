@@ -5,24 +5,28 @@
     android:orientation="horizontal" >
 
     <TextView
-        android:id="@+id/medName_temp"
+        android:id="@+id/medTime_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:gravity="right"
+        android:text="12:00PM" />
+
+    <TextView
+        android:id="@+id/medName_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_weight="0.83" />
+        android:layout_weight="1.14"
+        android:text="Phlogistinam" />
 
     <TextView
         android:id="@+id/medDosage_temp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-    <TextView
-        android:id="@+id/medTime_temp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="" />
+        android:text="20mg"
+        android:layout_weight="1" 
+/>
 
     <CheckBox
         android:id="@+id/medStatus_temp"
@@ -43,16 +47,5 @@
             android:text="E"
             android:width="16dp" />
             
-    <!-- <Button
-        android:id="@+id/medEditBtn2"
->>>>>>> jason
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:text="Edit" />
-<<<<<<< HEAD
 
-=======
- -->
->>>>>>> jason
 </LinearLayout>

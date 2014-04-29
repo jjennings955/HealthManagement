@@ -25,7 +25,7 @@ public class ScheduleBinder implements ViewBinder {
 		int viewId = view.getId();
 		switch (viewId)
 		{
-		case R.id.medName_temp:
+		case R.id.medName_1:
 			TextView tv = (TextView)view;
 			tv.setText(cursor.getString(2));
 			return true;

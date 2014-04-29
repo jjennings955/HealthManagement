@@ -2,6 +2,7 @@ package com.team4.healthmonitor.fragments;
 
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import com.team4.database.Article;
 import com.team4.database.DatabaseHandler;
@@ -12,7 +13,7 @@ import com.team4.healthmonitor.R.id;
 import com.team4.healthmonitor.R.layout;
 import com.team4.healthmonitor.R.menu;
 import com.team4.healthmonitor.adapters.ArticleAdapter;
-import com.team4.healthmonitor.adapters.Utility;
+import com.team4.healthmonitor.adapters.VitalAdapter;
 import com.team4.healthmonitor.dialogs.EditMedicineDialog;
 import com.team4.healthmonitor.dialogs.StorageDialog;
 
@@ -35,11 +36,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class StorageFragment extends Fragment 
 {
-	
+	private TextView tip;
 	private FragmentActivity myContext;
 	private String username;
 	private String password;
@@ -65,6 +67,7 @@ public class StorageFragment extends Fragment
 			adapter.clear();
 			adapter.addAll(db.getUserArticle(userId));
 			adapter.notifyDataSetChanged();
+			//checkTip();
 			//Utility.setListViewHeightBasedOnChildren(listView);
 			//Utility.setListViewHeightBasedOnChildren(adapter.getVi
 		}
@@ -75,6 +78,7 @@ public class StorageFragment extends Fragment
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
 		ListView rootList = (ListView)rootView.findViewById(R.id.storage_list);
+		tip = (TextView)rootView.findViewById(R.id.storageTip);
 		listView = rootList;
 		  LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
 			      new IntentFilter("com.team4.healthmonitor.UPDATESTORAGE"));
@@ -85,11 +89,27 @@ public class StorageFragment extends Fragment
 		ArrayList<Article> articles = db.getUserArticle(userId);
 		adapter = new ArticleAdapter(this, getActivity(), R.layout.article_item, articles);
 		rootList.setAdapter(adapter);
+		rootList.setEmptyView(tip);
+		//checkTip();
 		//Utility.setListViewHeightBasedOnChildren(rootList);
 		setHasOptionsMenu(true);
 	
 		return rootView;
 	}
+	private void checkTip()
+	{
+		if (shouldDisplayTip())
+			tip.setVisibility(View.VISIBLE);
+		else
+			tip.setVisibility(View.GONE);
+	}
+	private boolean shouldDisplayTip()
+	{
+		//boolean result = true;
+		return adapter == null || adapter.getCount() == 0;
+		//return true;
+	}
+	
     public void showEditArticleDialog(int id)
     {
         FragmentManager fm = getActivity().getSupportFragmentManager();

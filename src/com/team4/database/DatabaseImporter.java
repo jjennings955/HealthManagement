@@ -24,7 +24,7 @@ public class DatabaseImporter extends IntentService {
 	protected void onHandleIntent(Intent arg0) {
         DatabaseHandler db = new DatabaseHandler(this);
         Log.w("PHMS", "started importing database");
-        DatabaseHandler.importFoodDatabase(db.getWritableDatabase(), this.getResources().openRawResource(R.raw.nutrition));
+        DatabaseHandler.importFoodDatabase(db.getWritableDatabase(), this.getResources().openRawResource(R.raw.nutrition), 100);
         db.getWritableDatabase();
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Events.DATABASE_IMPORTED));
 	}

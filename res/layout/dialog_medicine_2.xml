@@ -6,7 +6,7 @@
   android:fillViewport="true">
   
 <LinearLayout
-    android:id="@+id/edit_name"
+    android:id="@+id/dietParent"
     android:layout_width="290dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"

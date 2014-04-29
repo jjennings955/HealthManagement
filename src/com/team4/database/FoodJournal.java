@@ -10,19 +10,26 @@ public class FoodJournal {
 	 * 								userId INTEGER, 
 	 * 								foodId INTEGER, 
 	 * 								FOREIGN KEY(user) REFERENCES user(id), 
-	 * 								FOREIGN KEY(food) references food(id));
+	 * 								FOREIGN KEY(food) references food2(id));
 				
 	 * */
 	
 	private int _id = 0;
 	private int userId = 0;
 	private int foodId = 0;
+	private float amount;
+	private long datetime;
 	
-	
-	public FoodJournal(int id, int userId, int foodId) {
+	public FoodJournal(int id, int userId, int foodId, float amount, long datetime) {
 		_id = id;
 		this.userId = userId;
 		this.foodId = foodId;
+		this.amount = amount;
+		this.datetime = datetime;
+	}
+	public FoodJournal()
+	{
+		
 	}
 
 
@@ -53,6 +60,26 @@ public class FoodJournal {
 
 	public void setFoodId(int foodId) {
 		this.foodId = foodId;
+	}
+
+
+	public float getAmount() {
+		return amount;
+	}
+
+
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
+
+
+	public long getDatetime() {
+		return datetime;
+	}
+
+
+	public void setDatetime(long datetime) {
+		this.datetime = datetime;
 	}
 	
 	

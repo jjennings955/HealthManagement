@@ -95,12 +95,14 @@ public class EditMedicineDialog extends DialogFragment implements OnClickListene
 			}
 		}
 		private void handleDelete() {
-			MedicationEvent target = db.getMedicationEvent(id); 
-			db.delete(target);
-			Intent mshg = new Intent("my-event");
-			mshg.putExtra("message", "data");
-			LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(mshg);
-
+			MedicationEvent target = db.getMedicationEvent(id);
+			if (target != null)
+			{
+				db.delete(target);
+				Intent mshg = new Intent("my-event");
+				mshg.putExtra("message", "data");
+				LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(mshg);
+			}
 			dismiss();
 		}
 

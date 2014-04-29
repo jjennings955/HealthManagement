@@ -18,7 +18,7 @@
         <activity
             android:name="com.team4.healthmonitor.SplashScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,14 +31,14 @@
         <activity
              android:name="com.team4.healthmonitor.MainActivity"
              android:label="@string/app_name"
-             android:screenOrientation="portrait">
+             android:screenOrientation="sensor">
         </activity>
         
         <!-- Main App Activity -->
         <activity
              android:name="com.team4.healthmonitor.MainAppActivity"
              android:label="@string/app_name"
-             android:screenOrientation="portrait">
+             android:screenOrientation="sensor">
         </activity>
         <receiver android:name=".AlarmReceiver" />
         
@@ -46,7 +46,8 @@
         <activity
              android:name="com.team4.healthmonitor.RegisterActivity"
              android:label="@string/app_name"
-             android:screenOrientation="portrait">
+             android:screenOrientation="sensor">
+             >
         </activity>
           <service
             android:name="com.team4.database.DatabaseImporter"

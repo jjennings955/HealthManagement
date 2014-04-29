@@ -1,13 +1,18 @@
 package com.team4.healthmonitor.fragments;
 
 
+import java.util.ArrayList;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.MainActivity;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.R.id;
 import com.team4.healthmonitor.R.layout;
 import com.team4.healthmonitor.R.menu;
+import com.team4.healthmonitor.adapters.ArticleAdapter;
 import com.team4.healthmonitor.dialogs.DietDialog;
-
+import com.team4.healthmonitor.adapters.DietAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class DietFragment extends Fragment 
@@ -28,7 +34,8 @@ public class DietFragment extends Fragment
 	private FragmentActivity myContext;
 	private String username;
 	private String password;
-
+	private DietAdapter adapter;
+	private int userId;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
@@ -36,13 +43,14 @@ public class DietFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_diet, container, false);
 		setHasOptionsMenu(true);
 		//((MainAppActivity) getActivity()).setActionBarTitle("Diet");
-		
-		Intent i = getActivity().getIntent();
-		username = i.getStringExtra(MainActivity.USERNAME);
-		password = i.getStringExtra(MainActivity.PASSWORD);
-		
-		//Toast.makeText(getActivity(), username +" "+password, Toast.LENGTH_SHORT).show();
-		//Toast.makeText(getActivity(), myContext+"", Toast.LENGTH_SHORT).show();
+		DatabaseHandler db = new DatabaseHandler(getActivity());
+		ListView foodList = (ListView)rootView.findViewById(R.id.food_list);
+		Bundle arguments = this.getArguments();
+		userId = arguments.getInt(Arguments.USERID);
+		ArrayList<com.team4.database.FoodJournal> foods = db.getUserFoods(userId);
+		adapter = new DietAdapter(this, getActivity(), R.layout.article_item, foods);
+		foodList.setAdapter(adapter);
+		foodList.setEmptyView(rootView.findViewById(R.id.dietTip));
 		
 		
 		return rootView;

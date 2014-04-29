@@ -5,15 +5,48 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/vital_backButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:textSize="8sp"
+            android:text="@string/leftArrow" />
+
+        <TextView
+            android:id="@+id/vitals_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="1-1-2011"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/vital_forwardButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:textSize="8sp"
+            android:layout_gravity="center"
+            android:text="@string/rightArrow" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/vitalTip"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="180dp"
-        android:textColor="#939393"
-        android:text="You have not tracked any vital signs today. Add some by clicking the + button at the top of your screen!"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:gravity="center_vertical"
+        android:text="You have not tracked any vital signs for this day. Add some by clicking the + button at the top of your screen!"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#939393" />
 
     <TextView
         android:id="@+id/vitals_BP_label"

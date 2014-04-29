@@ -6,7 +6,7 @@
   android:fillViewport="true">
   
 <LinearLayout
-    android:id="@+id/edit_name"
+    android:id="@+id/dietParent"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -141,14 +141,14 @@
         android:layout_height="wrap_content" >
 
         <CheckBox
-            android:id="@+id/checkBox1"
+            android:id="@+id/medicine_takenMon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Mon" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/medicine_takenTue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -160,14 +160,14 @@
         android:layout_height="wrap_content" >
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/medicine_takenWed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Wed" />
 
         <CheckBox
-            android:id="@+id/checkBox4"
+            android:id="@+id/medicine_takenThu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -179,14 +179,14 @@
         android:layout_height="wrap_content" >
 
         <CheckBox
-            android:id="@+id/checkBox5"
+            android:id="@+id/medicine_takenFri"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Fri" />
 
         <CheckBox
-            android:id="@+id/checkBox6"
+            android:id="@+id/medicine_takenSat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -198,7 +198,7 @@
         android:layout_height="wrap_content" >
 
         <CheckBox
-            android:id="@+id/checkBox7"
+            android:id="@+id/medicine_takenSun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sun" />

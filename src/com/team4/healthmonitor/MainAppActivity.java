@@ -68,7 +68,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		userId = i.getIntExtra(MainActivity.USERID, -1);
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		User currentUser = db.getUser(userId);
-		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDate());
+		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDay(), Helper.getDate());
 		
 		Calendar now = Calendar.getInstance();
 		now.setTimeInMillis(System.currentTimeMillis() + 1000*15);
