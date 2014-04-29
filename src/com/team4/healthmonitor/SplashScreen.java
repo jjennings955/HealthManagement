@@ -2,6 +2,7 @@ package com.team4.healthmonitor;
 
 
 import com.team4.database.DatabaseHandler;
+
 import com.team4.database.DatabaseImporter;
 import com.team4.database.Food2;
 import com.team4.database.Helper;
@@ -43,6 +44,28 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         DatabaseHandler db = new DatabaseHandler(this);
+
+        /*Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                  Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
+
+                    String[] toArr = {"jason.jennings@mavs.uta.edu","saad.subhani@gmail.com", "devkishen.sisodia@mavs.uta.edu", "picard.folefack@mavs.uta.edu"};
+                    m.setTo(toArr);
+                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
+                    m.setSubject("Android Test - From Jason");
+                    m.setBody("EMAIL IS WORKING!?");
+                m.send();
+                    //Your code goes here
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            thread.start();
+        });*/
+
+         
         
         Log.w("PHMS", Helper.getDate());
         if (db.getFoodCount() < 1)

@@ -2,16 +2,11 @@ package com.team4.database;
 
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Scanner;
-
-import com.team4.healthmonitor.R;
 
 import android.annotation.TargetApi;
 import android.content.ContentValues;
@@ -51,6 +46,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				//select count(*) from schedule where schedule_id = ? and 
 				/*"create view schedule as " +
 				"	select U.id as user_id, S.id schedule_id, M.name as medication_name, S.dosage as medication_dosage, S.day as day, S.time_hours as time_hours, S.time_mins as time_mins, MT.medication_schedule_id as taken_entry" +
+
 				"	from " +
 				"		(medication_schedule as S JOIN user as U JOIN medication as M ON " +
 				"			S.user = U.id and S.medication = M.id) " +
@@ -112,6 +108,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<MedSchedule> results = new ArrayList<MedSchedule>();
+
 		String query1 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication as M, medication_schedule as S where M.id = S.medication and not exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
 		String query2 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication as M, medication_schedule as S where M.id = S.medication and exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
 		
@@ -567,6 +564,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    db.insert("food", null, values);
 	    //db.close(); 
 	}
+
 	public int getFoodCount()
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -608,6 +606,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
 	}
+
 	
 	/*
 	 * Add food_journal
@@ -654,9 +653,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 			return null;
 	}
-	public ArrayList<Contact> getContacts(int userid)
+	public ArrayList<Integer> getContactsList(int userid)
 	{
-		return null;
+		ArrayList<Integer> contacts = new ArrayList<Integer>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT id FROM contacts WHERE user_id = ?";
+		Cursor cursor = db.rawQuery(query, new String[] {userid+""});
+        if (cursor.moveToFirst()) 
+        {
+            do 
+            {
+            	int result = cursor.getInt(0);
+            	Log.w("TESTING", result+"");
+            	contacts.add(result);
+            } 
+            while (cursor.moveToNext());
+        }
+        return contacts;
+		
 	}
 	public void store(Session s)
 	{
@@ -771,6 +785,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    vt.setType(cursor.getInt(1));
 	    vt.setValue1(cursor.getInt(2));
 	    vt.setValue2(cursor.getInt(3));
+
 	    vt.setDatetime(cursor.getLong(4));
 	    vt.setUser_Id(cursor.getInt(5));
 	    
@@ -841,6 +856,57 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("description", a.getDescription());
 	    values.put("user", a.getUserId());
 		db.update("article", values, "id = ?", new String[] { ""+a.getId() });		
+	}
+
+
+	public ArrayList<VitalSign> getUserVitals(int userid, int type) {
+		ArrayList<VitalSign> results = new ArrayList<VitalSign>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from vitalsign where user = ? and type = ?;";
+		Cursor cursor = db.rawQuery(query, new String[] { "" + userid, ""+type });
+				
+        if (cursor.moveToFirst()) {
+            do {
+        	    VitalSign vt = new VitalSign();
+        	    vt.setId(cursor.getInt(0));
+        	    vt.setType(cursor.getInt(1));
+        	    vt.setValue1(cursor.getInt(2));
+        	    vt.setValue2(cursor.getInt(3));
+        	    vt.setDatetime(cursor.getInt(4));
+        	    vt.setUser_Id(cursor.getInt(5));
+        	   results.add(vt);
+            } while (cursor.moveToNext());
+        }
+        return results;
+	}
+	
+	public static boolean importFoodDatabase(SQLiteDatabase db, InputStream infile)
+	{
+		Scanner scan = new Scanner(infile);
+		String line = "";
+		String split[];
+		String columns[] = "id,calories,protein,lipid,carbs,fiber,sugar,potassium,sodium,fat_sat,fat_mono,fat_poly,cholesterol,weight_serving1,desc_serving1,weight_serving2,desc_serving2,description".split(",");
+		//db.beginTransaction();
+		scan.nextLine();
+		while (scan.hasNextLine()) {
+			line = scan.nextLine();
+			split = line.split("\t");
+			//Log.w("PHMS", "Description = " + split[split.length-1]);
+			ContentValues values = new ContentValues();
+			for (int i = 0; i < columns.length; i++)
+			{
+				values.put(columns[i], split[i]);
+			}
+			db.insert("food2", null, values);
+			ContentValues values2 = new ContentValues();
+			values2.put("id", split[0]);
+			values2.put("description", split[split.length-1]);
+			db.insert("food_search", null, values2);
+		}
+		//db.endTransaction();
+		scan.close();
+		return true;
+
 	}
 
 	public ArrayList<VitalSign> getUserVitals(int userid) {
