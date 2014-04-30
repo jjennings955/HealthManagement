@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,9 @@ import android.widget.TextView;
 import com.team4.database.Article;
 import com.team4.database.Helper;
 import com.team4.database.VitalSign;
+import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.dialogs.VitalDialog;
 import com.team4.healthmonitor.fragments.StorageFragment;
 import com.team4.healthmonitor.fragments.VitalsFragment;
 
@@ -67,23 +71,20 @@ public class VitalAdapter extends ArrayAdapter<VitalSign> {
     	   
        }
        TextView field1 = (TextView)convertView.findViewById(R.id.vitalField1);
-     //  TextView field2 = (TextView)convertView.findViewById(R.id.vitalField2);
-      // TextView field3 = (TextView)convertView.findViewById(R.id.vitalField3);
        String val1 = ""+entry.getValue1();
        String val2 = ""+entry.getValue2();
        String type = map[entry.getType()];
        field1.setText(rowString);
-       //field2.setText(val1);
-    /*   if (entry.getType() == VitalSign.WEIGHT || entry.getType() == VitalSign.BLOOD_SUGAR)
-    	   field3.setText("");
-       else
-    	   field3.setText(val2);*/
        ImageButton edit = (ImageButton)convertView.findViewById(R.id.vitalEditBtn);
 
        final int id = entry.getId();
+       final int userId = entry.getUser_Id();
+    		   
+       Log.w("PHMS", "Generated button for vitalsign with ID = " + id);
        edit.setOnClickListener(new View.OnClickListener() {
 	   @Override
 		public void onClick(View v) {
+			showEditVitalDialog(id, userId);
 			
 		}
        });
@@ -91,4 +92,17 @@ public class VitalAdapter extends ArrayAdapter<VitalSign> {
        // Return the completed view to render on screen
        return convertView;
    }
+
+    private void showEditVitalDialog(int id, int userId)
+    {
+        FragmentManager fm2 = parentFragment.getActivity().getSupportFragmentManager();
+        VitalDialog vd = new VitalDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.ITEMID, id);
+        args.putInt(Arguments.USERID, userId);
+        //args.putInt(Arguments.USERID, userId);
+        //args.putInt(Arguments.OFFSET, offset);
+        vd.setArguments(args);
+        vd.show(fm2, "fragment_edit_name");
+    }
 }

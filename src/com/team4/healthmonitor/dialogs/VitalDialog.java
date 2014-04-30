@@ -42,14 +42,30 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 	private int userId;
 	private String mode;
 	private int offset;
-
+	private boolean editing;
+	private int itemId;
+	
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) 
 	 {
 			 View view2 = inflater.inflate(R.layout.dialog_vitals2, container);
 			 Bundle arguments = this.getArguments();
+			 DatabaseHandler db = new DatabaseHandler(getActivity());
+			 VitalSign entry = null;
+			 if (arguments.containsKey(Arguments.ITEMID))
+			 {
+				 editing = true;
+				 itemId = arguments.getInt(Arguments.ITEMID, 0);
+				 Log.w("PHMS", "EDITING VITAL WITH ID = " +itemId);
+				 entry = db.getVitalSign(itemId);
+			 }
+			 else
+			 {
+				 editing = false;
+				 
+				 offset = arguments.getInt(Arguments.OFFSET, 0);
+			 }
 			 userId = arguments.getInt(Arguments.USERID, -1);
-			 offset = arguments.getInt(Arguments.OFFSET, 0);
 			 
 			 getDialog().setTitle("Add Vital Signs");
 			label1 = (TextView)view2.findViewById(R.id.vital_label1);
@@ -63,6 +79,11 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner.setOnItemSelectedListener(this);
 			spinner.setAdapter(adapter);
+			if (editing)
+			{
+				savebutton.setText("Update");
+				spinner.setSelection(entry.getType());
+			}
 			savebutton.setOnClickListener(this);
 			return view2;
 	 }
@@ -169,7 +190,15 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 				v.setDatetime(System.currentTimeMillis() + 1000*24*60*60*offset);
 				v.setValue1(Integer.parseInt(val1));
 				v.setType(type);
-				db.store(v);
+				if (editing)
+				{
+					v.setId(itemId);
+					db.update(v);
+				}
+				else
+				{
+					db.store(v);
+				}
 				sendUpdate(type);
 				dismiss();
 			}
@@ -199,7 +228,16 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 				v.setValue2(Integer.parseInt(val2));
 				v.setType(type);
 				
-				db.store(v);
+				if (editing)
+				{
+					v.setId(itemId);
+					db.update(v);
+				}
+				else
+				{
+					db.store(v);
+				}
+				
 				sendUpdate(type);
 				dismiss();
 			}

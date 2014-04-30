@@ -104,12 +104,6 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
 	 
      medName.setAdapter(adapter);
      
-     
-     
-     AutoCompleteSelected foo = new AutoCompleteSelected();
-    	
-
-
      Button button = (Button)view.findViewById(R.id.btnSubmit);
      button.setOnClickListener(this);
      return view;
@@ -199,44 +193,6 @@ private void sendUpdate() {
 	Intent mshg = new Intent("my-event");
 	mshg.putExtra("message", "data");
 	LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(mshg);
-}
-private class AutoCompleteSelected implements OnItemClickListener, OnItemSelectedListener, OnClickListener
-{
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		DatabaseHandler db = new DatabaseHandler(getActivity());
-		Medication foo = db.findMedication(medName.getText().toString());
-		if (foo != null)
-		{
-			Log.w("PHMS", foo.toString());
-		}
-		
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position,
-			long id) {
-		Medication foo = (Medication)parent.getSelectedItem();
-		if (foo != null)
-		{
-			Log.w("PHMS", "THREE! " + foo.toString());
-		}
-		
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-		
-		
-	}
-
-	@Override
-	public void onClick(View v) {
-		Log.w("PHMS", v.toString());
-		
-	}
-	
 }
 
 

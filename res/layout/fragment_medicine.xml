@@ -1,26 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:background="#FF000000" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_weight="0.56"
+                android:text="Time" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.45"
+                android:text="Name" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.17"
+                android:text="Dosage" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.74"
+                android:background="#FF000000"
+                android:text="Taken?" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/medicineList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" 
+        android:background="#FF000000">
+
         <TextView
             android:id="@+id/med_sun"
             android:layout_width="0dp"
-            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_horizontal"
             android:text="Sun" />
+
         <TextView
             android:id="@+id/med_mon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mon"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:text="Mon" />
 
         <TextView
             android:id="@+id/med_tue"
@@ -33,53 +87,47 @@
         <TextView
             android:id="@+id/med_wed"
             android:layout_width="0dp"
-            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_horizontal"
             android:text="Wed" />
 
         <TextView
             android:id="@+id/med_thu"
             android:layout_width="0dp"
-            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_horizontal"
             android:text="Thur" />
 
         <TextView
             android:id="@+id/med_fri"
             android:layout_width="0dp"
-            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_horizontal"
             android:text="Fri" />
 
         <TextView
             android:id="@+id/med_sat"
             android:layout_width="0dp"
-            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_horizontal"
             android:text="Sat" />
-
-
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/medicineList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" >
-    </ListView>
-
+    
     <TextView
         android:id="@+id/medicineT"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:visibility="invisible"
         android:gravity="center_vertical"
         android:text="You do not have any medications scheduled for today. Add some by clicking the + button at the top of your screen!"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#939393" />
 
-</LinearLayout>
+</FrameLayout>

@@ -20,6 +20,7 @@ import android.util.Log;
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PHMS";
     private static final int DATABASE_VERSION = 25;
+
     private Context myContext;
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,7 +39,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table food(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories REAL, fat REAL, protein REAL, carbs REAL, fiber REAL, sugar REAL);\n" +
 				"create table food2(id INTEGER PRIMARY KEY, calories REAL, protein REAL, lipid REAL, carbs REAL, fiber REAL, sugar REAL, potassium REAL, sodium REAL, fat_sat REAL, fat_mono REAL, fat_poly REAL, cholesterol REAL, weight_serving1 REAL, desc_serving1 TEXT, weight_serving2 REAL, desc_serving2 TEXT, description TEXT);\n" +
 				
-				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
+				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, user INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create virtual table food_search using fts3(id INTEGER, description TEXT);\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
 				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TINYINT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
@@ -571,6 +572,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor result = db.rawQuery("select * from food2", null);
 		return result.getCount();
 	}
+	public Food2 getFood(Cursor cur)
+	{
+		Food2 result = new Food2();
+		result.setId(cur.getInt(0));
+		result.setCalories(cur.getFloat(1));
+		result.setProtein(cur.getFloat(2));
+		result.setLipid(cur.getFloat(3));
+		result.setCarbs(cur.getFloat(4));
+		result.setFiber(cur.getFloat(5));
+		result.setSugar(cur.getFloat(6));
+		result.setPotassium(cur.getFloat(7));
+		result.setSodium(cur.getFloat(8));
+		result.setFat_sat(cur.getFloat(9));
+		result.setFat_mono(cur.getFloat(10));
+		result.setFat_poly(cur.getFloat(11));
+		result.setCholesterol(cur.getFloat(12));
+		result.setWeight_serving1(cur.getFloat(13));
+		result.setDesc_serving1(cur.getString(14));
+		result.setWeight_serving2(cur.getFloat(15));
+		result.setDesc_serving2(cur.getString(16));
+		result.setDescription(cur.getString(17));
+		return result;
+	}
+	
 	public Food2 getFood(int id)
 	{
 
@@ -579,25 +604,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cur = db.rawQuery("select * from food2 where id = ?", new String[] { "" + id });
 		if (cur.moveToFirst())
 		{
-			Food2 result = new Food2();
-			result.setId(cur.getInt(0));
-			result.setCalories(cur.getFloat(1));
-			result.setProtein(cur.getFloat(2));
-			result.setLipid(cur.getFloat(3));
-			result.setCarbs(cur.getFloat(4));
-			result.setFiber(cur.getFloat(5));
-			result.setSugar(cur.getFloat(6));
-			result.setPotassium(cur.getFloat(7));
-			result.setSodium(cur.getFloat(8));
-			result.setFat_sat(cur.getFloat(9));
-			result.setFat_mono(cur.getFloat(10));
-			result.setFat_poly(cur.getFloat(11));
-			result.setCholesterol(cur.getFloat(12));
-			result.setWeight_serving1(cur.getFloat(13));
-			result.setDesc_serving1(cur.getString(14));
-			result.setWeight_serving2(cur.getFloat(15));
-			result.setDesc_serving2(cur.getString(16));
-			result.setDescription(cur.getString(17));
+			Food2 result = getFood(cur);
 			return result;
 		}
 		else
@@ -615,10 +622,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    SQLiteDatabase db = this.getWritableDatabase();
 	    //"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
 	    ContentValues values = new ContentValues();
+	    values.put("name", food_j.getName());
 	    values.put("amount", food_j.getAmount());
 	    values.put("datetime", food_j.getDatetime());
 	    values.put("user", food_j.getUserId()); 
-	    values.put("food", food_j.getFoodId());  
+	    
 	    
 	    db.insert("food_journal", null, values);
 	    //db.close(); 
@@ -723,25 +731,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public FoodJournal getFood_journal(int id) {
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    //"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
-	    Cursor cursor = db.query("food_journal", new String[] {"id", "amount", "user",
-	            "food", "datetime"}, "id = ?",
-	            new String[] { String.valueOf(id) }, null, null, null, null);
-	    
-	    if (cursor != null)
-	        cursor.moveToFirst();
+	    String query = "select * from food_journal where id = ?";
+	    Cursor cursor = db.rawQuery(query, new String[] { "" + id });
+	    if (cursor.moveToFirst())
+	    {
 	    
 	    FoodJournal food_j = new FoodJournal();
 	    food_j.setId(cursor.getInt(0));
-	    food_j.setAmount(cursor.getFloat(1));
+	    food_j.setName(cursor.getString(1));
+	    food_j.setAmount(cursor.getFloat(2));
 
-	    food_j.setUserId(cursor.getInt(2));
-	    food_j.setFoodId(cursor.getInt(3));
+	    food_j.setUserId(cursor.getInt(3));
 	    food_j.setDatetime(cursor.getInt(4));
+	    return food_j;
+	    }
 	   // FoodJournal food_j = new FoodJournal(Integer.parseInt(cursor.getString(0)),
 	    //		Integer.parseInt(cursor.getString(1)),Integer.parseInt(cursor.getString(2)));
 	    
 	    
-	    return food_j;
+	    return null;
 	}
 	
 	
@@ -774,22 +782,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    
 	    
 	    //Cursor c = db.rawQuery("select * from article where userId= ?", new String[]{String.valueOf(id)});
-	 
-	    Cursor cursor = db.query("vitalsign", new String[] {"id", "type",
-	            "value1","value2","user"}, "user = ?",
-	            new String[] { String.valueOf(id) }, null, null, null, null);
-	    if (cursor != null)
-	        cursor.moveToFirst();
-	    VitalSign vt = new VitalSign();
-	    vt.setId(cursor.getInt(0));
-	    vt.setType(cursor.getInt(1));
-	    vt.setValue1(cursor.getInt(2));
-	    vt.setValue2(cursor.getInt(3));
-
-	    vt.setDatetime(cursor.getLong(4));
-	    vt.setUser_Id(cursor.getInt(5));
+	    Cursor cursor = db.rawQuery("select * from vitalsign where id = ?", new String[] { "" + id });
 	    
-	    return vt;
+	    if (cursor.moveToFirst())
+	    {
+		    VitalSign vt = new VitalSign();
+		    vt.setId(cursor.getInt(0));
+		    vt.setType(cursor.getInt(1));
+		    vt.setValue1(cursor.getInt(2));
+		    vt.setValue2(cursor.getInt(3));
+	
+		    vt.setDatetime(cursor.getLong(4));
+		    vt.setUser_Id(cursor.getInt(5));
+		    
+		    return vt;
+	    }
+	    return null;
 	}
 	
 	public ArrayList<VitalSign> getVitalSigns(int userId)
@@ -825,7 +833,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    values.put("value2", sign.getValue2()); 
 	    values.put("user", sign.getUser_Id());  
 	    values.put("datetime", sign.getDatetime());
-
+	    Log.w("PHMS", values.toString());
 	    db.update("vitalsign", values, "id = ?", new String[] { ""+sign.getId() });		
 	}
 	
@@ -935,6 +943,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor result = db.rawQuery(query, new String[] { args,  args + "%" });
 		return result;
 	}
+	public ArrayList<Food2> getFoods()
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		ArrayList<Food2> result = new ArrayList<Food2>();
+		String query = "select * from food2";
+		Cursor cur = db.rawQuery(query, new String[] {});
+		if (cur.moveToFirst())
+		{
+			do
+			{
+				result.add(getFood(cur));
+			} while (cur.moveToNext());
+			return result;
+		}
+		else
+		{
+			return null;
+		}
+	}
 	
 	public ArrayList<VitalSign> getUserVitals(int userid, int type, int offset) {
 		ArrayList<VitalSign> results = new ArrayList<VitalSign>();
@@ -968,13 +995,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String line = "";
 		String split[];
 		String columns[] = "id,calories,protein,lipid,carbs,fiber,sugar,potassium,sodium,fat_sat,fat_mono,fat_poly,cholesterol,weight_serving1,desc_serving1,weight_serving2,desc_serving2,description".split(",");
-		//db.beginTransaction();
 		scan.nextLine();
 		int cnt = 0;
 		while (scan.hasNextLine() && cnt++ < num) {
 			line = scan.nextLine();
 			split = line.split("\t");
-			//Log.w("PHMS", "Description = " + split[split.length-1]);
 			ContentValues values = new ContentValues();
 			for (int i = 0; i < columns.length; i++)
 			{
@@ -986,7 +1011,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			values2.put("description", Helper.toDisplayCase(split[split.length-1]));
 			db.insert("food_search", null, values2);
 		}
-		//db.endTransaction();
 		scan.close();
 		return true;
 	}
@@ -996,14 +1020,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			SQLiteDatabase db = this.getWritableDatabase();
 			String query = "SELECT * from food_journal where user = ?;";
 			Cursor cursor = db.rawQuery(query, new String[] { "" + userid });
-					
+			
 	        if (cursor.moveToFirst()) {
 	            do {
 	        	    FoodJournal food_j = new FoodJournal();
 	        	    food_j.setId(cursor.getInt(0));
-	        	    food_j.setAmount(cursor.getFloat(1));
-	        	    food_j.setUserId(cursor.getInt(2));
-	        	    food_j.setFoodId(cursor.getInt(3));
+	        	    food_j.setName(cursor.getString(1));
+	        	    food_j.setAmount(cursor.getFloat(2));
+	        	    food_j.setUserId(cursor.getInt(3));
+	        	    
 	        	    food_j.setDatetime(cursor.getInt(4));
 	        	   results.add(food_j);
 	            } while (cursor.moveToNext());

@@ -16,14 +16,14 @@ public class FoodJournal {
 	
 	private int _id = 0;
 	private int userId = 0;
-	private int foodId = 0;
+	private String name;
 	private float amount;
 	private long datetime;
 	
-	public FoodJournal(int id, int userId, int foodId, float amount, long datetime) {
+	public FoodJournal(int id, int userId, String name, float amount, long datetime) {
 		_id = id;
 		this.userId = userId;
-		this.foodId = foodId;
+		this.name = name;
 		this.amount = amount;
 		this.datetime = datetime;
 	}
@@ -53,15 +53,7 @@ public class FoodJournal {
 	}
 
 
-	public int getFoodId() {
-		return foodId;
-	}
-
-
-	public void setFoodId(int foodId) {
-		this.foodId = foodId;
-	}
-
+	
 
 	public float getAmount() {
 		return amount;
@@ -80,6 +72,12 @@ public class FoodJournal {
 
 	public void setDatetime(long datetime) {
 		this.datetime = datetime;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

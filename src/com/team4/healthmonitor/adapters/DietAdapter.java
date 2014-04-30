@@ -6,6 +6,7 @@ import com.team4.database.Article;
 import com.team4.database.DatabaseHandler;
 import com.team4.database.Food2;
 import com.team4.database.FoodJournal;
+import com.team4.database.Helper;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.fragments.DietFragment;
 import com.team4.healthmonitor.fragments.StorageFragment;
@@ -42,28 +43,17 @@ public class DietAdapter extends ArrayAdapter<FoodJournal> {
        }
        // Lookup view for data population
        TextView desc = (TextView) convertView.findViewById(R.id.fj_desc);
-       TextView amt = (TextView) convertView.findViewById(R.id.fj_amt);
+       TextView time = (TextView) convertView.findViewById(R.id.fj_time);
        TextView cals = (TextView)convertView.findViewById(R.id.fj_cals);
-       TextView fat = (TextView)convertView.findViewById(R.id.fj_fat);
-       TextView protein = (TextView)convertView.findViewById(R.id.fj_protein);
-       TextView carbs = (TextView)convertView.findViewById(R.id.fj_carb);
        
        //CheckBox taken = (CheckBox)convertView.findViewById(R.id.medStatus_temp);
        ImageButton edit = (ImageButton)convertView.findViewById(R.id.fj_edit);
-       
-       // Populate the data into the template view using the data object
-       Food2 food = db.getFood(entry.getFoodId());
-       desc.setText(food.getDescription());
-       amt.setText("" + entry.getAmount());
-       Log.w("PHMS", "Fat for " + food.getDescription() + " " + food.getLipid());
-       cals.setText("" + String.format("%1.0f", (food.getCalories()/food.getWeight_serving1() * entry.getAmount())));
-       
-       carbs.setText("" + String.format("%1.0f", (food.getCarbs()/food.getWeight_serving1() * entry.getAmount())));
-       protein.setText("" + String.format("%1.0f", (food.getProtein()/food.getWeight_serving1() * entry.getAmount())));
-       fat.setText("" + String.format("%1.0f", (food.getLipid()/food.getWeight_serving1() * entry.getAmount())));
-       
-       
+       String timeString = Helper.formatTime(entry.getDatetime());
+       desc.setText(entry.getName());
+       cals.setText("" + ((int)entry.getAmount()) + " calories");
+       time.setText("" + timeString);
        final int id = entry.getId();
+       
        edit.setOnClickListener(new View.OnClickListener() {
 	   @Override
 		public void onClick(View v) {

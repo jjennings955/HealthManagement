@@ -14,11 +14,15 @@ import com.team4.healthmonitor.adapters.ArticleAdapter;
 import com.team4.healthmonitor.dialogs.DietDialog;
 import com.team4.healthmonitor.adapters.DietAdapter;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,10 +40,20 @@ public class DietFragment extends Fragment
 	private String password;
 	private DietAdapter adapter;
 	private int userId;
+	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+		  @Override
+		  public void onReceive(Context context, Intent intent) {
+		    updateData();
+		  }
+
+		};
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+			      new IntentFilter("com.team4.healthmonitor.UPDATEDIET"));
+		
 		View rootView = inflater.inflate(R.layout.fragment_diet, container, false);
 		setHasOptionsMenu(true);
 		//((MainAppActivity) getActivity()).setActionBarTitle("Diet");
@@ -55,7 +69,14 @@ public class DietFragment extends Fragment
 		
 		return rootView;
 	}
-	
+		
+	public void updateData()
+	{
+		DatabaseHandler db = new DatabaseHandler(getActivity());
+		adapter.clear();
+		adapter.addAll(db.getUserFoods(userId));
+		adapter.notifyDataSetChanged();
+	}
 	public void onAttach(Activity activity)
 	{
 	    myContext=(FragmentActivity) activity;
@@ -76,7 +97,7 @@ public class DietFragment extends Fragment
 	    {
 	        case R.id.add_item_diet:
 	        	
-	        	showVitalDialog();
+	        	showDietDialog();
 	            return true;
 	        case R.id.settings_item:
 	        	Toast.makeText(getActivity(), "Search",
@@ -87,10 +108,13 @@ public class DietFragment extends Fragment
 	    }
 	}
 	
-    private void showVitalDialog()
+    private void showDietDialog()
     {
         FragmentManager fm = myContext.getSupportFragmentManager();
         DietDialog dd = new DietDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.USERID, userId);
+        dd.setArguments(args);
         dd.show(fm, "fragment_edit_name");
     }
 }

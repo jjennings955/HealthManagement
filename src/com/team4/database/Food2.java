@@ -127,5 +127,9 @@ public class Food2 {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public String toString()
+	{
+		return getDescription();
+	}
 
 }
