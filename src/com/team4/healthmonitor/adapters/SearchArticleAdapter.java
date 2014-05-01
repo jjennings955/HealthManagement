@@ -28,14 +28,14 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 
-public class ArticleAdapter extends ArrayAdapter<Article> {
-	private StorageFragment parentFragment = null;
+public class SearchArticleAdapter extends ArrayAdapter<Article> {
+	private SearchFragment parentFragment = null;
 	
-	public ArticleAdapter(Context context, int resource, List<Article> objects) {
+	public SearchArticleAdapter(Context context, int resource, List<Article> objects) {
 		super(context, resource, objects);
 		
 	}
-	public ArticleAdapter(StorageFragment parentFragment, Context context, int resource, List<Article> objects)
+	public SearchArticleAdapter(SearchFragment parentFragment, Context context, int resource, List<Article> objects)
 	{
 		super(context, resource, objects);
 		this.parentFragment = parentFragment;
@@ -69,7 +69,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 	   @Override
 		public void onClick(View v) {
 			
-			parentFragment.showEditArticleDialog(id);
+			//parentFragment.showEditArticleDialog(id);
 		}
        });
        

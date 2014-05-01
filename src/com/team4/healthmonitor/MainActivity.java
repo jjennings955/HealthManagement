@@ -3,6 +3,7 @@ package com.team4.healthmonitor;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +30,12 @@ public class MainActivity extends Activity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
       DatabaseHandler db = new DatabaseHandler(this);
+      
+      
+      
+      
+      
+      
       username = (EditText)findViewById(R.id.main_edit_login);
       password = (EditText)findViewById(R.id.main_edit_password);
       attempts = (TextView)findViewById(R.id.main_attempts_text);

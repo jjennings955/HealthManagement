@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.dialogs.SearchDialog;
 
 import android.annotation.TargetApi;
 import android.content.ContentValues;
@@ -44,7 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table food2(id INTEGER PRIMARY KEY, calories REAL, protein REAL, lipid REAL, carbs REAL, fiber REAL, sugar REAL, potassium REAL, sodium REAL, fat_sat REAL, fat_mono REAL, fat_poly REAL, cholesterol REAL, weight_serving1 REAL, desc_serving1 TEXT, weight_serving2 REAL, desc_serving2 TEXT, description TEXT);\n" +
 				
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
-				"create virtual table food_search using fts3(id INTEGER, description TEXT);\n" +
+				"create virtual table article_search using fts3(id,type, url,title, description, user);\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
 				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TINYINT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table medication_tracking(medication_schedule_id INTEGER, date TEXT, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id) ON DELETE CASCADE, primary key (medication_schedule_id, date));\n";
@@ -65,6 +66,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			Log.w("PHMS", statements[i]);
 			db.execSQL(statements[i]);
 		}
+		
+		
+		String query = "INSERT INTO article_search SELECT * FROM article";
+	      //SQLiteDatabase mdb = db.getWritableDatabase();
+	      db.execSQL(query);
+		
+		
 		//db.endTransaction();
 		User jason = new User("admin", "admin", "jason", "jennings", 6, 1, 200, 26, 'M');
 		
@@ -319,6 +327,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 		return results;
 	}
+	
+	
+	public ArrayList<Article> getArticle_search(String keyword)
+	{
+		ArrayList<Article> results = new ArrayList<Article>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * FROM article_search WHERE article_search MATCH '"+keyword+"';";//article_search
+		Cursor cursor = db.rawQuery(query, null);
+		Log.w("PHMS", ""+cursor.getCount());
+		Log.w("PHMS", "" + cursor.moveToFirst());
+        if (cursor.moveToFirst()) {
+            do {
+            	Article art = new Article();
+    			art.setId(cursor.getInt(0));
+    			art.setType(cursor.getString(1));
+    			art.setUrl(cursor.getString(2));
+    			art.setTitle(cursor.getString(3));
+    			art.setDescription(cursor.getString(4));
+    			art.setUserId(cursor.getInt(5));//id,type, url,title, description, user
+                results.add(art);
+            } while (cursor.moveToNext());
+        }
+		return results;
+	}
+	
+	
+	
 	public void deleteMedication(Medication target)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
