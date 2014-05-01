@@ -44,10 +44,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table medication_tracking(medication_schedule_id INTEGER, date TEXT, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id) ON DELETE CASCADE, primary key (medication_schedule_id, date));\n" +
 				"create table medication_conflict(medication_one INTEGER, medication_two INTEGER, PRIMARY KEY(medication_one, medication_two));\n";
 		
-			//	"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TINYINT, dosage REAL, medication INTEGER, user INTEGER, priority TEXT, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
-				//"create table medication_tracking(medication_schedule_id INTEGER, date TEXT, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id) ON DELETE CASCADE, primary key (medication_schedule_id, date));\n";
-				//select count(*) from schedule where schedule_id = ? and 
-		
 		String statements[] = create_statement.split("\n");
 		for (int i = 0; i < statements.length; i++)
 		{
@@ -113,11 +109,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			this.store(med, db);
 		}
-		/*if (tylenol.getId() != null & aspirin.getId() != null)
+		if (tylenol != null && aspirin != null)
 		{
 			this.makeConflict(db, tylenol.getId(), aspirin.getId());
 			this.makeConflict(db, aspirin.getId(), tylenol.getId());
-		}*/
+		}
 	}
 	/* Mark a medication as taken
 	 * 
