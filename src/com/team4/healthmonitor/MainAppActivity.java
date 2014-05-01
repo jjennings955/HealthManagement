@@ -205,7 +205,6 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		                		
 		                		final String[] toArr = toArrTemp;
 		                		final String[] name = nameTemp;
-		                		//Toast.makeText(getApplicationContext(), ""+sessionHour+":"+sessionMinute, Toast.LENGTH_SHORT).show();
 		                		
 		                		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDay(), Helper.getDate());
 		                		
@@ -244,20 +243,6 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 			                			if((medHour > nowHour || (medHour == nowHour && medMin >= nowMin)))
 			                			{
 			                				
-			                				//Toast.makeText(getApplicationContext(), "Priority: "+scheduleEntries.get(a).getPriority()+"", Toast.LENGTH_SHORT).show();
-			                			    //Today Set time had NOT passed
-			                		//		Toast.makeText(getApplicationContext(), "now: "+now.getTime()+"", Toast.LENGTH_SHORT).show();
-			                		//		Toast.makeText(getApplicationContext(), "medTime: "+medTime.getTime()+"", Toast.LENGTH_SHORT).show();
-			                		//		Toast.makeText(getApplicationContext(), scheduleEntries.get(a).getHour()+"   "+scheduleEntries.get(a).getMinutes(), Toast.LENGTH_SHORT).show();
-			                				//	Toast.makeText(getApplicationContext(), "medTime: "+medTime.getTime()+"", Toast.LENGTH_SHORT).show();
-			                				
-			                				//Toast.makeText(getApplicationContext(), "in", Toast.LENGTH_SHORT).show();
-			                				
-			                				
-			                				
-			                				//Toast.makeText(getApplicationContext(), medname+"", Toast.LENGTH_SHORT).show();
-			                				
-			                				//Toast.makeText(getApplicationContext(), "now: "+nowHour+":"+nowMin+"   "+scheduleEntries.get(a).getName()+": "+medHour+":"+medMin, Toast.LENGTH_SHORT).show();
 			                				
 			                				if(nowHour == medHour && nowMin == medMin)
 			                				{
@@ -275,7 +260,6 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 			                			}
 			                			else if((medHour > sessionHour || (medHour == sessionHour && medMin >= sessionMinute)) && scheduleEntries.get(a).getStatus() == false && scheduleEntries.get(a).getPriority().toString().equalsIgnoreCase("high"))
 			                			{
-			                				//Toast.makeText(getApplicationContext(), ""+sessionHour+":"+sessionMinute, Toast.LENGTH_SHORT).show();
 			                				
 			                				if(medHour == nowHour && medMin < minsUntilEmail && medMin + minsUntilEmail == nowMin && medsAlerted.contains(scheduleEntries.get(a).getID()) == false)
 			                				{
@@ -293,15 +277,12 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 				                		                try {
 				                		                	Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
 	
-				                		                    //String[] toArr = {"jason.jennings@mavs.uta.edu","saad.subhani@gmail.com", "devkishen.sisodia@mavs.uta.edu", "picard.folefack@mavs.uta.edu"};
 				                		                    m.setTo(toArr);
 				                		                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
-				                		                   // m.setSubject("PHMS - "+currentUser.getFirstName()+" "+currentUser.getLastName()+" has not taken medication");
 				                		                    m.setSubject("PHMS - MEDICATION ALERT FOR "+ name[0]+ " " +name[1]);
-				                		                   // m.setBody(currentUser.getFirstName()+" "+currentUser.getLastName()+" has not taken "+scheduleEntries.get(a).getName());
 				                		                    m.setBody(medName[0] + " has not been taken by "+ name[0]+ " " +name[1]+"!");
 				                		                    m.send();
-				                		                    //Your code goes here
+				                		                   
 				                		                } catch (Exception e) {
 				                		                    e.printStackTrace();
 				                		                }
@@ -328,15 +309,12 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 					                		                try {
 					                		                	Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
 		
-					                		                   // String[] toArr = {"jason.jennings@mavs.uta.edu","saad.subhani@gmail.com", "devkishen.sisodia@mavs.uta.edu", "picard.folefack@mavs.uta.edu"};
-					                		                    m.setTo(toArr);
+					                		                	m.setTo(toArr);
 					                		                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
-					                		                   // m.setSubject("PHMS - "+currentUser.getFirstName()+" "+currentUser.getLastName()+" has not taken medication");
 					                		                    m.setSubject("PHMS - MEDICATION ALERT FOR "+ name[0]+ " " +name[1]);
-						                		                   // m.setBody(currentUser.getFirstName()+" "+currentUser.getLastName()+" has not taken "+scheduleEntries.get(a).getName());
 						                		                m.setBody(medName[0] + " has not been taken by "+ name[0]+ " " +name[1]+"!");
 					                		                    m.send();
-					                		                    //Your code goes here
+					                		                   
 					                		                } catch (Exception e) {
 					                		                    e.printStackTrace();
 					                		                }
@@ -361,15 +339,12 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 					                		                try {
 					                		                	Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
 		
-					                		                    //String[] toArr = {"jason.jennings@mavs.uta.edu","saad.subhani@gmail.com", "devkishen.sisodia@mavs.uta.edu", "picard.folefack@mavs.uta.edu"};
 					                		                    m.setTo(toArr);
 					                		                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
-					                		                   // m.setSubject("PHMS - "+currentUser.getFirstName()+" "+currentUser.getLastName()+" has not taken medication");
 					                		                    m.setSubject("PHMS - MEDICATION ALERT FOR "+ name[0]+ " " +name[1]);
-						                		                   // m.setBody(currentUser.getFirstName()+" "+currentUser.getLastName()+" has not taken "+scheduleEntries.get(a).getName());
 						                		                m.setBody(medName[0] + " has not been taken by "+ name[0]+ " " +name[1]+"!");
 					                		                    m.send();
-					                		                    //Your code goes here
+					                		                    
 					                		                } catch (Exception e) {
 					                		                    e.printStackTrace();
 					                		                }
@@ -396,15 +371,12 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 				                		                try {
 				                		                	Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
 	
-				                		                    //String[] toArr = {"jason.jennings@mavs.uta.edu","saad.subhani@gmail.com", "devkishen.sisodia@mavs.uta.edu", "picard.folefack@mavs.uta.edu"};
 				                		                    m.setTo(toArr);
 				                		                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
-				                		                   // m.setSubject("PHMS - "+currentUser.getFirstName()+" "+currentUser.getLastName()+" has not taken medication");
 				                		                    m.setSubject("PHMS - MEDICATION ALERT FOR "+ name[0]+ " " +name[1]);
-					                		                   // m.setBody(currentUser.getFirstName()+" "+currentUser.getLastName()+" has not taken "+scheduleEntries.get(a).getName());
 					                		                m.setBody(medName[0] + " has not been taken by "+ name[0]+ " " +name[1]+"!");
 				                		                    m.send();
-				                		                    //Your code goes here
+				                		                    
 				                		                } catch (Exception e) {
 				                		                    e.printStackTrace();
 				                		                }
@@ -421,8 +393,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		                		
 		                		}
 		                    	
-		                        // TODO Auto-generated method stub
-		                        // Write your code here to update the UI.
+		                        
 		                    }
 		                });
 		            } 
@@ -435,31 +406,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		}).start();
 		
 
-/*		for(int a = 0; a < scheduleEntries.size(); a++)
-		{
-			String str = scheduleEntries.get(a).getTime();
-			Toast.makeText(getApplicationContext(), str.substring(str.length() - 2, str.length())+"", Toast.LENGTH_SHORT).show();
-		}
-*/		
-		
 
-	/*	
-		Bundle bundle = new Bundle();
-		bundle.putString("username", username);
-		MedicineFragment fragment=new MedicineFragment();
-		fragment.setArguments(bundle);
-
-		
-	
-		Fragment fragment = new Fragment();
-		Bundle bundle = new Bundle();
-		bundle.putString(key, username);
-		fragment.setArguments(bundle);
-
-*/
-		
-		
-		
 		setContentView(R.layout.activity_main_app);
 
 		// Initilization
@@ -490,7 +437,6 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 				// on changing the page
 				// make respected tab selected
 				actionBar.setSelectedNavigationItem(position);
-				//Toast.makeText(getApplicationContext(), position+"", Toast.LENGTH_SHORT).show();
 			}
 
 			@Override

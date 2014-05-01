@@ -45,14 +45,10 @@ public class DietDialog extends DialogFragment  {
 		 final DatabaseHandler db = new DatabaseHandler(getActivity());
 
 		foodIntake=(AutoCompleteTextView) view.findViewById(R.id.autoCompleteFood);
-		 //quantity=(EditText) view.findViewById(R.id.diet);
-		//foodIntake.setCompletion
 		 getDialog().setTitle("Track Food Intake");
 		 
 		
 	     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, TEST);
-			//foodIntake.setAdapter(new CompleteFoodAdapter(this.getActivity(), db.getFoodCursor("a"), true));
-	     //mAdapter = new SimpleCursorAdapter(context, layout, c, from, to)
 		    mAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null,
                     new String[] { "description" },
                     new int[] {android.R.id.text1}, 
@@ -78,7 +74,6 @@ public class DietDialog extends DialogFragment  {
 		 Button button = (Button)view.findViewById(R.id.diet_submitBtn);
 	     button.setOnClickListener(new OnClickListener() {
 	         public void onClick(View v) {
-	             // When button is clicked, call up to owning activity.
 	             dismiss();
 	         }
 	     });

@@ -68,9 +68,6 @@ public class StorageFragment extends Fragment
 			adapter.clear();
 			adapter.addAll(db.getUserArticle(userId));
 			adapter.notifyDataSetChanged();
-			//checkTip();
-			//Utility.setListViewHeightBasedOnChildren(listView);
-			//Utility.setListViewHeightBasedOnChildren(adapter.getVi
 		}
 
 		
@@ -91,8 +88,6 @@ public class StorageFragment extends Fragment
 		adapter = new ArticleAdapter(this, getActivity(), R.layout.article_item, articles);
 		rootList.setAdapter(adapter);
 		rootList.setEmptyView(tip);
-		//checkTip();
-		//Utility.setListViewHeightBasedOnChildren(rootList);
 		setHasOptionsMenu(true);
 	
 		return rootView;

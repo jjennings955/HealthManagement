@@ -100,7 +100,6 @@ public class MedicineFragment extends Fragment
 		adapter.clear();
 		adapter.addAll(getSchedule());
 		adapter.notifyDataSetChanged();
-		//checkTip();
 	}
 	public ArrayList<MedSchedule> getSchedule()
 	{
@@ -114,7 +113,7 @@ public class MedicineFragment extends Fragment
 		@Override
 		public void onClick(View v) {
 			ArrayList<Integer> ids = new ArrayList<Integer>(Arrays.asList(new Integer[]{ -1, R.id.med_sun, R.id.med_mon, R.id.med_tue, R.id.med_wed, R.id.med_thu, R.id.med_fri, R.id.med_sat }));
-			//((TextView)v).setPaintFlags(0);
+			
 			selectedDay.setPaintFlags(0);
 			day = ids.indexOf(v.getId());
 			updateData();
@@ -158,7 +157,6 @@ public class MedicineFragment extends Fragment
 	    }
 	    Log.w("PHMS", "day = " + day);
 	    updateData();
-	    //checkTip();
 		return rootView;
 	}
 	
@@ -171,9 +169,7 @@ public class MedicineFragment extends Fragment
 	}
 	private boolean shouldDisplayTip()
 	{
-		//boolean result = true;
 		return adapter == null || adapter.getCount() == 0;
-		//return true;
 	}
 		
 		

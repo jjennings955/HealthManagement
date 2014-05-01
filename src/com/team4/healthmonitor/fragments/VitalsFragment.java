@@ -139,9 +139,6 @@ public class VitalsFragment extends Fragment
 	    labels.put(VitalSign.BLOOD_SUGAR, (TextView) rootView.findViewById(R.id.vitals_bloodsugar_label));
 	    labels.put(VitalSign.CHOLESTEROL, (TextView) rootView.findViewById(R.id.vitals_cholesterol_label));
 	    labels.put(VitalSign.WEIGHT, (TextView) rootView.findViewById(R.id.vitals_weight_label));
-	    
-	    //listViews = new ListView[]{ bplist, weightlist, cholesterolList, sugarList };
-	    //adapters = new VitalAdapter[]{ bpadapter, weightadapter, choladapter, sugaradapter };
 	    listViews.size();
 	    
 	    for (Entry<Integer, ListView> entry : listViews.entrySet())

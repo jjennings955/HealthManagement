@@ -67,17 +67,10 @@ public class VitalAdapter extends ArrayAdapter<VitalSign> {
     	   
        }
        TextView field1 = (TextView)convertView.findViewById(R.id.vitalField1);
-     //  TextView field2 = (TextView)convertView.findViewById(R.id.vitalField2);
-      // TextView field3 = (TextView)convertView.findViewById(R.id.vitalField3);
        String val1 = ""+entry.getValue1();
        String val2 = ""+entry.getValue2();
        String type = map[entry.getType()];
        field1.setText(rowString);
-       //field2.setText(val1);
-    /*   if (entry.getType() == VitalSign.WEIGHT || entry.getType() == VitalSign.BLOOD_SUGAR)
-    	   field3.setText("");
-       else
-    	   field3.setText(val2);*/
        ImageButton edit = (ImageButton)convertView.findViewById(R.id.vitalEditBtn);
 
        final int id = entry.getId();

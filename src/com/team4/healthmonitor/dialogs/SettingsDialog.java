@@ -162,7 +162,7 @@ public class SettingsDialog extends DialogFragment implements OnClickListener
 		
 		public void handleUpdate()
 		{
-Log.w("TEST", "BUTTON CLICKED");
+			Log.w("TEST", "BUTTON CLICKED");
 			
 			String userName = newUser.getText().toString();
 			String password = newPassword.getText().toString();
@@ -234,12 +234,6 @@ Log.w("TEST", "BUTTON CLICKED");
 				valid = false;
 				lName.setError("Invalid last name");
 			}
-			/*if (!User.validateGender(userGender))
-			{
-				valid = false;
-				RadioButton foo = (RadioButton)findViewById(R.id.radio_male);
-				foo.setError("Please choose a gender");
-			}*/
 			if (!User.validateAge(userAge))
 			{
 				valid = false;
@@ -298,7 +292,6 @@ Log.w("TEST", "BUTTON CLICKED");
 				  user.setPassword(password);
 				  user.setFirstName(firstName);
 				  user.setLastName(lastName);
-				 //.setGender(gen);
 				  user.setAge(userAge);
 				  user.setWeight(userWeight);
 				  user.setHeight_feet(hf);
