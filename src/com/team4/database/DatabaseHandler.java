@@ -76,8 +76,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		cv.put("medication_two", id2);
 		
 		ContentValues cv2 = new ContentValues();
-		cv.put("medication_one", id2);
-		cv.put("medication_two", id1);
+		cv2.put("medication_one", id2);
+		cv2.put("medication_two", id1);
 		try {
 			
 		
@@ -128,7 +128,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			try
 			{
 				this.makeConflict(db, tylenol.getId(), aspirin.getId());
-				this.makeConflict(db, aspirin.getId(), tylenol.getId());
+				//this.makeConflict(db, aspirin.getId(), tylenol.getId());
 			} catch (SQLiteException e)
 			{
 				
@@ -721,6 +721,7 @@ Log.w("PHMS", "" + cursor.moveToFirst());
         if (cursor.moveToFirst()) {
             do {
              Article art = new Article();
+             
      art.setId(cursor.getInt(0));
      art.setType(cursor.getString(1));
      art.setUrl(cursor.getString(2));
