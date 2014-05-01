@@ -37,7 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table sessions(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, timestamp INTEGER, FOREIGN KEY(user_id) REFERENCES user(id));\n" +
 				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, datetime INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
-				"create virtual table article_search using fts3(id, url, title, description, user);\n" +
+				"create virtual table article_search using fts3(id, type, url, title, description, user);\n" +
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, user INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create virtual table food_search using fts3(id INTEGER, description TEXT, FOREIGN KEY(id) REFERENCES food_journal(id) ON DELETE CASCADE);\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
@@ -78,9 +78,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		ContentValues cv2 = new ContentValues();
 		cv.put("medication_one", id2);
 		cv.put("medication_two", id1);
+		try {
+			
 		
 		db.insert("medication_conflict", null, cv);
 		db.insert("medication_conflict", null, cv2);
+		} catch (SQLiteException e)
+		{
+				
+		}
+		
 	}
 	
 	private boolean checkConflict(int id1, int id2)
@@ -137,7 +144,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		ContentValues cv = new ContentValues();
 		cv.put("date", date);
 		cv.put("medication_schedule_id", id);
-		db.insert("medication_tracking", null, cv);
+		try {
+			db.insert("medication_tracking", null, cv);
+		} catch (SQLiteException e)
+		{
+			
+		}
+		
 	}
 	/* Mark a medication as not taken
 	 * 
@@ -193,7 +206,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("user", newEvent.getUserId());
 		  values.put("day", newEvent.getDay());
 		  values.put("priority", newEvent.getPriority());
-		  db.insert("medication_schedule", null, values);
+		  try
+		  {
+			  db.insert("medication_schedule", null, values);  
+		  } catch (SQLiteException e)
+		  {
+			  
+		  }
+		  
 		  
 	}
 
@@ -251,8 +271,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  ContentValues values = new ContentValues();
 		  values.put("name", newMedication.getName());
 		  values.put("priority", newMedication.getPriority());
-		  long id = db.insert("medication", null, values);
-		  newMedication.setId((int)id);
+		  try
+		  {
+			  long id = db.insert("medication", null, values);
+			  newMedication.setId((int)id);
+		  }
+		  catch (SQLiteException e)
+		  {
+			  
+		  }
 	}
 	public Medication findMedication(String medName)
 	{
