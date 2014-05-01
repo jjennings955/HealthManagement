@@ -3,21 +3,6 @@ package com.team4.healthmonitor.fragments;
 
 import java.util.ArrayList;
 
-import com.team4.database.DatabaseHandler;
-import com.team4.database.FoodJournal;
-import com.team4.database.Helper;
-import com.team4.database.VitalSign;
-import com.team4.healthmonitor.Arguments;
-import com.team4.healthmonitor.MainActivity;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-import com.team4.healthmonitor.R.menu;
-import com.team4.healthmonitor.adapters.ArticleAdapter;
-import com.team4.healthmonitor.dialogs.DietDialog;
-import com.team4.healthmonitor.dialogs.SearchDialog;
-import com.team4.healthmonitor.dialogs.SettingsDialog;
-import com.team4.healthmonitor.adapters.DietAdapter;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -36,11 +21,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.FoodJournal;
+import com.team4.database.Helper;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.adapters.DietAdapter;
+import com.team4.healthmonitor.dialogs.DietDialog;
+import com.team4.healthmonitor.dialogs.SearchDialog;
+import com.team4.healthmonitor.dialogs.SettingsDialog;
 
 public class DietFragment extends Fragment 
 {

@@ -1,16 +1,16 @@
 package com.team4.healthmonitor.adapters;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+
 import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.fragments.DietFragment;
 import com.team4.healthmonitor.fragments.MedicineFragment;
 import com.team4.healthmonitor.fragments.SearchFragment;
 import com.team4.healthmonitor.fragments.StorageFragment;
 import com.team4.healthmonitor.fragments.VitalsFragment;
-
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter 
 {

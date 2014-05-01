@@ -5,31 +5,15 @@ package com.team4.healthmonitor;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-
-import com.team4.database.Contact;
-import com.team4.database.DatabaseHandler;
-import com.team4.database.Helper;
-import com.team4.database.MedSchedule;
-import com.team4.database.Session;
-import com.team4.database.User;
-
-
-import com.team4.healthmonitor.adapters.TabsPagerAdapter;
-import com.team4.healthmonitor.dialogs.EditMedicineDialog;
-import com.team4.healthmonitor.dialogs.SecurityDialog;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.AlarmManager;
 import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationManager;
-
 import android.app.PendingIntent;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -38,22 +22,24 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
-import android.os.Handler;
-
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-
-import android.view.View;
-import android.widget.Toast;
+import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.widget.Toast;
+
+import com.team4.database.Contact;
+import com.team4.database.DatabaseHandler;
+import com.team4.database.Helper;
+import com.team4.database.MedSchedule;
+import com.team4.database.Session;
+import com.team4.database.User;
+import com.team4.healthmonitor.adapters.TabsPagerAdapter;
+import com.team4.healthmonitor.dialogs.SecurityDialog;
 @SuppressLint("NewApi")
 public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener
 {
