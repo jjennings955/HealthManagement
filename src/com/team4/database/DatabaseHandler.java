@@ -41,7 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, user INTEGER, food INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id), FOREIGN KEY(food) references food(id));\n" +
 				"create virtual table food_search using fts3(id INTEGER, description TEXT);\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
-				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TINYINT, dosage REAL, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
+				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TINYINT, dosage REAL, medication INTEGER, user INTEGER, priority TEXT, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table medication_tracking(medication_schedule_id INTEGER, date TEXT, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id) ON DELETE CASCADE, primary key (medication_schedule_id, date));\n";
 				//select count(*) from schedule where schedule_id = ? and 
 				/*"create view schedule as " +
@@ -72,7 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		meds.add(new Medication("Viox", 1));
 		meds.add(new Medication("Heroin", 1));
 		meds.add(new Medication("Caffeine", 1));
-		MedicationEvent mv = new MedicationEvent(5, 24, Calendar.WEDNESDAY, 5, 1, 1);
+		MedicationEvent mv = new MedicationEvent(5, 24, Calendar.WEDNESDAY, 5, 1, 1, "high");
 		
 		
 		for (Medication m : meds)
@@ -109,8 +109,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<MedSchedule> results = new ArrayList<MedSchedule>();
 
-		String query1 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication as M, medication_schedule as S where M.id = S.medication and not exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
-		String query2 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication as M, medication_schedule as S where M.id = S.medication and exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
+		String query1 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins, S.priority from medication as M, medication_schedule as S where M.id = S.medication and not exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
+		String query2 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins, S.priority from medication as M, medication_schedule as S where M.id = S.medication and exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
 		
 		Cursor cursor = db.rawQuery(query1, new String[] { "" + date, "" + u.getId(), "" + day });
 		if (cursor.moveToFirst()) {
@@ -128,7 +128,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             			cursor.getShort(3), // day
             			"" + cursor.getInt(4) + ":" + minutesAdjusted, //hours, mins
             			""+date,
-            			false); // taken?
+            			false, cursor.getString(6)); // taken?
     			//String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
     			//results.add(row);
     			results.add(result);
@@ -150,7 +150,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             			cursor.getShort(3), // day
             			"" + cursor.getInt(4) + ":" + minutesAdjusted,  //hours, mins 
             			""+date,
-            			true); // taken?
+            			true, cursor.getString(6)); // taken?
 //    			String row[] = { cursor.getString(0), ""+cursor.getFloat(1), "" + cursor.getString(2), "" + cursor.getInt(3), "" + cursor.getInt(4) }; 
     			//results.add(row);
     			results.add(result);
@@ -172,6 +172,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("medication", newEvent.getMedication_id());
 		  values.put("user", newEvent.getUserId());
 		  values.put("day", newEvent.getDay());
+		  values.put("priority", newEvent.getPriority());
 		  db.insert("medication_schedule", null, values);
 		  
 	}
@@ -716,6 +717,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return results;
+	}
+	public Session currentUserSession(int userId)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from sessions WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1";
+		Cursor cursor = db.rawQuery(query, new String[] { ""+ userId });
+		
+        if (cursor.moveToFirst()) {
+            	Session result = new Session();
+        		result.setSession_id(cursor.getInt(0));
+        		result.setUser_id(cursor.getInt(1));
+        		result.setTimestamp(cursor.getLong(2));
+        		return result;
+            } 
+        return null;
+        
+
+        
 	}
 	/*
 	 * Get single food_journal entry from Id

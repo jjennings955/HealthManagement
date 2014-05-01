@@ -82,6 +82,7 @@ public class MedScheduleAdapter extends ArrayAdapter<MedSchedule> {
 			DatabaseHandler db = new DatabaseHandler(parentFragment.getActivity());
 			if (isChecked)
 				db.medicationTaken(id, date);
+			
 			else
 				db.medicationNotTaken(id, date);
 		}

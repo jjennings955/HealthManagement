@@ -15,7 +15,7 @@ public class MedicationEvent {
 	private float dosage;
 	private int medication_id;
 	private int day;
-	
+	private String priority;
 	private int user_id;
 	public static boolean validateHours(int hr)
 	{
@@ -41,7 +41,7 @@ public class MedicationEvent {
 		
 	}
 
-	public MedicationEvent(int time_hours, int time_mins, int day, float dosage, int medication_id, int user_id)
+	public MedicationEvent(int time_hours, int time_mins, int day, float dosage, int medication_id, int user_id, String priority)
 	{
 		this.time_hours = time_hours;
 		this.time_mins = time_mins;
@@ -49,6 +49,7 @@ public class MedicationEvent {
 		this.day = day;
 		this.medication_id = medication_id;
 		this.user_id = user_id;
+		this.setPriority(priority);
 		
 	}
 
@@ -96,6 +97,12 @@ public class MedicationEvent {
 	}
 	public void setDay(int day) {
 		this.day = day;
+	}
+	public String getPriority() {
+		return priority;
+	}
+	public void setPriority(String priority) {
+		this.priority = priority;
 	}
 	
 }
