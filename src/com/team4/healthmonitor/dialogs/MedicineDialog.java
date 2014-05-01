@@ -163,6 +163,9 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
     		 {
 		    	 for (int i = 0; i < numTimes; i++)
 		    	 {
+		    		 if (hours + i*inter >= 24)
+		    			 break;
+		    		 
 		    		 MedicationEvent med = new MedicationEvent();
 		    		 
 		    		 if(high.isChecked())
