@@ -36,6 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table sessions(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, timestamp INTEGER, FOREIGN KEY(user_id) REFERENCES user(id));\n" +
 				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, datetime INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
+				"create virtual table article_search using fts3(id,type, url,title, description, user);\n" +
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, user INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create virtual table food_search using fts3(id INTEGER, description TEXT, FOREIGN KEY(id) REFERENCES food_journal(id) ON DELETE CASCADE);\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
@@ -391,7 +392,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String query = "SELECT * from user where username = ?;";
 		Cursor cursor = db.rawQuery(query, new String[] { uname });
-		return cursor.moveToFirst();
+		return cursor.getCount() == 0;
 	}
 
 	public ArrayList<User> getUsers()
@@ -671,6 +672,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    db.insert("vitalsign", null, values);
 	    //db.close(); 
 	}
+	
+	
+public ArrayList<Article> getArticle_search(String keyword)
+{
+ArrayList<Article> results = new ArrayList<Article>();
+SQLiteDatabase db = this.getWritableDatabase();
+String query = "SELECT * FROM article_search WHERE article_search MATCH ?";//article_search
+Cursor cursor = db.rawQuery(query, new String[] { keyword });
+Log.w("PHMS", ""+cursor.getCount());
+Log.w("PHMS", "" + cursor.moveToFirst());
+        if (cursor.moveToFirst()) {
+            do {
+             Article art = new Article();
+     art.setId(cursor.getInt(0));
+     art.setType(cursor.getString(1));
+     art.setUrl(cursor.getString(2));
+     art.setTitle(cursor.getString(3));
+     art.setDescription(cursor.getString(4));
+     art.setUserId(cursor.getInt(5));//id,type, url,title, description, user
+                results.add(art);
+            } while (cursor.moveToNext());
+        }
+return results;
+}
 	
 	/*
 	 * Get single vital sign entry from Id
