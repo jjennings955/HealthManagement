@@ -3,22 +3,16 @@ package com.team4.healthmonitor;
 
 import android.app.Activity;
 import android.content.Intent;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.team4.database.Contact;
-import com.team4.database.DatabaseHandler;
-import com.team4.database.User;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+
+import com.team4.database.Contact;
+import com.team4.database.DatabaseHandler;
+import com.team4.database.User;
 
 public class RegisterActivity extends Activity {
 	

@@ -1,22 +1,16 @@
 package com.team4.healthmonitor;
 
 
-import com.team4.database.DatabaseHandler;
-
-import com.team4.database.Helper;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
-import android.content.BroadcastReceiver;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.Helper;
 
 public class SplashScreen extends Activity {
  

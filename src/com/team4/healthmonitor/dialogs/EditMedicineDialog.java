@@ -1,17 +1,6 @@
 package com.team4.healthmonitor.dialogs;
 
-import com.team4.database.DatabaseHandler;
-import com.team4.database.Medication;
-import com.team4.database.MedicationEvent;
-import com.team4.healthmonitor.Arguments;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-import com.team4.healthmonitor.fragments.MedicineFragment;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -22,11 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.Medication;
+import com.team4.database.MedicationEvent;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.fragments.MedicineFragment;
 
 
 public class EditMedicineDialog extends DialogFragment implements OnClickListener {

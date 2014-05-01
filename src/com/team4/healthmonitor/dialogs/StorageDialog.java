@@ -3,16 +3,7 @@ package com.team4.healthmonitor.dialogs;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.team4.database.Article;
-import com.team4.database.DatabaseHandler;
-import com.team4.healthmonitor.Arguments;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -20,10 +11,13 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.team4.database.Article;
+import com.team4.database.DatabaseHandler;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
 
 public class StorageDialog extends android.support.v4.app.DialogFragment implements android.view.View.OnClickListener {
 	private int userId;
@@ -90,7 +84,6 @@ public class StorageDialog extends android.support.v4.app.DialogFragment impleme
 			title = this.title.getText().toString();
 			desc = this.desc.getText().toString();
 			url = this.url.getText().toString();
-			Log.w("PHMS", "title = " + title + " desc = " + desc + " url = " + url);
 			if (title.equals(""))
 			{
 				valid = false;
@@ -118,6 +111,7 @@ public class StorageDialog extends android.support.v4.app.DialogFragment impleme
 					Log.w("PHMS", a.toString());
 					db.store(a);
 					sendUpdate();
+					dismiss();
 				}
 				else
 				{
@@ -125,6 +119,7 @@ public class StorageDialog extends android.support.v4.app.DialogFragment impleme
 					Log.w("PHMS", a.toString());
 					db.update(a);
 					sendUpdate();
+					dismiss();
 				}
 
 			}
@@ -136,8 +131,8 @@ public class StorageDialog extends android.support.v4.app.DialogFragment impleme
 			dummy.setId(id);
 			db.delete(dummy);
 			sendUpdate();
+			dismiss();
 		}
-		dismiss();	
 	}
 	
 }

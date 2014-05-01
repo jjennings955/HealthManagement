@@ -1,18 +1,15 @@
 package com.team4.healthmonitor.adapters;
 
-import com.team4.database.MedSchedule;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.fragments.MedicineFragment;
-
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.fragments.MedicineFragment;
 
 public class ScheduleBinder implements ViewBinder {
 	private MedicineFragment parent;

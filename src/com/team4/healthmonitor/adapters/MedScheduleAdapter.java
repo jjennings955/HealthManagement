@@ -2,14 +2,6 @@ package com.team4.healthmonitor.adapters;
 
 import java.util.ArrayList;
 
-import com.team4.database.DatabaseHandler;
-import com.team4.database.Helper;
-import com.team4.database.MedSchedule;
-import com.team4.healthmonitor.fragments.MedicineFragment;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,16 +12,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
-import android.widget.HeterogeneousExpandableList;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.team4.database.DatabaseHandler;
-import com.team4.database.Helper;
 import com.team4.database.MedSchedule;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.fragments.MedicineFragment;

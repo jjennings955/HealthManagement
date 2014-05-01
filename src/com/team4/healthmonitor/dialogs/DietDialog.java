@@ -1,4 +1,6 @@
 package com.team4.healthmonitor.dialogs;
+import java.util.Calendar;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -108,8 +109,12 @@ public class DietDialog extends DialogFragment  {
 	        		 Log.w("PHMS", " amount = " + foodAmount);
 	        		 if (mode == CREATING)
 	        		 {
+	     				Calendar foo = Calendar.getInstance();
+	    				foo.setTimeInMillis(System.currentTimeMillis());
+	    				foo.add(Calendar.DAY_OF_YEAR, offset);
+	    				
 		        		 FoodJournal food = new FoodJournal();
-		        		 food.setDatetime(System.currentTimeMillis() + 1000*24*60*60*offset);
+		        		 food.setDatetime(foo.getTimeInMillis());
 		        		 food.setUserId(userId);
 			        	 food.setName(foodName);
 			        	 food.setAmount(Float.parseFloat(foodAmount));

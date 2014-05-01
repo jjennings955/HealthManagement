@@ -1,12 +1,10 @@
 package com.team4.healthmonitor.adapters;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,13 +14,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.team4.database.Article;
 import com.team4.database.Helper;
 import com.team4.database.VitalSign;
 import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.dialogs.VitalDialog;
-import com.team4.healthmonitor.fragments.StorageFragment;
 import com.team4.healthmonitor.fragments.VitalsFragment;
 
 public class VitalAdapter extends ArrayAdapter<VitalSign> {

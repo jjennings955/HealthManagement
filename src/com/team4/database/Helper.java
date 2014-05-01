@@ -6,12 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import android.net.ParseException;
 
 public class Helper {
 	public static String getHex( byte [] raw ) {

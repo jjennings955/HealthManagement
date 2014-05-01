@@ -2,14 +2,6 @@ package com.team4.healthmonitor.adapters;
 
 import java.util.List;
 
-import com.team4.database.Article;
-import com.team4.database.DatabaseHandler;
-import com.team4.database.FoodJournal;
-import com.team4.database.Helper;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.fragments.DietFragment;
-import com.team4.healthmonitor.fragments.StorageFragment;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.FoodJournal;
+import com.team4.database.Helper;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.fragments.DietFragment;
 
 public class DietAdapter extends ArrayAdapter<FoodJournal> {
 	public DietFragment parentFragment;

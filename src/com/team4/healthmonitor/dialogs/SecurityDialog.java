@@ -1,56 +1,20 @@
 package com.team4.healthmonitor.dialogs;
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
-import com.team4.database.DatabaseHandler;
-import com.team4.database.Medication;
-import com.team4.database.MedicationEvent;
-import com.team4.database.Session;
-import com.team4.database.User;
-import com.team4.healthmonitor.Arguments;
-import com.team4.healthmonitor.MainAppActivity;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-
-import android.content.DialogInterface;
-import android.view.View.OnClickListener;
-
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.User;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
 
 
 public class SecurityDialog extends DialogFragment implements OnClickListener

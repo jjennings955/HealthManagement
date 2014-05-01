@@ -1,14 +1,6 @@
 package com.team4.healthmonitor.dialogs;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
-import com.team4.database.DatabaseHandler;
-import com.team4.database.VitalSign;
-import com.team4.healthmonitor.Arguments;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,19 +9,21 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.VitalSign;
+import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
 
 public class VitalDialog extends DialogFragment implements OnItemSelectedListener, OnClickListener  {
 	

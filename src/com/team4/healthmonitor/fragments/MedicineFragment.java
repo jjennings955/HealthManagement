@@ -3,26 +3,6 @@ package com.team4.healthmonitor.fragments;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-
-import com.team4.database.DatabaseHandler;
-import com.team4.database.Helper;
-import com.team4.database.MedSchedule;
-import com.team4.database.Medication;
-import com.team4.database.User;
-import com.team4.database.VitalSign;
-import com.team4.healthmonitor.Arguments;
-import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.R.id;
-import com.team4.healthmonitor.R.layout;
-import com.team4.healthmonitor.R.menu;
-import com.team4.healthmonitor.adapters.MedScheduleAdapter;
-import com.team4.healthmonitor.dialogs.EditMedicineDialog;
-import com.team4.healthmonitor.dialogs.MedicineDialog;
-import com.team4.healthmonitor.dialogs.SettingsDialog;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -30,13 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Paint;
-import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,14 +23,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.team4.database.DatabaseHandler;
+import com.team4.database.Helper;
+import com.team4.database.MedSchedule;
+import com.team4.database.User;
 import com.team4.healthmonitor.Arguments;
+import com.team4.healthmonitor.R;
+import com.team4.healthmonitor.adapters.MedScheduleAdapter;
+import com.team4.healthmonitor.dialogs.EditMedicineDialog;
+import com.team4.healthmonitor.dialogs.MedicineDialog;
+import com.team4.healthmonitor.dialogs.SettingsDialog;
 
 public class MedicineFragment extends Fragment
 {

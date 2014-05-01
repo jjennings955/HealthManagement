@@ -13,48 +13,51 @@ import android.widget.TextView;
 
 import com.team4.database.Article;
 import com.team4.healthmonitor.R;
-import com.team4.healthmonitor.fragments.StorageFragment;
+import com.team4.healthmonitor.fragments.SearchFragment;
 
+public class SearchResultAdapter extends ArrayAdapter<Article> {
 
-public class ArticleAdapter extends ArrayAdapter<Article> {
-	private StorageFragment parentFragment = null;
-	public ArticleAdapter(Context context, int resource, List<Article> objects) {
+private SearchFragment sparentFragment = null;
+	
+	public SearchResultAdapter(Context context, int resource, List<Article> objects) {
 		super(context, resource, objects);
 		
 	}
-	public ArticleAdapter(StorageFragment parentFragment, Context context, int resource, List<Article> objects)
+	public SearchResultAdapter(SearchFragment sparentFragment, Context context, int resource, List<Article> objects)
 	{
 		super(context, resource, objects);
-		this.parentFragment = parentFragment;
+		this.sparentFragment = sparentFragment;
 	}
-
+	
+	
+	
+	
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
        // Get the data item for this position
        Article entry = getItem(position);  
-       Log.w("PHMS", "ListAdapter" + position);
        // Check if an existing view is being reused, otherwise inflate the view
        if (convertView == null) {
           convertView = LayoutInflater.from(getContext()).inflate(R.layout.article_item, null);
        }
        // Lookup view for data population
-       TextView title = (TextView) convertView.findViewById(R.id.artTitle);
-       TextView url = (TextView) convertView.findViewById(R.id.artUrl);
-       TextView description = (TextView)convertView.findViewById(R.id.artDesc);
+       TextView stitle = (TextView) convertView.findViewById(R.id.artTitle);
+       TextView surl = (TextView) convertView.findViewById(R.id.artUrl);
+       TextView sdescription = (TextView)convertView.findViewById(R.id.artDesc);
        //CheckBox taken = (CheckBox)convertView.findViewById(R.id.medStatus_temp);
-       ImageButton edit = (ImageButton)convertView.findViewById(R.id.storageEditBtn);
+       ImageButton sedit = (ImageButton)convertView.findViewById(R.id.storageEditBtn);
+       sedit.setVisibility(View.INVISIBLE);
        
        // Populate the data into the template view using the data object
-       title.setText(entry.getTitle());
-       url.setText(entry.getUrl());
-       description.setText(entry.getDescription());
-       description.setMinHeight(0);
+       stitle.setText(entry.getTitle());
+       surl.setText(entry.getUrl());
+       sdescription.setText(entry.getDescription());
+       sdescription.setMinHeight(0);
        final int id = entry.getId();
-       edit.setOnClickListener(new View.OnClickListener() {
+       sedit.setOnClickListener(new View.OnClickListener() {
 	   @Override
 		public void onClick(View v) {
 			
-			parentFragment.showEditArticleDialog(id);
 		}
        });
        
@@ -62,6 +65,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
        return convertView;
    }
 	
-
+	
+	
 
 }

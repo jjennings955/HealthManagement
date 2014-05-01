@@ -189,7 +189,7 @@ public class VitalsFragment extends Fragment
 		else
 		{
 			forwardButton.setVisibility(View.VISIBLE);
-			Button todayButton = (Button)getActivity().findViewById(R.id.today);
+			Button todayButton = (Button)myContext.findViewById(R.id.today);
 			todayButton.setVisibility(View.VISIBLE);
 		}
 	}
