@@ -39,9 +39,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, user INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create virtual table food_search using fts3(id INTEGER, description TEXT, FOREIGN KEY(id) REFERENCES food_journal(id) ON DELETE CASCADE);\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
-				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TINYINT, dosage TEXT, medication INTEGER, user INTEGER, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
+				"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TINYINT, dosage TEXT, medication INTEGER, user INTEGER, priority TEXT, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table medication_tracking(medication_schedule_id INTEGER, date TEXT, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id) ON DELETE CASCADE, primary key (medication_schedule_id, date));\n" +
 				"create table medication_conflict(medication_one INTEGER, medication_two INTEGER, PRIMARY KEY(medication_one, medication_two));\n";
+		
+			//	"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, time_hours INTEGER,  time_mins INTEGER, day TINYINT, dosage REAL, medication INTEGER, user INTEGER, priority TEXT, FOREIGN KEY(medication) REFERENCES medication(id), FOREIGN KEY(user) REFERENCES user(id));\n" +
+				//"create table medication_tracking(medication_schedule_id INTEGER, date TEXT, FOREIGN KEY(medication_schedule_id) REFERENCES medication_schedule(id) ON DELETE CASCADE, primary key (medication_schedule_id, date));\n";
+				//select count(*) from schedule where schedule_id = ? and 
 		
 		String statements[] = create_statement.split("\n");
 		for (int i = 0; i < statements.length; i++)
@@ -108,8 +112,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			this.store(med, db);
 		}
-		this.makeConflict(db, tylenol.getId(), aspirin.getId());
-		this.makeConflict(db, aspirin.getId(), tylenol.getId());
+		/*if (tylenol.getId() != null & aspirin.getId() != null)
+		{
+			this.makeConflict(db, tylenol.getId(), aspirin.getId());
+			this.makeConflict(db, aspirin.getId(), tylenol.getId());
+		}*/
 	}
 	/* Mark a medication as taken
 	 * 
@@ -138,8 +145,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<MedSchedule> results = new ArrayList<MedSchedule>();
 
-		String query1 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication as M, medication_schedule as S where M.id = S.medication and not exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
-		String query2 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins from medication as M, medication_schedule as S where M.id = S.medication and exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
+		String query1 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins, S.priority from medication as M, medication_schedule as S where M.id = S.medication and not exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
+		String query2 = "select S.id, M.name, S.dosage, S.day, S.time_hours, S.time_mins, S.priority from medication as M, medication_schedule as S where M.id = S.medication and exists (select * from medication_tracking where medication_schedule_id = S.id and date = ?) and user = ? and day = ? order by S.time_hours, S.time_mins, M.name;";
 		
 		Cursor cursor = db.rawQuery(query1, new String[] { "" + date, "" + u.getId(), "" + day });
 		if (cursor.moveToFirst()) {
@@ -175,6 +182,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		  values.put("medication", newEvent.getMedication_id());
 		  values.put("user", newEvent.getUserId());
 		  values.put("day", newEvent.getDay());
+		  values.put("priority", newEvent.getPriority());
 		  db.insert("medication_schedule", null, values);
 		  
 	}
@@ -422,6 +430,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put("height_inches", target.getHeight_inches());
 		values.put("weight", target.getWeight());
 		values.put("age", target.getAge());
+		
 		db.update("user", values, "id = ?", new String[] { ""+target.getId() });
 	}
 	
@@ -606,6 +615,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return results;
+	}
+	public Session currentUserSession(int userId)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "SELECT * from sessions WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1";
+		Cursor cursor = db.rawQuery(query, new String[] { ""+ userId });
+		
+        if (cursor.moveToFirst()) {
+            	Session result = new Session();
+        		result.setSession_id(cursor.getInt(0));
+        		result.setUser_id(cursor.getInt(1));
+        		result.setTimestamp(cursor.getLong(2));
+        		return result;
+            } 
+        return null;
+        
+
+        
 	}
 	/*
 	 * Get single food_journal entry from Id

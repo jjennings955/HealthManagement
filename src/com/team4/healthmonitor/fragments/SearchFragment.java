@@ -28,9 +28,6 @@ public class SearchFragment extends Fragment
 
 		View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 		setHasOptionsMenu(true);
-		//((MainAppActivity) getActivity()).setActionBarTitle("Search");
-		
-		//Toast.makeText(getActivity(), myContext+"", Toast.LENGTH_SHORT).show();
 		
 		return rootView;
 	}

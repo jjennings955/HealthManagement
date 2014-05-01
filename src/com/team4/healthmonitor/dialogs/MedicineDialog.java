@@ -63,6 +63,8 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
 	 private EditText interval;
 	 private int userId;
 	 private HashMap<Integer, CheckBox> checkMap;
+	 
+	 
  public MedicineDialog() 
  {
  }
@@ -73,16 +75,14 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
 	 Bundle args = getArguments();
 	 userId = args.getInt(Arguments.USERID);
 	 DatabaseHandler db = new DatabaseHandler(this.getActivity());
-	 //Intent intent = this.getActivity().getIntent().getIntExtra("userid", defaultValue);
 	 List<String> suggestions = new ArrayList<String>();
 	 ArrayList<Medication> medications = db.getMedications();
 	 for (Medication m : medications)
 	 {
 		 suggestions.add(m.getName());
 	 }
-	 //String[] suggestions2 = (String[])suggestions.toArray();
+	 
 	 final ArrayAdapter<Medication> adapter = new ArrayAdapter<Medication>(this.getActivity(), android.R.layout.simple_list_item_1, medications);
-	 //SimpleCursorAdapter adapter = new SimpleCursorAdapter(context, layout, c, from, to)
      View view = inflater.inflate(R.layout.dialog_medicine, container);
      medName = (AutoCompleteTextView) view.findViewById(R.id.MedName);
      interval = (EditText)view.findViewById(R.id.edit_dosage_interval);
@@ -90,6 +90,8 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
      priority = (RadioGroup) view.findViewById(R.id.Priority);
      time = (TimePicker) view.findViewById(R.id.MedTime);
      perDay = (EditText) view.findViewById(R.id.NumberOfTimes);
+     high = (RadioButton)view.findViewById(R.id.High);
+     low = (RadioButton)view.findViewById(R.id.Low);
      getDialog().setTitle("Add a Medication");
 
 	
@@ -180,12 +182,22 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
 		    	 for (int i = 0; i < numTimes; i++)
 		    	 {
 		    		 MedicationEvent med = new MedicationEvent();
+		    		 
+		    		 if(high.isChecked())
+		    		 {
+		    			 med.setPriority("high");
+		    		 }
+		    		 else
+		    		 {
+		    			 med.setPriority("low");
+		    		 }
+		    		 
 		        	 med.setMedication_id(medId);
 		        	 med.setUserId(userId);
 		        	 med.setTime_hours(hours + i*inter);
 		        	 med.setTime_mins(mins);
 		        	 med.setDosage(enteredDosage);
-		        	 med.setDay(e.getKey()); // FIX ME!
+		        	 med.setDay(e.getKey());
 		        	 db.store(med);
 		    	 }
     		 }

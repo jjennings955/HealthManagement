@@ -119,7 +119,7 @@ public class StorageDialog extends android.support.v4.app.DialogFragment impleme
 					db.store(a);
 					sendUpdate();
 				}
-				else // (type == UPDATE)
+				else
 				{
 					a.setId(id);
 					Log.w("PHMS", a.toString());

@@ -40,6 +40,7 @@ import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.adapters.VitalAdapter;
 import com.team4.healthmonitor.dialogs.SearchDialog;
+import com.team4.healthmonitor.dialogs.SettingsDialog;
 import com.team4.healthmonitor.dialogs.VitalDialog;
 
 
@@ -165,9 +166,6 @@ public class VitalsFragment extends Fragment
 	    labels.put(VitalSign.BLOOD_SUGAR, (TextView) rootView.findViewById(R.id.vitals_bloodsugar_label));
 	    labels.put(VitalSign.CHOLESTEROL, (TextView) rootView.findViewById(R.id.vitals_cholesterol_label));
 	    labels.put(VitalSign.WEIGHT, (TextView) rootView.findViewById(R.id.vitals_weight_label));
-	    
-	    //listViews = new ListView[]{ bplist, weightlist, cholesterolList, sugarList };
-	    //adapters = new VitalAdapter[]{ bpadapter, weightadapter, choladapter, sugaradapter };
 	    listViews.size();
 	    
 	    for (Entry<Integer, ListView> entry : listViews.entrySet())
@@ -290,8 +288,7 @@ public class VitalsFragment extends Fragment
 	        	showVitalDialog();
 	            return true;
 	        case R.id.settings_item:
-	        	Toast.makeText(getActivity(), "Search",
-	        		      Toast.LENGTH_SHORT).show();
+	        	showSettingsDialog(userId);
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -317,5 +314,15 @@ public class VitalsFragment extends Fragment
         args.putInt(Arguments.DIALOGTYPE, SearchDialog.VITAL_DATE);
         vd.setArguments(args);
         vd.show(fm2, "fragment_edit_name");
+    }
+    
+    public void showSettingsDialog(int id)
+    {
+        FragmentManager fm = myContext2.getSupportFragmentManager();
+        SettingsDialog md = new SettingsDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.USERID, id);
+        md.setArguments(args);
+        md.show(fm, "dialog_settings_medicine");
     }
 }

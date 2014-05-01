@@ -5,14 +5,19 @@ package com.team4.healthmonitor;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
+import com.team4.database.Contact;
 import com.team4.database.DatabaseHandler;
 import com.team4.database.Helper;
 import com.team4.database.MedSchedule;
+import com.team4.database.Session;
 import com.team4.database.User;
 
 
 import com.team4.healthmonitor.adapters.TabsPagerAdapter;
+import com.team4.healthmonitor.dialogs.EditMedicineDialog;
+import com.team4.healthmonitor.dialogs.SecurityDialog;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -34,18 +39,21 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import android.view.View;
 import android.widget.Toast;
-
+import android.os.Vibrator;
 @SuppressLint("NewApi")
 public class MainAppActivity extends FragmentActivity implements ActionBar.TabListener
 {
@@ -54,6 +62,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	public final static String PASSWORD = "com.team4.healthmonitor.PASSWORD";
 	public final static String MEDTIME = "com.team4.healthmonitor.TIME";
 	public final static String MEDNAME = "com.team4.healthmonitor.NAME";
+	public final static String USERID = "com.team4.healthmonitor.USERID";
 	public static String username = "";
 	public static String password = "";
 
@@ -71,6 +80,10 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	private float mAccel; // acceleration apart from gravity
 	private float mAccelCurrent; // current acceleration including gravity
 	private float mAccelLast; // last acceleration including gravity
+	private int minsUntilEmail = 2;
+	private ArrayList<Integer> medsAlerted = new ArrayList<Integer>();
+	public boolean firstTime = true;
+	private MediaPlayer player;
 
 	private final SensorEventListener mSensorListener = new SensorEventListener() 
 	{
@@ -85,9 +98,23 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		    float delta = mAccelCurrent - mAccelLast;
 		    mAccel = mAccel * 0.9f + delta; // perform low-cut filter
 		    
-		    if(mAccel > 4)
+		    SecurityDialog sd = new SecurityDialog();
+		    
+		    
+		    if((mAccel > 7 && getSupportFragmentManager().findFragmentByTag("SecurityDialog") == null) || (mAccel > 7 && firstTime == true))
 		    {
-		    	Log.i("Accelerometer", mAccel+"");
+		    	
+		        Bundle b = new Bundle();
+		        b = getIntent().getExtras();
+		        int id = b.getInt(USERID);
+		        Bundle args = new Bundle();
+		        args.putInt(Arguments.USERID, id);
+		        sd.setArguments(args);
+		    	sd.show(getSupportFragmentManager(), "SecurityDialog");
+		    	sd.setCancelable(false);
+		    	firstTime = false;
+		    	
+		    	
 		    }
 		}
 
@@ -122,6 +149,8 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		password = i.getStringExtra(MainActivity.PASSWORD);
 		userId = i.getIntExtra(MainActivity.USERID, -1);
 		
+		
+		
 		new Thread(new Runnable() 
 		{
 		    @Override
@@ -145,6 +174,38 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		                    
 		                    	DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		                		User currentUser = db.getUser(userId);
+		                		Session currentSession = db.currentUserSession(userId);
+		                		Timestamp s = new Timestamp(currentSession.getTimestamp());
+		                		Calendar session = Calendar.getInstance();
+		                		session.setTimeInMillis(s.getTime());
+		                		int sessionHour = session.get(Calendar.HOUR);
+		                		int sessionMinute = session.get(Calendar.MINUTE);
+		                		
+		                		ArrayList<Integer> contactIDs = new ArrayList<Integer>();
+		                		contactIDs = db.getContactsList(userId);
+		                		
+		                		String[] toArrTemp = {"",""};
+		                		String[] nameTemp = {"",""};
+		                		
+		                		if(contactIDs.size() == 2)
+		                		{
+		                			
+		                			Contact one = db.getContact(contactIDs.get(0));
+		                			Contact two = db.getContact(contactIDs.get(1));
+		                			toArrTemp[0] = one.getEmail();
+		                			toArrTemp[1] = two.getEmail();
+		                			
+		                			
+		                		}
+		                		
+		                		nameTemp[0] = currentUser.getFirstName();
+		                		nameTemp[1] = currentUser.getLastName();
+		                		
+		                		
+		                		
+		                		final String[] toArr = toArrTemp;
+		                		final String[] name = nameTemp;
+		                		
 		                		ArrayList<MedSchedule> scheduleEntries = db.getUserMedicationSchedule(currentUser, Helper.getDay(), Helper.getDate());
 		                		
 		                		Calendar now = Calendar.getInstance();
@@ -153,7 +214,13 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		                		
 		                		for(int a = 0; a < scheduleEntries.size(); a++)
 		                		{
+		                			
+
+			                		String[] medNameTemp = {""};
+			                		
+			                		medNameTemp[0] = scheduleEntries.get(a).getName(); 
 		                		
+			                		final String[] medName = medNameTemp;
 		                			
 		                			medTime.set(Calendar.HOUR_OF_DAY, scheduleEntries.get(a).getHour());
 		                			medTime.set(Calendar.MINUTE, scheduleEntries.get(a).getMinutes());
@@ -169,35 +236,164 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	                				nowMin = now.get(Calendar.MINUTE);
 	                				medHour = medTime.get(Calendar.HOUR);
 	                				medMin = medTime.get(Calendar.MINUTE);
+	                				
+	                				if(scheduleEntries.get(a).getPriority() != null && scheduleEntries.get(a).getStatus() == false)
+	                				{
 		                			
-		                			if(medHour > nowHour || (medHour == nowHour && medMin >= nowMin))
-		                			{
-		                			    //Today Set time had NOT passed
-		                		//		Toast.makeText(getApplicationContext(), "now: "+now.getTime()+"", Toast.LENGTH_SHORT).show();
-		                		//		Toast.makeText(getApplicationContext(), "medTime: "+medTime.getTime()+"", Toast.LENGTH_SHORT).show();
-		                		//		Toast.makeText(getApplicationContext(), scheduleEntries.get(a).getHour()+"   "+scheduleEntries.get(a).getMinutes(), Toast.LENGTH_SHORT).show();
-		                				//	Toast.makeText(getApplicationContext(), "medTime: "+medTime.getTime()+"", Toast.LENGTH_SHORT).show();
-		                				
-		                				//Toast.makeText(getApplicationContext(), "in", Toast.LENGTH_SHORT).show();
-		                				
-		                				
-		                				
-		                				//Toast.makeText(getApplicationContext(), medname+"", Toast.LENGTH_SHORT).show();
-		                				
-		                				//Toast.makeText(getApplicationContext(), "now: "+nowHour+":"+nowMin+"   "+scheduleEntries.get(a).getName()+": "+medHour+":"+medMin, Toast.LENGTH_SHORT).show();
-		                				
-		                				if(nowHour == medHour && nowMin == medMin)
-		                				{
-		                					Toast.makeText(getApplicationContext(), "Found medicine needed to be taken: "+scheduleEntries.get(a).getName(), Toast.LENGTH_SHORT).show();
-		                					createNotification(scheduleEntries.get(a).getName());
-		                				}
-		                				
-		                			}
+			                			if((medHour > nowHour || (medHour == nowHour && medMin >= nowMin)))
+			                			{
+			                				
+			                				
+			                				if(nowHour == medHour && nowMin == medMin)
+			                				{
+			                					setVolumeControlStream(AudioManager.STREAM_MUSIC);
+			                					player = MediaPlayer.create(getBaseContext(), R.raw.notification);
+			                					player.start();
+			                					Toast.makeText(getApplicationContext(), "You need to take your "+scheduleEntries.get(a).getName()+" now!", Toast.LENGTH_SHORT).show();
+			                					Vibrator v = (Vibrator) getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+			                					v.vibrate(500);
+			                					createNotification(scheduleEntries.get(a).getName());
+			                				}
+			                				
+			                				
+			                				
+			                			}
+			                			else if((medHour > sessionHour || (medHour == sessionHour && medMin >= sessionMinute)) && scheduleEntries.get(a).getStatus() == false && scheduleEntries.get(a).getPriority().toString().equalsIgnoreCase("high"))
+			                			{
+			                				
+			                				if(medHour == nowHour && medMin < minsUntilEmail && medMin + minsUntilEmail == nowMin && medsAlerted.contains(scheduleEntries.get(a).getID()) == false)
+			                				{
+			                					setVolumeControlStream(AudioManager.STREAM_MUSIC);
+			                					player = MediaPlayer.create(getBaseContext(), R.raw.email);
+			                					player.start();
+			                					medsAlerted.add(scheduleEntries.get(a).getID());
+			                					Toast.makeText(getApplicationContext(), "SENDING EMAIL!", Toast.LENGTH_SHORT).show();
+			                					Vibrator v = (Vibrator) getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+			                					v.vibrate(500);
+			                					Thread thread = new Thread(new Runnable()
+			                					{
+				                		            @Override
+				                		            public void run() {
+				                		                try {
+				                		                	Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
+	
+				                		                    m.setTo(toArr);
+				                		                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
+				                		                    m.setSubject("PHMS - MEDICATION ALERT FOR "+ name[0]+ " " +name[1]);
+				                		                    m.setBody(medName[0] + " has not been taken by "+ name[0]+ " " +name[1]+"!");
+				                		                    m.send();
+				                		                   
+				                		                } catch (Exception e) {
+				                		                    e.printStackTrace();
+				                		                }
+				                		            }
+				                		            
+				                		        });
+				                				thread.start();
+			                				}
+			                				else if(medHour == nowHour && medMin > minsUntilEmail && medsAlerted.contains(scheduleEntries.get(a).getID()) == false)
+			                				{
+			                					if(medMin + minsUntilEmail >= 60 && medMin + (minsUntilEmail - 60) == nowMin)
+			                					{
+			                						setVolumeControlStream(AudioManager.STREAM_MUSIC);
+				                					player = MediaPlayer.create(getBaseContext(), R.raw.email);
+				                					player.start();
+			                						medsAlerted.add(scheduleEntries.get(a).getID());
+			                						Toast.makeText(getApplicationContext(), "SENDING EMAIL!", Toast.LENGTH_SHORT).show();
+				                					Vibrator v = (Vibrator) getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+				                					v.vibrate(500);
+				                					Thread thread = new Thread(new Runnable()
+				                					{
+					                		            @Override
+					                		            public void run() {
+					                		                try {
+					                		                	Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
+		
+					                		                	m.setTo(toArr);
+					                		                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
+					                		                    m.setSubject("PHMS - MEDICATION ALERT FOR "+ name[0]+ " " +name[1]);
+						                		                m.setBody(medName[0] + " has not been taken by "+ name[0]+ " " +name[1]+"!");
+					                		                    m.send();
+					                		                   
+					                		                } catch (Exception e) {
+					                		                    e.printStackTrace();
+					                		                }
+					                		            }
+					                		            
+					                		        });
+					                				thread.start();
+			                					}
+			                					else if(medMin + minsUntilEmail < 60 && medMin + minsUntilEmail == nowMin)
+			                					{
+			                						setVolumeControlStream(AudioManager.STREAM_MUSIC);
+				                					player = MediaPlayer.create(getBaseContext(), R.raw.email);
+				                					player.start();
+			                						medsAlerted.add(scheduleEntries.get(a).getID());
+			                						Toast.makeText(getApplicationContext(), "SENDING EMAIL!", Toast.LENGTH_SHORT).show();
+			                						Vibrator v = (Vibrator) getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+				                					v.vibrate(500);
+				                					Thread thread = new Thread(new Runnable()
+				                					{
+					                		            @Override
+					                		            public void run() {
+					                		                try {
+					                		                	Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
+		
+					                		                    m.setTo(toArr);
+					                		                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
+					                		                    m.setSubject("PHMS - MEDICATION ALERT FOR "+ name[0]+ " " +name[1]);
+						                		                m.setBody(medName[0] + " has not been taken by "+ name[0]+ " " +name[1]+"!");
+					                		                    m.send();
+					                		                    
+					                		                } catch (Exception e) {
+					                		                    e.printStackTrace();
+					                		                }
+					                		            }
+					                		            
+					                		        });
+					                				thread.start();
+			                					}
+			              
+			                				}
+			                				else if(medHour < nowHour && medMin >= (60 - minsUntilEmail) && (medMin + minsUntilEmail) - 60 == nowMin && medsAlerted.contains(scheduleEntries.get(a).getID()) == false)
+			                				{
+			                					setVolumeControlStream(AudioManager.STREAM_MUSIC);
+			                					player = MediaPlayer.create(getBaseContext(), R.raw.email);
+			                					player.start();
+			                					medsAlerted.add(scheduleEntries.get(a).getID());
+			                					Toast.makeText(getApplicationContext(), "SENDING EMAIL!", Toast.LENGTH_SHORT).show();
+			                					Vibrator v = (Vibrator) getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+			                					v.vibrate(500);
+			                					Thread thread = new Thread(new Runnable()
+			                					{
+				                		            @Override
+				                		            public void run() {
+				                		                try {
+				                		                	Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
+	
+				                		                    m.setTo(toArr);
+				                		                    m.setFrom("personalhealthmonitoringsystem@gmail.com");
+				                		                    m.setSubject("PHMS - MEDICATION ALERT FOR "+ name[0]+ " " +name[1]);
+					                		                m.setBody(medName[0] + " has not been taken by "+ name[0]+ " " +name[1]+"!");
+				                		                    m.send();
+				                		                    
+				                		                } catch (Exception e) {
+				                		                    e.printStackTrace();
+				                		                }
+				                		            }
+				                		            
+				                		        });
+				                				thread.start();
+			                				}
+			                					
+			                				
+			                			}
+			                				
+	                				}
 		                		
 		                		}
 		                    	
-		                        // TODO Auto-generated method stub
-		                        // Write your code here to update the UI.
+		                        
 		                    }
 		                });
 		            } 
@@ -210,31 +406,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 		}).start();
 		
 
-/*		for(int a = 0; a < scheduleEntries.size(); a++)
-		{
-			String str = scheduleEntries.get(a).getTime();
-			Toast.makeText(getApplicationContext(), str.substring(str.length() - 2, str.length())+"", Toast.LENGTH_SHORT).show();
-		}
-*/		
-		
 
-	/*	
-		Bundle bundle = new Bundle();
-		bundle.putString("username", username);
-		MedicineFragment fragment=new MedicineFragment();
-		fragment.setArguments(bundle);
-
-		
-	
-		Fragment fragment = new Fragment();
-		Bundle bundle = new Bundle();
-		bundle.putString(key, username);
-		fragment.setArguments(bundle);
-
-*/
-		
-		
-		
 		setContentView(R.layout.activity_main_app);
 
 		// Initilization
@@ -265,7 +437,6 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 				// on changing the page
 				// make respected tab selected
 				actionBar.setSelectedNavigationItem(position);
-				//Toast.makeText(getApplicationContext(), position+"", Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
@@ -318,16 +489,7 @@ public class MainAppActivity extends FragmentActivity implements ActionBar.TabLi
 	{
 	}
 	
-	private void setAlarm(Calendar targetCal, int requestCode, String medtime, String medname)
-	{
-
-		  Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
-		  intent.putExtra("MEDTIME", medtime);
-		  intent.putExtra("MEDNAME", medname);
-		  PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), requestCode, intent, 0);
-		  AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		  alarmManager.set(AlarmManager.RTC_WAKEUP, targetCal.getTimeInMillis(), pendingIntent);
-	}
+	
 	
 	public void createNotification(String med) 
 	{

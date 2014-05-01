@@ -88,6 +88,7 @@ public class DietDialog extends DialogFragment  {
 		});
 	     button.setOnClickListener(new OnClickListener() {
 	         public void onClick(View v) {
+//<<<<<<< HEAD
 	        	 boolean valid = true;
 	        	 String foodName = foodIntake.getText().toString();
 	        	 String foodAmount = amount.getText().toString();

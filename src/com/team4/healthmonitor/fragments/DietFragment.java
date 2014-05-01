@@ -16,6 +16,7 @@ import com.team4.healthmonitor.R.menu;
 import com.team4.healthmonitor.adapters.ArticleAdapter;
 import com.team4.healthmonitor.dialogs.DietDialog;
 import com.team4.healthmonitor.dialogs.SearchDialog;
+import com.team4.healthmonitor.dialogs.SettingsDialog;
 import com.team4.healthmonitor.adapters.DietAdapter;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -150,7 +151,7 @@ public class DietFragment extends Fragment
 		{
 			sum += adapter.getItem(i).getAmount();
 		}
-		calories.setText("" + (int)sum);
+		calories.setText("" + (int)sum + " calories consumed");
 	}
 	private void updateDate() {
 		date.setText(Helper.getDateWithOffset(offset));
@@ -188,8 +189,7 @@ public class DietFragment extends Fragment
 	        	showDietDialog();
 	            return true;
 	        case R.id.settings_item:
-	        	Toast.makeText(getActivity(), "Search",
-	        		      Toast.LENGTH_SHORT).show();
+	        	showSettingsDialog(userId);
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -227,5 +227,15 @@ public class DietFragment extends Fragment
         args.putInt(Arguments.DIALOGTYPE, SearchDialog.DIET_DATE);
         vd.setArguments(args);
         vd.show(fm2, "fragment_edit_name");
+    }
+    
+    public void showSettingsDialog(int id)
+    {
+        FragmentManager fm = myContext.getSupportFragmentManager();
+        SettingsDialog md = new SettingsDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.USERID, id);
+        md.setArguments(args);
+        md.show(fm, "dialog_settings_medicine");
     }
 }

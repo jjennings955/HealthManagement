@@ -15,6 +15,7 @@ import com.team4.healthmonitor.R.menu;
 import com.team4.healthmonitor.adapters.ArticleAdapter;
 import com.team4.healthmonitor.adapters.VitalAdapter;
 import com.team4.healthmonitor.dialogs.EditMedicineDialog;
+import com.team4.healthmonitor.dialogs.SettingsDialog;
 import com.team4.healthmonitor.dialogs.StorageDialog;
 
 import android.content.BroadcastReceiver;
@@ -67,9 +68,6 @@ public class StorageFragment extends Fragment
 			adapter.clear();
 			adapter.addAll(db.getUserArticle(userId));
 			adapter.notifyDataSetChanged();
-			//checkTip();
-			//Utility.setListViewHeightBasedOnChildren(listView);
-			//Utility.setListViewHeightBasedOnChildren(adapter.getVi
 		}
 
 		
@@ -90,8 +88,6 @@ public class StorageFragment extends Fragment
 		adapter = new ArticleAdapter(this, getActivity(), R.layout.article_item, articles);
 		rootList.setAdapter(adapter);
 		rootList.setEmptyView(tip);
-		//checkTip();
-		//Utility.setListViewHeightBasedOnChildren(rootList);
 		setHasOptionsMenu(true);
 	
 		return rootView;
@@ -132,8 +128,7 @@ public class StorageFragment extends Fragment
 	        	showStorageDialog();
 	            return true;
 	        case R.id.settings_item:
-	        	Toast.makeText(getActivity(), "Search",
-	        		      Toast.LENGTH_SHORT).show();
+	        	showSettingsDialog(userId);
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -155,4 +150,14 @@ public class StorageFragment extends Fragment
 	{
 	   inflater.inflate(R.menu.storage_menu, menu);
 	}
+	
+	 public void showSettingsDialog(int id)
+	    {
+	        FragmentManager fm = getActivity().getSupportFragmentManager();
+	        SettingsDialog md = new SettingsDialog();
+	        Bundle args = new Bundle();
+	        args.putInt(Arguments.USERID, id);
+	        md.setArguments(args);
+	        md.show(fm, "dialog_settings_medicine");
+	    }
 }

@@ -10,9 +10,10 @@ public class MedSchedule implements Comparable<MedSchedule>
 	public int day;
 	public String date;
 	public boolean status;
+	public String priority;
 	public int id;
 	
-	public MedSchedule(int id, String name, String dosage, int day, String time, String date, boolean status)
+	public MedSchedule(int id, String name, String dosage, int day, String time, String date, boolean status, String priority)
 	{
 		this.id = id;
 		this.name = name;
@@ -21,6 +22,7 @@ public class MedSchedule implements Comparable<MedSchedule>
 		this.time = time;
 		this.date = date;
 		this.status = status;
+		this.priority = priority;
 	}
 
 	public MedSchedule() {
@@ -64,6 +66,7 @@ public class MedSchedule implements Comparable<MedSchedule>
 		return (getHour() * 60 + getMinutes()) - (another.getHour() * 60 + another.getMinutes());
 		
 	}
+
 	public static MedSchedule getMedSchedule(Cursor cursor)
 	{
 		int hours = cursor.getInt(4);
@@ -80,7 +83,25 @@ public class MedSchedule implements Comparable<MedSchedule>
 		result.dosage = cursor.getString(2);
 		result.day = cursor.getShort(3);
 		result.time = timeString;
+		result.priority = cursor.getString(6);
 		return result;
 		
 	}
+
+	public boolean getStatus()
+	{
+		return status;
+	}
+	
+	public String getPriority()
+	{
+		return priority;
+	}
+	
+	public int getID()
+	{
+		return id;
+	}
+
+
 }

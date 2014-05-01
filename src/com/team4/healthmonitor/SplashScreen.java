@@ -31,9 +31,6 @@ public class SplashScreen extends Activity {
 		    Log.d("receiver", "Got message: " + message);
 		    Toast foo = Toast.makeText(context, "Finished importing food database", Toast.LENGTH_SHORT);
 		    foo.show();
-            //Intent i = new Intent(SplashScreen.this, MainActivity.class);
-            //startActivity(i);
-		    //finish();
 		  }
 		};
 
@@ -42,14 +39,10 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         DatabaseHandler db = new DatabaseHandler(this);
-
-
-         
-        
         Log.w("PHMS", Helper.getDate());
         Intent i = new Intent(SplashScreen.this, MainActivity.class);
         startActivity(i);
-	    finish();
+        finish();
    }
  
 }

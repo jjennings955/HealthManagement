@@ -31,8 +31,6 @@ public class MainActivity extends Activity {
       DatabaseHandler db = new DatabaseHandler(this);
       username = (EditText)findViewById(R.id.main_edit_login);
       password = (EditText)findViewById(R.id.main_edit_password);
-      attempts = (TextView)findViewById(R.id.main_attempts_text);
-      attempts.setText(Integer.toString(counter));
       login = (Button)findViewById(R.id.main_login_btn);
    }
 
@@ -61,13 +59,6 @@ public class MainActivity extends Activity {
 
       Toast.makeText(getApplicationContext(), "Wrong Credentials",
       Toast.LENGTH_SHORT).show();
-      attempts.setBackgroundColor(Color.RED);	
-      counter--;
-      attempts.setText(Integer.toString(counter));
-      if(counter==0)
-      {
-         login.setEnabled(false);
-      }
 
    }
 
