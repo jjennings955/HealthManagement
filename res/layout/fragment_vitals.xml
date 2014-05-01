@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -14,30 +15,46 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:textSize="8sp"
-            android:text="@string/leftArrow" />
+            android:inputType="date"
+            android:text="@string/leftArrow"
+            android:textSize="8sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/vitals_date"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/today"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="1-1-2011"
-            android:enabled="false"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/today"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/vital_forwardButton"
+            android:text="Today"
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/vital_forwardButton"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:textSize="8sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:text="@string/rightArrow" />
-
-    </LinearLayout>
+            android:text="@string/rightArrow"
+            android:textSize="8sp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/vitalTip"

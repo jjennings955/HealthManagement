@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,16 +15,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.method.MovementMethod;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,17 +39,22 @@ import com.team4.database.VitalSign;
 import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.adapters.VitalAdapter;
+import com.team4.healthmonitor.dialogs.SearchDialog;
 import com.team4.healthmonitor.dialogs.VitalDialog;
 
 
 
-public class VitalsFragment extends Fragment 
+public class VitalsFragment extends Fragment
 {
 	
 	private FragmentActivity myContext;
 	private String username;
 	private String password;
 	private int userId;
+	private TextView date;
+	private Button backButton;
+	private Button forwardButton;
+	private Button todayButton;
 	private int offset = 0;
 	private FragmentActivity myContext2;
 	private DatabaseHandler db;
@@ -54,23 +62,22 @@ public class VitalsFragment extends Fragment
 	private HashMap<Integer, ListView> listViews;
 	private HashMap<Integer, TextView> labels;
 	private TextView tip;
-	private TextView date;
-	private Button backButton;
-	private Button forwardButton;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_vitals, container, false);
 		setHasOptionsMenu(true);
 		Bundle foo = getArguments();
-		
 		backButton = (Button)rootView.findViewById(R.id.vital_backButton);
 		forwardButton = (Button)rootView.findViewById(R.id.vital_forwardButton);
+		todayButton = (Button)rootView.findViewById(R.id.today);
 		userId = foo.getInt(Arguments.USERID);
 		date = (TextView)rootView.findViewById(R.id.vitals_date);
+		//date.setInputType()
 		db = new DatabaseHandler(getActivity());
 		tip = (TextView)rootView.findViewById(R.id.vitalTip);
-		  LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
 			      new IntentFilter("com.team4.healthmonitor.UPDATEVITALS"));
 		
 
@@ -88,7 +95,7 @@ public class VitalsFragment extends Fragment
 		backButton = (Button)rootView.findViewById(R.id.vital_backButton);
 		forwardButton = (Button)rootView.findViewById(R.id.vital_forwardButton);
 		
-       backButton.setOnClickListener(new View.OnClickListener() {
+       backButton.setOnClickListener(new OnClickListener() {
     	   @Override
     		public void onClick(View v) {
     			offset--;
@@ -99,7 +106,7 @@ public class VitalsFragment extends Fragment
     			updateDate();
     		}
            });
-       forwardButton.setOnClickListener(new View.OnClickListener() {
+       forwardButton.setOnClickListener(new OnClickListener() {
     	   @Override
     		public void onClick(View v) {
     			offset++;
@@ -110,7 +117,27 @@ public class VitalsFragment extends Fragment
     			updateDate();
     		}
            });
+       
+       date.setOnClickListener(new OnClickListener() {
 		
+		@Override
+		public void onClick(View v) {
+			showSearchDialog();
+		}
+	});
+       Button todayButton = (Button)rootView.findViewById(R.id.today);
+       todayButton.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			offset = 0;
+			updateData(VitalSign.WEIGHT);
+			updateData(VitalSign.CHOLESTEROL);
+			updateData(VitalSign.BLOOD_SUGAR);
+			updateData(VitalSign.BLOOD_PRESSURE);
+			updateDate();			
+		}
+	});
 	    ListView bplist = (ListView)rootView.findViewById(R.id.vitals_bplistview);
 	    bpadapter = new VitalAdapter(this, getActivity(), bplist.getId(), bps);
 	    
@@ -162,9 +189,17 @@ public class VitalsFragment extends Fragment
 	private void updateDate() {
 		date.setText(Helper.getDateWithOffset(offset));
 		if (offset == 0)
+		{
 			forwardButton.setVisibility(View.INVISIBLE);
+			
+			todayButton.setVisibility(View.GONE);
+		}
 		else
+		{
 			forwardButton.setVisibility(View.VISIBLE);
+			Button todayButton = (Button)getActivity().findViewById(R.id.today);
+			todayButton.setVisibility(View.VISIBLE);
+		}
 	}
 	public int getOffset()
 	{
@@ -190,9 +225,21 @@ public class VitalsFragment extends Fragment
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 		  @Override
 		  public void onReceive(Context context, Intent intent) {
-		    // Extract data included in the Intent
-		    int type = intent.getIntExtra("type", 0);
-		    updateData(type);
+			  Log.w("PHMS", "Received message");
+		    int type = intent.getIntExtra("type", -1);
+		    int newoffset = intent.getIntExtra("offset", offset);
+		    if (newoffset != offset)
+		    {
+		    	offset = newoffset;
+		    	updateData(VitalSign.BLOOD_PRESSURE);
+		    	updateData(VitalSign.BLOOD_SUGAR);
+		    	updateData(VitalSign.CHOLESTEROL);
+		    	updateData(VitalSign.WEIGHT);
+		    	updateDate();
+		    }
+		    
+		    if (type != -1)
+		    	updateData(type);
 		  }
 		};
 
@@ -258,6 +305,16 @@ public class VitalsFragment extends Fragment
         Bundle args = new Bundle();
         args.putInt(Arguments.USERID, userId);
         args.putInt(Arguments.OFFSET, offset);
+        vd.setArguments(args);
+        vd.show(fm2, "fragment_edit_name");
+    }
+    private void showSearchDialog()
+    {
+        FragmentManager fm2 = myContext2.getSupportFragmentManager();
+        SearchDialog vd = new SearchDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.USERID, userId);
+        args.putInt(Arguments.DIALOGTYPE, SearchDialog.VITAL_DATE);
         vd.setArguments(args);
         vd.show(fm2, "fragment_edit_name");
     }

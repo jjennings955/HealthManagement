@@ -117,7 +117,7 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
      String enteredDosage = "";
      int hours = -1;
      int mins = -1;
-     float dosage = -1.0f;
+     String dosage = "";
      String interval = "";
      
      String num_times = "";
@@ -125,14 +125,15 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
      
      enteredMedName = medName.getText().toString();
      enteredDosage = this.dosage.getText().toString();
-     try
+     /*try
      {
     	 dosage = Float.parseFloat(enteredDosage);
      }
      catch (NumberFormatException e)
      {
     	 dosage = -1.0f;
-     }
+     }*/
+     
      hours = time.getCurrentHour();
      mins = time.getCurrentMinute();
      num_times = perDay.getText().toString();
@@ -143,10 +144,17 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
     	 valid = false;
     	 medName.setError("Medication name not found in database");
      }
-     if (enteredDosage.equals("") && dosage != -1.0f)
+     Medication medcheck = db.findMedication(enteredMedName);
+     if (medcheck != null && db.willConflict(userId, medcheck.getId()))
      {
     	 valid = false;
-    	 this.dosage.setError("Please enter a dosage");
+    	 medName.setError("This medication conflicts with a scheduled medication!");
+     }
+     String testDosage = enteredDosage.toLowerCase();
+     if (enteredDosage.equals("") || !testDosage.matches("[0-9]+(ml|mg|capsules|pills|tabs|g|mcg)?"))
+     {
+    	 valid = false;
+    	 this.dosage.setError("Please enter a valid dosage (number followed by units)");
      }
      if (!num_times.matches("[1-9][0-9]*?"))
      {
@@ -176,7 +184,7 @@ public class MedicineDialog extends DialogFragment implements OnClickListener
 		        	 med.setUserId(userId);
 		        	 med.setTime_hours(hours + i*inter);
 		        	 med.setTime_mins(mins);
-		        	 med.setDosage(dosage);
+		        	 med.setDosage(enteredDosage);
 		        	 med.setDay(e.getKey()); // FIX ME!
 		        	 db.store(med);
 		    	 }

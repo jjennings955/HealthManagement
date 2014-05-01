@@ -1,12 +1,14 @@
 package com.team4.database;
 
+import android.database.Cursor;
+
 public class MedSchedule implements Comparable<MedSchedule>
 {
 	public String name;
 	public String dosage;
 	public String time;
 	public int day;
-	private String date;
+	public String date;
 	public boolean status;
 	public int id;
 	
@@ -20,7 +22,9 @@ public class MedSchedule implements Comparable<MedSchedule>
 		this.date = date;
 		this.status = status;
 	}
-	
+
+	public MedSchedule() {
+	}
 	public String getTime()
 	{
 		return time;
@@ -60,8 +64,23 @@ public class MedSchedule implements Comparable<MedSchedule>
 		return (getHour() * 60 + getMinutes()) - (another.getHour() * 60 + another.getMinutes());
 		
 	}
-
-
-
-
+	public static MedSchedule getMedSchedule(Cursor cursor)
+	{
+		int hours = cursor.getInt(4);
+		int minutes = cursor.getInt(5);
+		String mins = "";
+		if (minutes < 10)
+			mins = "0" + minutes;
+		else
+			mins = ""+minutes;
+		String timeString = hours + ":" + mins;
+		MedSchedule result = new MedSchedule();
+		result.id = cursor.getInt(0);
+		result.name = cursor.getString(1);
+		result.dosage = cursor.getString(2);
+		result.day = cursor.getShort(3);
+		result.time = timeString;
+		return result;
+		
+	}
 }

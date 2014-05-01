@@ -1,5 +1,7 @@
 package com.team4.database;
 
+import android.database.Cursor;
+
 
 public class FoodJournal {
 	
@@ -14,7 +16,7 @@ public class FoodJournal {
 				
 	 * */
 	
-	private int _id = 0;
+	private int _id = -1;
 	private int userId = 0;
 	private String name;
 	private float amount;
@@ -79,6 +81,16 @@ public class FoodJournal {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public static FoodJournal getFoodJournal(Cursor cursor)
+	{
+	    FoodJournal food_j = new FoodJournal();
+	    food_j.setId(cursor.getInt(0));
+	    food_j.setName(cursor.getString(1));
+	    food_j.setAmount(cursor.getFloat(2));
+	    food_j.setUserId(cursor.getInt(3));
+	    
+	    food_j.setDatetime(cursor.getLong(4));
+	    return food_j;
+	}
 	
 }

@@ -1,5 +1,6 @@
 package com.team4.healthmonitor;
 
+import java.util.ArrayList;
 import java.util.Date; 
 import java.util.Properties; 
 import javax.activation.CommandMap; 
@@ -72,7 +73,28 @@ public class Mail extends javax.mail.Authenticator {
     _user = user; 
     _pass = pass; 
   } 
- 
+  public static void sendMail(final ArrayList<String> recipients, final String subject, final String body)
+  {
+      Thread thread = new Thread(new Runnable(){
+          @Override
+          public void run() {
+              try {
+                Mail m = new Mail("personalhealthmonitoringsystem@gmail.com", "admin321");
+
+                  m.setTo((String[])recipients.toArray());
+                  m.setFrom("personalhealthmonitoringsystem@gmail.com");
+                  m.setSubject(subject);
+                  m.setBody(body);
+              m.send();
+                  //Your code goes here
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+          }
+      });
+      
+      thread.start();
+  }
   public boolean send() throws Exception { 
     Properties props = _setProperties(); 
  
@@ -165,5 +187,4 @@ public class Mail extends javax.mail.Authenticator {
   public void setSubject(String string) {
       this._subject = string;
   }
-  // more of the getters and setters ….. 
 } 

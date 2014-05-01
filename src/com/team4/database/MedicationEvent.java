@@ -1,5 +1,7 @@
 package com.team4.database;
 
+import android.database.Cursor;
+
 
 public class MedicationEvent {
 /*"create table medication_schedule(id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -12,7 +14,7 @@ public class MedicationEvent {
 	private int _id;
 	private int time_hours;
 	private int time_mins;
-	private float dosage;
+	private String dosage;
 	private int medication_id;
 	private int day;
 	
@@ -41,7 +43,7 @@ public class MedicationEvent {
 		
 	}
 
-	public MedicationEvent(int time_hours, int time_mins, int day, float dosage, int medication_id, int user_id)
+	public MedicationEvent(int time_hours, int time_mins, int day, String dosage, int medication_id, int user_id)
 	{
 		this.time_hours = time_hours;
 		this.time_mins = time_mins;
@@ -73,10 +75,10 @@ public class MedicationEvent {
 	public void setTime_mins(int time_mins) {
 		this.time_mins = time_mins;
 	}
-	public float getDosage() {
+	public String getDosage() {
 		return dosage;
 	}
-	public void setDosage(float dosage) {
+	public void setDosage(String dosage) {
 		this.dosage = dosage;
 	}
 	public int getMedication_id() {
@@ -96,6 +98,18 @@ public class MedicationEvent {
 	}
 	public void setDay(int day) {
 		this.day = day;
+	}
+	public static MedicationEvent getMedicationEvent(Cursor cursor)
+	{
+		MedicationEvent medEvent = new MedicationEvent();
+		medEvent.setId(cursor.getInt(0));
+		medEvent.setTime_hours(cursor.getInt(1));
+		medEvent.setTime_mins(cursor.getInt(2));
+		medEvent.setDay(cursor.getShort(3));
+		medEvent.setDosage(cursor.getString(4));
+		medEvent.setMedication_id(cursor.getInt(5));
+		medEvent.setUserId(cursor.getInt(6));
+		return medEvent;
 	}
 	
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import android.database.Cursor;
 import android.telephony.PhoneNumberUtils;
 
 public class User {
@@ -209,6 +210,20 @@ public class User {
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	public static User getUser(Cursor cursor)
+	{
+		User userObj = new User();
+        userObj.setId(cursor.getInt(0));
+        userObj.setUserName(cursor.getString(1));
+        userObj.setPassword(cursor.getString(2));
+        userObj.setFirstName(cursor.getString(3));
+        userObj.setLastName(cursor.getString(4));
+        userObj.setGender(cursor.getString(5));
+        userObj.setHeight_feet(cursor.getInt(6));
+        userObj.setHeight_inches(cursor.getInt(7));
+        userObj.setWeight(cursor.getFloat(8));
+        userObj.setAge(cursor.getInt(9));
+        return userObj;
+	}
 
 }

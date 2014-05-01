@@ -43,7 +43,7 @@
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:inputType="number" />
+        android:inputType="textVisiblePassword" />
 
     <TextView
         android:id="@+id/medicine_priority_text"

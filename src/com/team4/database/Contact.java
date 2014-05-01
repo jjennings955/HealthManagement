@@ -1,5 +1,6 @@
 package com.team4.database;
 
+import android.database.Cursor;
 import android.telephony.PhoneNumberUtils;
 
 public class Contact {
@@ -64,5 +65,15 @@ public class Contact {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public static Contact getContact(Cursor cursor)
+	{
+		Contact result = new Contact();
+		result.setId(cursor.getInt(0));
+		result.setUser_id(cursor.getInt(1));
+		result.setName(cursor.getString(2));
+		result.setPhone(cursor.getString(3));
+		result.setEmail(cursor.getString(4));
+		return result;
 	}
 }

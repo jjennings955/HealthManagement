@@ -87,6 +87,20 @@ public class Helper {
 		}
 		return d.getTime();
 	}
+	public static long getDateFromUserString(String date)
+	{
+		SimpleDateFormat format1 = new SimpleDateFormat("M-d-yyyy");
+		Date d = null;
+		try
+		{
+			d = format1.parse(date);
+		}
+		catch (java.text.ParseException e)
+		{
+			return -1;
+		}
+		return d.getTime();
+	}
 	public static String formatTime(long millis)
 	{
 		Calendar cal = Calendar.getInstance();
@@ -101,7 +115,7 @@ public class Helper {
 	{
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(System.currentTimeMillis());
-		cal.add(Calendar.DAY_OF_MONTH, offset);
+		cal.add(Calendar.DAY_OF_YEAR, offset);
 		SimpleDateFormat format1 = new SimpleDateFormat("M-d-yyyy");
 
 		String formatted = format1.format(cal.getTime());

@@ -1,5 +1,6 @@
 package com.team4.healthmonitor.dialogs;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import com.team4.database.DatabaseHandler;
@@ -156,7 +157,7 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 		Intent mshg = new Intent("com.team4.healthmonitor.UPDATEVITALS");
 		mshg.putExtra("type", type);
 		LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(mshg);
-	}
+	}	
 	@Override
 	public void onClick(View view) {
 		DatabaseHandler db = new DatabaseHandler(getActivity());
@@ -187,7 +188,10 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 			{
 				VitalSign v = new VitalSign();
 				v.setUser_Id(userId);
-				v.setDatetime(System.currentTimeMillis() + 1000*24*60*60*offset);
+				Calendar foo = Calendar.getInstance();
+				foo.setTimeInMillis(System.currentTimeMillis());
+				foo.add(Calendar.DAY_OF_YEAR, offset);
+				v.setDatetime(foo.getTimeInMillis());
 				v.setValue1(Integer.parseInt(val1));
 				v.setType(type);
 				if (editing)
@@ -223,7 +227,10 @@ public class VitalDialog extends DialogFragment implements OnItemSelectedListene
 			{
 				VitalSign v = new VitalSign();
 				v.setUser_Id(userId);
-				v.setDatetime(System.currentTimeMillis() + 1000*24*60*60*offset);
+				Calendar foo = Calendar.getInstance();
+				foo.setTimeInMillis(System.currentTimeMillis());
+				foo.add(Calendar.DAY_OF_YEAR, offset);
+				v.setDatetime(foo.getTimeInMillis());
 				v.setValue1(Integer.parseInt(val1));
 				v.setValue2(Integer.parseInt(val2));
 				v.setType(type);

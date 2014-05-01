@@ -4,6 +4,9 @@ package com.team4.healthmonitor.fragments;
 import java.util.ArrayList;
 
 import com.team4.database.DatabaseHandler;
+import com.team4.database.FoodJournal;
+import com.team4.database.Helper;
+import com.team4.database.VitalSign;
 import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.MainActivity;
 import com.team4.healthmonitor.R;
@@ -12,6 +15,7 @@ import com.team4.healthmonitor.R.layout;
 import com.team4.healthmonitor.R.menu;
 import com.team4.healthmonitor.adapters.ArticleAdapter;
 import com.team4.healthmonitor.dialogs.DietDialog;
+import com.team4.healthmonitor.dialogs.SearchDialog;
 import com.team4.healthmonitor.adapters.DietAdapter;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -28,22 +32,40 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DietFragment extends Fragment 
 {
 	
 	private FragmentActivity myContext;
+	private TextView calories;
 	private String username;
 	private String password;
 	private DietAdapter adapter;
 	private int userId;
+	private TextView date;
+	private Button backButton;
+	private Button forwardButton;
+	private Button today;
+	private int offset = 0;
+	
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 		  @Override
 		  public void onReceive(Context context, Intent intent) {
+		    int newoffset = intent.getIntExtra("offset", offset);
+		    if (newoffset != offset)
+		    {
+		    	offset = newoffset;
+		    }
 		    updateData();
+		    updateDate();
 		  }
 
 		};
@@ -60,13 +82,56 @@ public class DietFragment extends Fragment
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		ListView foodList = (ListView)rootView.findViewById(R.id.food_list);
 		Bundle arguments = this.getArguments();
+		date = (TextView)rootView.findViewById(R.id.diet_date);
+		backButton = (Button)rootView.findViewById(R.id.diet_backButton);
+		forwardButton = (Button)rootView.findViewById(R.id.diet_forwardButton);
 		userId = arguments.getInt(Arguments.USERID);
-		ArrayList<com.team4.database.FoodJournal> foods = db.getUserFoods(userId);
+		today = (Button)rootView.findViewById(R.id.today_diet);
+		calories = (TextView)rootView.findViewById(R.id.diet_calories);
+		ArrayList<FoodJournal> foods = db.getUserFoods(userId, offset);
+		int sum = 0;
+		
+
+		
 		adapter = new DietAdapter(this, getActivity(), R.layout.article_item, foods);
 		foodList.setAdapter(adapter);
 		foodList.setEmptyView(rootView.findViewById(R.id.dietTip));
-		
-		
+		  backButton.setOnClickListener(new View.OnClickListener() {
+	    	   @Override
+	    		public void onClick(View v) {
+	    			offset--;
+	    			updateData();
+	    			updateDate();
+	    		}
+	           });
+	       forwardButton.setOnClickListener(new View.OnClickListener() {
+	    	   @Override
+	    		public void onClick(View v) {
+	    			offset++;
+	    			updateData();
+	    			updateDate();
+	    		}
+	           });
+	       
+	       date.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				showSearchDialog();
+			}
+		});
+	     today.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				offset = 0;
+				updateDate();
+				updateData();
+				
+			}
+		});
+		updateDate();
+		updateCalories();
 		return rootView;
 	}
 		
@@ -74,8 +139,31 @@ public class DietFragment extends Fragment
 	{
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		adapter.clear();
-		adapter.addAll(db.getUserFoods(userId));
+		adapter.addAll(db.getUserFoods(userId, offset));
 		adapter.notifyDataSetChanged();
+		updateCalories();
+	}
+	private void updateCalories()
+	{
+		int sum = 0;
+		for (int i = 0, cnt = adapter.getCount(); i < cnt; i++)
+		{
+			sum += adapter.getItem(i).getAmount();
+		}
+		calories.setText("" + (int)sum);
+	}
+	private void updateDate() {
+		date.setText(Helper.getDateWithOffset(offset));
+		if (offset == 0)
+		{
+			today.setVisibility(View.GONE);
+			forwardButton.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			today.setVisibility(View.VISIBLE);
+			forwardButton.setVisibility(View.VISIBLE);
+		}
 	}
 	public void onAttach(Activity activity)
 	{
@@ -114,7 +202,30 @@ public class DietFragment extends Fragment
         DietDialog dd = new DietDialog();
         Bundle args = new Bundle();
         args.putInt(Arguments.USERID, userId);
+        args.putInt(Arguments.OFFSET, offset);
         dd.setArguments(args);
         dd.show(fm, "fragment_edit_name");
+    }
+
+	public void showEditDietDialog(int id) {
+        FragmentManager fm = myContext.getSupportFragmentManager();
+        DietDialog dd = new DietDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.USERID, userId);
+        args.putInt(Arguments.OFFSET, offset);
+        args.putInt(Arguments.ITEMID, id);
+        dd.setArguments(args);
+        dd.show(fm, "fragment_edit_name");
+		
+	}
+    private void showSearchDialog()
+    {
+        FragmentManager fm2 = myContext.getSupportFragmentManager();
+        SearchDialog vd = new SearchDialog();
+        Bundle args = new Bundle();
+        args.putInt(Arguments.USERID, userId);
+        args.putInt(Arguments.DIALOGTYPE, SearchDialog.DIET_DATE);
+        vd.setArguments(args);
+        vd.show(fm2, "fragment_edit_name");
     }
 }

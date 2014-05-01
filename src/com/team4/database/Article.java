@@ -1,5 +1,7 @@
 package com.team4.database;
 
+import android.database.Cursor;
+
 
 public class Article {
 	
@@ -117,6 +119,17 @@ public class Article {
 	{
 		return "(id = " + Id + "; title = " + title + "; desc = " + description + "; url = " + url + "; user = " + userId + ")";
 		
+	}
+	public static Article getArticle(Cursor cursor)
+	{
+		Article a = new Article();
+		a.setId(cursor.getInt(0));
+		a.setType(cursor.getString(1));
+		a.setUrl(cursor.getString(2));
+		a.setTitle(cursor.getString(3));
+		a.setDescription(cursor.getString(4));
+		a.setUserId(cursor.getInt(5));
+		return a;
 	}
 	
 	

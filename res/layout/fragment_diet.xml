@@ -4,20 +4,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <TextView
-        android:id="@+id/dietTip"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical"
-        android:textColor="#939393"
-        android:text="You have not tracked any food yet today. Add some by clicking the + button at the top of your screen!"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <ListView
-        android:id="@+id/food_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-    </ListView>
+
+ <RelativeLayout
+     android:id="@+id/RelativeLayout1"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/diet_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/today"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="1-1-2011"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/diet_forwardButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignBaseline="@+id/today_diet"
+            android:layout_alignBottom="@+id/today_diet"
+            android:layout_alignParentRight="true"
+            android:text="@string/rightArrow"
+            android:textSize="8sp" />
+
+        <Button
+            android:id="@+id/diet_backButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:inputType="date"
+            android:text="@string/leftArrow"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/dietTip"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical"
+            android:text="You have not tracked any food yet today. Add some by clicking the + button at the top of your screen!"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#939393" />
+
+        <ListView
+            android:id="@+id/food_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/diet_calories"
+            android:layout_below="@+id/diet_date" >
+
+        </ListView>
+
+        <Button
+            android:id="@+id/today_diet"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/diet_forwardButton"
+            android:text="Today"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/diet_calories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/dietTip"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/dietTip"
+            android:layout_marginBottom="14dp"
+            android:gravity="center_horizontal"
+            android:text="Calories"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </RelativeLayout>
 </LinearLayout>

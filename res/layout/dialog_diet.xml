@@ -7,36 +7,40 @@
     <TextView
         android:id="@+id/diet_foodlabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_weight="1"
         android:text="Food Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/editFood"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_weight="1"
         android:completionThreshold="1"
         android:ems="10"
         android:text="" >
 
-        <requestFocus />
+    	<requestFocus />
     </EditText>
 
     <TextView
         android:id="@+id/diet_amount_label"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_weight="1"
         android:text="Calories"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
         android:layout_width="130dp"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
         <EditText
             android:id="@+id/diet_amount_edit"
@@ -45,13 +49,29 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="numberDecimal" />
+            android:inputType="numberSigned|numberDecimal" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/diet_submitBtn"
+    <LinearLayout
+        android:id="@+id/buttonParent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save" />
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/diet_submitBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/diet_deleteBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:text="Delete" />
+    </LinearLayout>
 
 </LinearLayout>

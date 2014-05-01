@@ -1,5 +1,7 @@
 package com.team4.database;
 
+import android.database.Cursor;
+
 
 public class VitalSign {
 	
@@ -84,7 +86,18 @@ public class VitalSign {
 	public void setDatetime(long l) {
 		this.datetime = l;
 	}
-	
+	public static VitalSign getVitalSign(Cursor cursor)
+	{
+	    VitalSign vt = new VitalSign();
+	    vt.setId(cursor.getInt(0));
+	    vt.setType(cursor.getInt(1));
+	    vt.setValue1(cursor.getInt(2));
+	    vt.setValue2(cursor.getInt(3));
+
+	    vt.setDatetime(cursor.getLong(4));
+	    vt.setUser_Id(cursor.getInt(5));
+	    return vt;
+	}
 	
 
 }

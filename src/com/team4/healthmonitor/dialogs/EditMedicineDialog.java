@@ -111,7 +111,7 @@ public class EditMedicineDialog extends DialogFragment implements OnClickListene
 		{
 			int time_hrs = time.getCurrentHour();
 			int time_mins = time.getCurrentMinute();
-			float dose = Float.parseFloat(dosage.getText().toString());
+			String dose = dosage.getText().toString();
 			event.setTime_hours(time_hrs);
 			event.setTime_mins(time_mins);
 			event.setDosage(dose);

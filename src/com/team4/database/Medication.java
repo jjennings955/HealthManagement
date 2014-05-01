@@ -1,5 +1,7 @@
 package com.team4.database;
 
+import android.database.Cursor;
+
 
 public class Medication {
 	//"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, priority INTEGER);
@@ -47,5 +49,13 @@ public class Medication {
 	public String toString()
 	{
 		return this.getName();
+	}
+	public static Medication getMedication(Cursor cursor)
+	{
+		Medication med = new Medication();
+		med.setId(cursor.getInt(0));
+		med.setName(cursor.getString(1));
+		med.setPriority(cursor.getInt(2));
+		return med;		
 	}
 }

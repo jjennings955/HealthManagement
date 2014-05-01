@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.team4.database.Article;
 import com.team4.database.DatabaseHandler;
-import com.team4.database.Food2;
 import com.team4.database.FoodJournal;
 import com.team4.database.Helper;
 import com.team4.healthmonitor.R;
@@ -46,19 +45,22 @@ public class DietAdapter extends ArrayAdapter<FoodJournal> {
        TextView time = (TextView) convertView.findViewById(R.id.fj_time);
        TextView cals = (TextView)convertView.findViewById(R.id.fj_cals);
        
-       //CheckBox taken = (CheckBox)convertView.findViewById(R.id.medStatus_temp);
        ImageButton edit = (ImageButton)convertView.findViewById(R.id.fj_edit);
-       String timeString = Helper.formatTime(entry.getDatetime());
+       
+        String timeString = Helper.formatTime(entry.getDatetime());
+       
+       
        desc.setText(entry.getName());
        cals.setText("" + ((int)entry.getAmount()) + " calories");
        time.setText("" + timeString);
+       
        final int id = entry.getId();
        
        edit.setOnClickListener(new View.OnClickListener() {
 	   @Override
 		public void onClick(View v) {
 			
-			//parentFragment.showEditArticleDialog(id);
+			parentFragment.showEditDietDialog(id);
 		}
        });
        
