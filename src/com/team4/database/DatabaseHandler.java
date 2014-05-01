@@ -13,6 +13,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
@@ -104,15 +105,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		meds.add(aspirin);
 		meds.add(new Medication("Viox", 1));
 		meds.add(new Medication("Caffeine", 1));
-		
+		meds.add(new Medication("Zoloft", 1));
+		meds.add(new Medication("Vicodin", 1));
+		meds.add(new Medication("Amoxicillin", 1));
+		meds.add(new Medication("Tamiflu", 1));
+		meds.add(new Medication("Sudafed", 1));
+		meds.add(new Medication("Benadryl", 1));
+		meds.add(new Medication("Levothyroxine", 1));
 		for (Medication med : meds)
 		{
 			this.store(med, db);
 		}
 		if (tylenol != null && aspirin != null)
 		{
-			this.makeConflict(db, tylenol.getId(), aspirin.getId());
-			this.makeConflict(db, aspirin.getId(), tylenol.getId());
+			try
+			{
+				this.makeConflict(db, tylenol.getId(), aspirin.getId());
+				this.makeConflict(db, aspirin.getId(), tylenol.getId());
+			} catch (SQLiteException e)
+			{
+				
+			}
 		}
 	}
 	/* Mark a medication as taken
