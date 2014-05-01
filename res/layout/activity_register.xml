@@ -246,7 +246,8 @@
            	    android:layout_below="@+id/DoctorPhone"
            	    android:ems="10"
            	    android:hint="Doctor&apos;s Email"
-           	    android:singleLine="true" />
+           	    android:singleLine="true"
+           	    android:inputType="textVisiblePassword" />
 
            	<EditText
            	    android:id="@+id/personalPhone"
@@ -267,7 +268,8 @@
            	    android:layout_below="@+id/personalPhone"
            	    android:ems="10"
            	    android:hint="Personal Contact&apos;s Email"
-           	    android:singleLine="true" />
+           	    android:singleLine="true" 
+           	    android:inputType="textVisiblePassword" />
 
            	<EditText
            	    android:id="@+id/personalName"

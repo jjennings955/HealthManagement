@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.team4.database.Article;
 import com.team4.database.DatabaseHandler;
+import com.team4.healthmonitor.Arguments;
 import com.team4.healthmonitor.R;
 import com.team4.healthmonitor.adapters.SearchResultAdapter;
 import com.team4.healthmonitor.dialogs.ArticleSearchDialog;
@@ -39,6 +40,7 @@ public class SearchFragment extends Fragment
 	private DatabaseHandler db;
 	private SearchResultAdapter adapter;
 	private ListView listView;
+	private int userId;
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 		  @Override
 		  public void onReceive(Context context, Intent intent) {
@@ -52,7 +54,7 @@ public class SearchFragment extends Fragment
 		public void updateData(String message)
 		{
 			adapter.clear();
-			adapter.addAll(db.getArticle_search(message)/*get search results*/);
+			adapter.addAll(db.getArticle_search(message, userId)/*get search results*/);
 			adapter.notifyDataSetChanged();
 		}
 
@@ -61,7 +63,8 @@ public class SearchFragment extends Fragment
 			Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-		
+		Bundle arguments = getArguments();
+		userId = arguments.getInt(Arguments.USERID, -1);
 		db = new DatabaseHandler(getActivity());
 		ListView rootList = (ListView)rootView.findViewById(R.id.search_list);
 		listView = rootList;

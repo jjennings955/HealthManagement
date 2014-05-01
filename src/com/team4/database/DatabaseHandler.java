@@ -36,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"create table sessions(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, timestamp INTEGER, FOREIGN KEY(user_id) REFERENCES user(id));\n" +
 				"create table vitalsign(id INTEGER PRIMARY KEY AUTOINCREMENT, type TINYINT, value1 INTEGER, value2 INTEGER, datetime INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create table article(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, url TEXT, title TEXT, description TEXT, user INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
-				"create virtual table article_search using fts3(id,type, url,title, description, user);\n" +
+				"create virtual table article_search using fts3(id, url, title, description, user);\n" +
 				"create table food_journal(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, user INTEGER, datetime INTEGER, FOREIGN KEY(user) REFERENCES user(id));\n" +
 				"create virtual table food_search using fts3(id INTEGER, description TEXT, FOREIGN KEY(id) REFERENCES food_journal(id) ON DELETE CASCADE);\n" +
 				"create table medication(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, priority INTEGER);\n" +
@@ -670,12 +670,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	
-public ArrayList<Article> getArticle_search(String keyword)
+public ArrayList<Article> getArticle_search(String keyword, int userId)
 {
 ArrayList<Article> results = new ArrayList<Article>();
 SQLiteDatabase db = this.getWritableDatabase();
-String query = "SELECT * FROM article_search WHERE article_search MATCH ?";//article_search
-Cursor cursor = db.rawQuery(query, new String[] { keyword });
+String query = "SELECT * FROM article natural join (SELECT id FROM article_search WHERE article_search MATCH ?) where user = ?";//article_search
+Cursor cursor = db.rawQuery(query, new String[] { keyword + "*", ""+userId });
 Log.w("PHMS", ""+cursor.getCount());
 Log.w("PHMS", "" + cursor.moveToFirst());
         if (cursor.moveToFirst()) {

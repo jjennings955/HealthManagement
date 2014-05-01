@@ -42,7 +42,7 @@ import com.team4.healthmonitor.dialogs.VitalDialog;
 public class VitalsFragment extends Fragment
 {
 	
-	private FragmentActivity myContext;
+	
 	private String username;
 	private String password;
 	private int userId;
@@ -189,7 +189,7 @@ public class VitalsFragment extends Fragment
 		else
 		{
 			forwardButton.setVisibility(View.VISIBLE);
-			Button todayButton = (Button)myContext.findViewById(R.id.today);
+			Button todayButton = (Button)myContext2.findViewById(R.id.today);
 			todayButton.setVisibility(View.VISIBLE);
 		}
 	}
