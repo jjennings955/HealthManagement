@@ -179,6 +179,9 @@ public class VitalsFragment extends Fragment
 		
 	}
 	private void updateDate() {
+		if (myContext2 == null)
+			return;
+		
 		date.setText(Helper.getDateWithOffset(offset));
 		if (offset == 0)
 		{
